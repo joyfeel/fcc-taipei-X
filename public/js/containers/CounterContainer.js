@@ -1,8 +1,8 @@
-import Counter from '../components/Counter'
-import * as actions from '../actions/counter'
+//import Counter from '../components/Counter'
+//import * as actions from '../actions/counter'
 //import { increment, decrement } from '../actions/counter'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+//import { connect } from 'react-redux'
+//import { bindActionCreators } from 'redux'
 
 function mapStateToProps(state) {
   return {
@@ -53,4 +53,4 @@ function addTodoAction(text){
 // 这样可以直接调用addTodoAction来派发 Action。
 */
 
-export default connect(mapStateToProps, mapDispatchToProps)(Counter)
+//export default connect(mapStateToProps, mapDispatchToProps)(Counter)

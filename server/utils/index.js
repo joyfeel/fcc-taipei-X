@@ -4,12 +4,16 @@ import Config from '../config'
 // Please note that exp is only set if the payload is an object liberal.
 // expiresIn: second (unit)
 // getToken['JWT'](email)
+//getToken['OAuth2'](user)
 export const getToken = {
   ['JWT'](email) {
     return jwt.sign({ email }, Config.jwt.jwtSecret, { algorithm: 'HS512', expiresIn: Config.jwt.jwtTokenExpiresIn })
   },
   ['EMAIL'](email) {
     return jwt.sign({ email }, Config.jwt.jwtSecret, { algorithm: 'HS256', expiresIn: Config.jwt.emailTokenExpiresIn })
+  },
+  ['OAuth2'](user) {
+    return jwt.sign(user, Config.jwt.jwtSecret, { algorithm: 'HS256', expiresIn: Config.jwt.OAuth2TokenExpiresIn })
   }
 }
 

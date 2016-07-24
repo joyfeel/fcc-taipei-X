@@ -49,13 +49,9 @@ router.post('/',
   // }),
   async(ctx, next) => {
     try {
+      console.log(ctx.request.headers)
       const accessTokenUrl = 'https://www.googleapis.com/oauth2/v4/token',
-            peopleApiUrl = 'https://www.googleapis.com/plus/v1/people/me'
-            //peopleApiUrl = 'https://www.googleapis.com/plus/v1/people/me/openIdConnect'
-            //https://www.googleapis.com/auth/plus.me
-            //peopleApiUrl = 'https://www.googleapis.com/plus/v1/people/me/openIdConnect'
-            //https://www.googleapis.com/plus/v1/people
-      //const peopleApiUrl = 'https://www.googleapis.com/auth/userinfo.profile'
+            peopleApiUrl = 'https://www.googleapis.com/oauth2/v2/userinfo'
 
       const params = {
         code: ctx.request.body.code,
@@ -64,7 +60,6 @@ router.post('/',
         redirect_uri: ctx.request.body.redirectUri,
         grant_type: 'authorization_code'
       }
-
       const accessTokenResponse = await fetch(accessTokenUrl, {
         method: 'post',
         headers: {
@@ -81,11 +76,13 @@ router.post('/',
           }
         })
         if (userInfoResponse.ok) {
-          console.log('OK???')
           const userInfo = await userInfoResponse.json()
-          console.log(userInfo)
+          const token = getToken['OAuth2'](userInfo)
+          //const a = await verifyToken(token)
+          //console.log('aaaaaaaaaaaaaaaaaaaaaa')
+          //console.log(a)
           ctx.response.body = {
-            token: 'test Token @#%^&',
+            token,
             user: userInfo
           }
         } else {
@@ -94,7 +91,6 @@ router.post('/',
             ctx.throw(BadRequestError.output.statusCode, BadRequestError)
           }
         }
-
       } else {
         if (accessTokenResponse.status === 400) {
           const BadRequestError = Boom.badRequest(`${accessTokenResponse.statusText} ${accessTokenResponse.url}`)
@@ -102,6 +98,8 @@ router.post('/',
         }
       }
     } catch(err) {
+      console.log('BACK ERR')
+      console.log(err)
       if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
         const TokenError = Boom.unauthorized('Email Token is not valid or expired')
         ctx.throw(TokenError.output.statusCode, TokenError)

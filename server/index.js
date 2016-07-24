@@ -64,38 +64,8 @@ app.on('error', (a, b) => {
   console.log('Maybe someone is hacking your server')
 })
 
-//app.keys = ['your-session-secret']
-//app.use(convert(session()))
-
 app.use(logger())
 app.use(convert(bodyParser()))
-
-// passport.serializeUser(function(user, done) {
-//   done(null, user.id)
-// })
-//
-// passport.deserializeUser(function(id, done) {
-//   User.findById(id, function (err, user) {
-//     done(err, user);
-//   })
-// })
-
-/*
-passport.use(new GoogleStrategy(Config.auth.google, (token, tokenSecret, profile, done) => {
-  console.log('Google Strategy')
-  done(null, 'asdasd')
-}))
-
-console.log(Config.auth.github)
-passport.use(new GitHubStrategy(Config.auth.github, (accessToken, refreshToken, profile, done) => {
-  console.log('GithubStrategy Strategy.........')
-  done(null, profile)
-}))
-*/
-
-//app.use(passport.initialize())
-//app.use(passport.session())
-
 app.use(convert(historyApiFallback({
   verbose: false
 })))
@@ -116,8 +86,17 @@ app.use(convert(WebpackHotMiddleware(compiler, {
 
 //app.use('/api', expressJwt({secret: secret}).unless({path: new RegExp('/api\/public.*/', 'i') }))
 app.use(serve(__dirname + '/../public'))
+// app.use(async(ctx, next) => {
+//   console.log('............WWW')
+//   console.log(ctx.request)
+// })
 app.use(convert(jwt({
   secret: process.env.JWT_SECRET
+  //credentialsRequired: false,
+  // getToken: function(req) {
+  //   console.log(req)
+  //   console.log('...............?')
+  // }
 }).unless({
   path: [
     '/v1/signin',
@@ -128,7 +107,8 @@ app.use(convert(jwt({
     '/v1/auth/github',
     '/v1/auth/github/callback',
     '/v1/forgot_password',
-    '/favicon.ico'
+    '/favicon.ico',
+    //'/v1/auth/google/dest/bundle.js'
   ]
 })))
 

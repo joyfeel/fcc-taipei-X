@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { googleLogin } from '../actions/oauth'
 
 class Login extends Component {
   render() {
@@ -17,7 +16,5 @@ class Login extends Component {
     )
   }
 }
-
-//googleLogin()
 
 export default connect()(Login)
