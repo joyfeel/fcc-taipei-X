@@ -31,27 +31,30 @@ router.get('/',
       //Config.user.nicknameChangeLimit
       const emailToken = ctx.request.query.token
       const { email } = await verifyToken(emailToken)
+      //console.log(emailToken)
       const result = await User.findOneAndUpdate({ email }, {
         isEmailActived: true,
         verifyEmailToken: undefined
       })
+
       if (!result) {
-        throw Boom.unauthorized('Email Token is not valid')
+        throw Boom.unauthorized('Email Token is not valid or expired')
       }
       const user = getCleanUser(result)
       const jwtToken = await getToken['JWT'](email)
 
       ctx.response.body = {
-        results: 'Successlly verify the email token',
-        token: jwtToken,
-        user,
-        status: 'OK'
+        status: 'success',
+        auth: {
+          token: jwtToken,
+          ...user
+        }
       }
     } catch(err) {
       if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
         const TokenError = Boom.unauthorized('Email Token is not valid or expired')
         ctx.throw(TokenError.output.statusCode, TokenError)
-      } else if (err.output.statusCode) {
+      } else if (err.output.statusCode) {   //
         ctx.throw(err.output.statusCode, err)
       } else {
         ctx.throw(500, err)
@@ -113,14 +116,12 @@ router.post('/',
       ctx.state.nodemailerInfo = await mailTransport(ctx.request.body, emailToken)
       await next()
     } catch (err) {
-      console.log('AAA')
       if (err.output.statusCode) {
         ctx.throw(err.output.statusCode, err)
       } else if (err.code === 11000) {
         const MongoError = Boom.conflict('DB Conflict')
         ctx.throw(MongoError.output.statusCode, MongoError)
       } else if (err.name === 'ValidationError') {
-        console.log('BBB')
         const UserInputError = Boom.badData('Your data is bad and you should feel bad')
         ctx.throw(UserInputError.output.statusCode, UserInputError)
       } else {
