@@ -9,9 +9,7 @@ export async function checkEmailStatus(ctx, next) {
 
   if (nodemailerInfo.rejected.length === 0) {
     ctx.response.body = {
-      results: 'Successlly',
-      user,
-      status: 'OK'
+      status: 'success'
     }
   } else {
     throw Boom.badImplementation('Your data is bad and you should feel bad')
@@ -20,17 +18,17 @@ export async function checkEmailStatus(ctx, next) {
 
 export function mailTransport (userInfo, emailToken = undefined) {
   return new Promise((resolve, reject) => {
-    const transporter = nodemailer.createTransport(Config.viaMailConfig)
+    const transporter = nodemailer.createTransport(Config.gmailConfig)
     let message
     if (emailToken) {
       message = {
         ...Config.registerMailTemplate,
-        from: Config.viaSender,
+        from: Config.gmailSender,
         to: userInfo.email,
         html:
           `<h1>Hi ${userInfo.nickname}</h1>
            <h2>
-             <a href='http://localhost:3000/register/${emailToken}'>
+             <a href='http://localhost:3000/signup/${emailToken}'>
                Click here to activate your account
              </a>
            </h2>`

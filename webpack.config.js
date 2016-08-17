@@ -1,6 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
 
+const env = process.env.NODE_ENV
+
 module.exports = {
   entry: [
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
@@ -14,7 +16,10 @@ module.exports = {
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(env)
+    })
   ],
   resolve: {
     extensions: ['', '.js', '.jsx']

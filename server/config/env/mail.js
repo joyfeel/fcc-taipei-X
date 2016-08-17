@@ -1,6 +1,6 @@
 export default {
   gmailSender: 'joybee210@gmail.com',
-  gMailConfig: {
+  gmailConfig: {
     service: 'Gmail',
     auth: {
       user: process.env.GMAIL_USERNAME,
@@ -8,16 +8,6 @@ export default {
     },
     logger: true,
     debug: true
-  },
-  viaSender: 'joychen@via.com.tw',
-  viaMailConfig: {
-    host: 'email.via.com.tw',
-    port: 587,
-    auth: {
-      user: process.env.VIA_USERNAME,
-      pass: process.env.VIA_PASSWORD
-    },
-    logger: true
   },
   registerMailTemplate: {
     //X-Google-Original-From

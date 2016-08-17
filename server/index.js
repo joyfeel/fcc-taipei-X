@@ -4,7 +4,7 @@ import convert from 'koa-convert'
 import path from 'path'
 import bodyParser from 'koa-bodyparser'
 import logger from 'koa-logger'
-//import session from 'koa-session'
+
 import serve from 'koa-static'
 import historyApiFallback from 'koa-connect-history-api-fallback'
 
@@ -16,7 +16,7 @@ import webpackConfig from '../webpack.config'
 import jwt from 'koa-jwt'
 
 import Router from 'koa-router'
-import registerRouter from '../server/router/register'
+import signupRouter from '../server/router/signup'
 import signinRouter from '../server/router/signin'
 import memberRouter from '../server/router/members'
 import reportRouter from '../server/router/reports'
@@ -28,16 +28,6 @@ import githubRouter from '../server/router/auth/github'
 import './config/database'
 import Config from './config'
 
-//===========================
-//import passport from 'koa-passport'
-//const GoogleStrategy = require('passport-google-oauth').Strategy
-//import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth'
-//import { Strategy as GithubStrategy } from 'passport-github2'
-//const GitHubStrategy = require('passport-github2').Strategy
-//import { OAuth2Strategy as GithubStrategy } from 'passport-github2'
-//===========================
-
-//const session = require('koa-generic-session')
 const app = new Koa()
 
 app.use(async(ctx, next) => {
@@ -48,23 +38,28 @@ app.use(async(ctx, next) => {
       ctx.throw(404)
     }
   } catch (err) {
+    //console.log(err.message)  //real error message
+    //console.log(err.status)   //status code
+    //console.log(err.name)     //status code name
     ctx.status = err.status || 500
-    ctx.body = { message: err.message }
-    // if (ctx.status === 404) {
-    //   ctx.body = { message: err.message }
-    // } else {
-    //   ctx.body = { message: err.message }
-    // }
-
-    ctx.app.emit('error', err, ctx)
+    ctx.body = {
+      status: 'error',
+      errors: {
+        message: err.message
+      }
+    }
+    if (ctx.status >= 500) {
+      ctx.app.emit('internalError', err, ctx)
+    }
   }
 })
 
-app.on('error', (a, b) => {
+app.on('internalError', (err, ctx) => {
+  console.log(err)
   console.log('Maybe someone is hacking your server')
 })
 
-app.use(logger())
+//app.use(logger())
 app.use(convert(bodyParser()))
 app.use(convert(historyApiFallback({
   verbose: false
@@ -86,10 +81,6 @@ app.use(convert(WebpackHotMiddleware(compiler, {
 
 //app.use('/api', expressJwt({secret: secret}).unless({path: new RegExp('/api\/public.*/', 'i') }))
 app.use(serve(__dirname + '/../public'))
-// app.use(async(ctx, next) => {
-//   console.log('............WWW')
-//   console.log(ctx.request)
-// })
 app.use(convert(jwt({
   secret: process.env.JWT_SECRET
   //credentialsRequired: false,
@@ -100,20 +91,20 @@ app.use(convert(jwt({
 }).unless({
   path: [
     '/v1/signin',
-    '/v1/register',
-    new RegExp('/v1\/register.*/', 'i'),
+    '/v1/signup',
+    new RegExp('/v1\/signup.*/', 'i'),
     '/v1/auth/google',
     '/v1/auth/google/callback',
     '/v1/auth/github',
     '/v1/auth/github/callback',
     '/v1/forgot_password',
-    '/favicon.ico',
-    //'/v1/auth/google/dest/bundle.js'
+    '/v1/reports',
+    '/favicon.ico'
   ]
 })))
 
-app.use(registerRouter.routes())
-app.use(registerRouter.allowedMethods({
+app.use(signupRouter.routes())
+app.use(signupRouter.allowedMethods({
   throw: true
 }))
 app.use(signinRouter.routes())

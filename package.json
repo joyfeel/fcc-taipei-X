@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --ignore public/ --exec babel-node ./server",
-    "test": "cross-env NODE_ENV=test mocha ./test --recursive --compilers js:babel-register",
-    "test:watch": "npm test -- --watch"
+    "test": "mocha ./test",
+    "test-cov": "istanbul cover --dir ./coverage _mocha -- ./test --opts ./test/mocha.opts",
+    "test:watch": "npm test -- -w"
   },
   "repository": {
     "type": "git",
@@ -64,6 +65,7 @@
     "chai": "3.5.0",
     "css-loader": "0.23.1",
     "file-loader": "0.9.0",
+    "istanbul": "1.0.0-alpha.2",
     "koa-webpack-dev-middleware": "1.2.1",
     "koa-webpack-hot-middleware": "1.0.3",
     "mocha": "2.5.3",
@@ -71,6 +73,7 @@
     "react-transform-hmr": "1.0.4",
     "sass-loader": "3.2.1",
     "style-loader": "0.13.1",
+    "supertest": "2.0.0",
     "url-loader": "0.5.7",
     "webpack": "1.13.1",
     "webpack-hot-middleware": "2.10.0",

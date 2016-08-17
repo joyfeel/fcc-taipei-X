@@ -1,6 +1,4 @@
 import Router from 'koa-router'
-import mongoose from 'mongoose'
-import Boom from 'boom'
 
 const router = new Router({
   prefix: '/v1/reports'
@@ -8,7 +6,9 @@ const router = new Router({
 
 router.get('/', async(ctx, next) => {
   try {
-    ctx.response.status = 200
+    ctx.response.body = {
+      result: 'YA'
+    }
   } catch (err) {
     ctx.throw(err.output.statusCode, err)
   }

@@ -9,7 +9,7 @@ import { mailTransport, checkEmailStatus } from '../utils/email'
 import Config from '../config'
 import _ from 'underscore'
 /*
-  Register
+  Signup
   (1) User input their user info
   (2) Server send mail
   (3) User click URL
@@ -18,10 +18,10 @@ import _ from 'underscore'
 */
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
-  prefix: '/v1/register'
+  prefix: '/v1/signup'
 })
 
-//Verify the email token
+//Active the account, and verify the email token
 router.get('/',
   validate({
     'token:query': ['require', 'token is required']
@@ -76,11 +76,10 @@ router.post('/',
     'nickname:body': ['require', 'isAlphanumeric', 'nickname is required or not alphanumeric'],
     'email:body': ['require', 'isEmail', 'email is required or not valid'],
     'password:body': ['require', 'password is required'],
-    'photo:body': ['require', 'isDataURI', 'photo is required or not dataURI'],
+    'avatar:body': ['require', 'isDataURI', 'avatar is required or not dataURI'],
   }),
   async(ctx, next) => {
     try {
-      console.log('?0')
       const { email } = ctx.request.body
       //1. Check the account is unique
       const accountExist = await isUserUnique(email)
@@ -114,12 +113,14 @@ router.post('/',
       ctx.state.nodemailerInfo = await mailTransport(ctx.request.body, emailToken)
       await next()
     } catch (err) {
+      console.log('AAA')
       if (err.output.statusCode) {
         ctx.throw(err.output.statusCode, err)
       } else if (err.code === 11000) {
         const MongoError = Boom.conflict('DB Conflict')
         ctx.throw(MongoError.output.statusCode, MongoError)
       } else if (err.name === 'ValidationError') {
+        console.log('BBB')
         const UserInputError = Boom.badData('Your data is bad and you should feel bad')
         ctx.throw(UserInputError.output.statusCode, UserInputError)
       } else {

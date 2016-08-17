@@ -23,7 +23,7 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  photo: {
+  avatar: {
     type: String,
     required: true,
     //default: 'ugly photo'
