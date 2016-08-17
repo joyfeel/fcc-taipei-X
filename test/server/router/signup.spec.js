@@ -1,6 +1,7 @@
 import request from '../utils'
 import { getToken, verifyToken } from '../../../server/utils'
 import { expect, should } from 'chai'
+import User from '../../../server/models/users'
 
 describe('/signup', () => {
   //Create a fake account
@@ -165,5 +166,10 @@ describe('/signup', () => {
         )
         done()
       })
+  })
+
+  it('clear the user collection in DB', async done => {
+    await User.remove({})
+    done()
   })
 })
