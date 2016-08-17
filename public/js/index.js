@@ -8,7 +8,7 @@ import configureStore from './store/configureStore'
 import CounterContainer from './containers/CounterContainer'
 import getRoutes from './routes'
 import rootSaga from './sagas'
-import '../css/main.scss'
+import '../css/main.css'
 
 const store = configureStore()
 store.runSaga(rootSaga)
