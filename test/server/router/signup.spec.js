@@ -1,6 +1,6 @@
 import request from '../utils'
 import { getToken, verifyToken } from '../../../server/utils'
-import { expect, should } from 'chai'
+import { expect } from 'chai'
 import User from '../../../server/models/users'
 
 describe('/signup', () => {
