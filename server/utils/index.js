@@ -43,12 +43,12 @@ export const verifyToken = (token) => {
 export const getCleanUser = (user) => {
   const u = user.toObject()
   return {
-    _id: u._id,
-    createdAt: u.createdAt,
-    updatedAt: u.updatedAt,
+    id: u._id,
     nickname: u.nickname,
     email: u.email,
-    photo: u.photo,
-    isEmailActived: u.isEmailActived
+    avatar: u.avatar,
+    edit_nickname_time: u.nicknameChangeLimit,
+    created_time: u.createdAt,
+    updated_time: u.updatedAt
   }
 }
