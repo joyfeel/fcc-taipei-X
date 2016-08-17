@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var autoprefixer = require('autoprefixer');
 
 const env = process.env.NODE_ENV
 
@@ -19,6 +20,9 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(env)
+    }),
+    new webpack.ProvidePlugin({
+        'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
     })
   ],
   resolve: {
@@ -29,15 +33,38 @@ module.exports = {
       test: /\.(jpg|png|woff|woff2|eot|ttf|svg)(\?vhibso)?$/,
       loader: 'url-loader?limit=100000'
     },
+    // {
+    //   test: /\.scss$/,
+    //   loader: 'style!css!autoprefixer!sass'
+    // },
     {
-      test: /\.scss$/,
-      loader: 'style!css!autoprefixer!sass'
+      test: /\.[s]?css$/,
+      loaders: [
+          'style?sourceMap',
+          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+          'postcss'
+      ]
     },
+    // {
+    //   test: /\.scss$/,
+    //   loaders: [
+    //     'style?sourceMap',
+    //     'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+    //     'resolve-url',
+    //     'sass?sourceMap'
+    //   ]
+    // },
     {
       test: /\.js$/,
       exclude: /node_modules/,
       loader: 'babel'
     }]
   },
-  devtool: "cheap-module-eval-source-map"
+  devtool: 'source-map',
+  // devtool: 'cheap-module-eval-source-map',
+
+  postcss: [
+      require('postcss-nested'),
+      require('postcss-cssnext')
+  ]
 }
