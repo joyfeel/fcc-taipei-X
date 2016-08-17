@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import CSSModules from 'react-css-modules';
+import "../../css/base/aa.css";
+import style from "../../css/main.css";
+
+
 
 class Home extends Component {
   render() {
     return (
-      <div className="container">
-        <div className="row">
+      <div styleName='container'>
+        <div className='aa'>aaaaaaaaa</div>
+        <div styleName='row'>
           <div className="col-sm">
             <h3>Heading</h3>
             <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor
@@ -32,5 +38,4 @@ class Home extends Component {
   }
 }
 
-
-export default Home
+export default CSSModules(Home, style)

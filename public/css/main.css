@@ -1,0 +1,27 @@
+:root {
+  --mainColor: red;
+  --assHole: pink;
+}
+
+
+.box {
+  color: black;
+  background-color: #333;
+}
+
+body {color: var(--mainColor)}
+
+.container {
+  composes: aa from './base/aa.css';
+  font-size: 27px;
+}
+
+
+.row {
+  color: var(--assHole);
+  background-color: #ff3;
+
+  &:hover {
+    color: red;
+  }
+}
