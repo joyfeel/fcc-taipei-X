@@ -13,8 +13,8 @@ const router = new Router({
 
 router.post('/',
   validate({
-    'email:body': ['require', 'isEmail', 'email is required or not valid'],
-    'password:body': ['require', 'password is required']
+    'email:body': ['require', 'isEmail', 'email or password are not valid'],
+    'password:body': ['require', 'email or password are not valid']
   }),
   authenticate,
   sendToken
@@ -26,9 +26,9 @@ async function authenticate(ctx, next) {
     //Ensure the email is existed in the DB
     const user = await User.findOne({ email })
     if (!user) {
-      throw Boom.unauthorized('invalid user')
+      throw Boom.badRequest('email or password are not valid')
     }
-    //Potentail design flaw?
+
     const isMatch = await user.validatePassword(password)
     if (!isMatch) {
       throw Boom.badImplementation('terrible implementation')
@@ -38,25 +38,28 @@ async function authenticate(ctx, next) {
     await next()
   } catch (err) {
     if (err.name === 'MismatchError') {
-      //401
-      const UnauthorizedError = Boom.unauthorized('invalid password')
-      ctx.throw(UnauthorizedError.output.statusCode, UnauthorizedError)
+      const BadRequest = Boom.badRequest('email or password are not valid')
+      ctx.throw(BadRequest.output.statusCode, BadRequest)
+    } else if (err.output.statusCode) {
+      ctx.throw(err.output.statusCode, err)
+    } else {
+      ctx.throw(500, err)
     }
-    ctx.throw(err)
   }
 }
 
 async function sendToken(ctx, next) {
   try {
     const { email } = ctx.request.body,
-          token = getToken['JWT'](email),
-          user = getCleanUser(ctx.state.user)
+      token = getToken['JWT'](email),
+      user = getCleanUser(ctx.state.user)
 
     ctx.response.body = {
-      results: 'Successfully signin',
-      token,
-      user,
-      status: 'OK'
+      status: 'success',
+      auth: {
+        token,
+        ...user
+      }
     }
   } catch (err) {
     ctx.throw(err)
