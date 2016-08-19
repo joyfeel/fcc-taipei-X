@@ -7,7 +7,8 @@ const env = process.env.NODE_ENV
 module.exports = {
   entry: [
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
-    path.join(__dirname, 'public/js/index.js')
+    // path.join(__dirname, 'public/js/index.js')
+    path.join(__dirname, 'public/js/app.js')
   ],
   output: {
     filename: 'bundle.js',
