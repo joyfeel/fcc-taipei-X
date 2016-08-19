@@ -31,7 +31,6 @@ router.get('/',
       //Config.user.nicknameChangeLimit
       const emailToken = ctx.request.query.token
       const { email } = await verifyToken(emailToken)
-      //console.log(emailToken)
       const result = await User.findOneAndUpdate({ email }, {
         isEmailActived: true,
         verifyEmailToken: undefined
@@ -87,7 +86,7 @@ router.post('/',
       //1. Check the account is unique
       const accountExist = await isUserUnique(email)
       if (accountExist) {
-        throw Boom.forbidden('This email address has already been registered')
+        throw Boom.forbidden('The email has already been registered')
       }
       //2. The user may forget to receive their email to authentication
       const result = await User.findOne({ email, isEmailActived: false })
@@ -103,7 +102,7 @@ router.post('/',
         })
         await user.save()
       } else {
-        //3. Store new user info in DB (finally!)
+        //3. Store new user info in DB (finally)
         user = new User(ctx.request.body)
         await user.save()
 
@@ -131,20 +130,5 @@ router.post('/',
   },
   checkEmailStatus
 )
-
-// async function checkEmailStatus(ctx, next) {
-//   const nodemailerInfo = ctx.state.nodemailerInfo,
-//         user = getCleanUser(ctx.state.user)
-//
-//   if (nodemailerInfo.rejected.length === 0) {
-//     ctx.response.body = {
-//       results: 'Successlly send registered email',
-//       user,
-//       status: 'OK'
-//     }
-//   } else {
-//     throw Boom.badImplementation('Your data is bad and you should feel bad')
-//   }
-// }
 
 export default router

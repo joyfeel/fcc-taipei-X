@@ -100,7 +100,11 @@ UserSchema.pre('save', async function (next) {
 })
 
 UserSchema.methods.validatePassword = async function validatePassword(signinPassword) {
-  return await bcrypt.compare(signinPassword, this.hashedPassword)
+  try {
+    return await bcrypt.compare(signinPassword, this.hashedPassword)
+  } catch (err) {
+    throw err
+  }
 }
 
 export default mongoose.model('user', UserSchema)

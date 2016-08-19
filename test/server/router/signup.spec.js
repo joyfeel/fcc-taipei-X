@@ -168,8 +168,25 @@ describe('/signup', () => {
       })
   })
 
+  it('abnormal signup [already have the active account]', function(done) {
+    this.timeout(20000)    // SMTP server timeout
+    request()
+      .post('/v1/signup')
+      .send(userSignupInfo)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(403)
+      .expect({
+        status: 'error',
+        errors: {
+          message: 'The email has already been registered'
+        }
+      })
+      .end(done)
+  })
+
   it('clear the user collection in DB', async done => {
     await User.remove({})
     done()
   })
+
 })
