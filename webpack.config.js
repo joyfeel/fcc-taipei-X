@@ -29,42 +29,34 @@ module.exports = {
     extensions: ['', '.js', '.jsx']
   },
   module: {
-    loaders: [{
-      test: /\.(jpg|png|woff|woff2|eot|ttf|svg)(\?vhibso)?$/,
-      loader: 'url-loader?limit=100000'
-    },
-    // {
-    //   test: /\.scss$/,
-    //   loader: 'style!css!autoprefixer!sass'
-    // },
-    {
-      test: /\.[s]?css$/,
-      loaders: [
+    loaders: [
+      {
+        test: /\.[s]?css$/,
+        loaders: [
           'style?sourceMap',
           'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
           'postcss'
-      ]
-    },
-    // {
-    //   test: /\.scss$/,
-    //   loaders: [
-    //     'style?sourceMap',
-    //     'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
-    //     'resolve-url',
-    //     'sass?sourceMap'
-    //   ]
-    // },
-    {
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel'
-    }]
+        ]
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel'
+      },
+      {
+        test: /\.woff(2)?(\?[a-z0-9]+)?$/,
+        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?[a-z0-9]+)?$/,
+        loader: 'file-loader'
+      }
+    ]
   },
   devtool: 'source-map',
   // devtool: 'cheap-module-eval-source-map',
-
   postcss: [
-      require('postcss-nested'),
-      require('postcss-cssnext')
+    require('postcss-nested'),
+    require('postcss-cssnext')
   ]
 }
