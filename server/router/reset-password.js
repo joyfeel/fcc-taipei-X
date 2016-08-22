@@ -3,12 +3,12 @@ import User from '../models/users'
 import Boom from 'boom'
 import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
-import { getToken } from '../utils'
+import { getToken, verifyToken } from '../utils'
 import { mailTransport, checkEmailStatus } from '../utils/email'
 import Config from '../config'
 import _ from 'underscore'
 /*
-  forgot-password
+  reset-password
   (1) 是在 Login 頁面點選的，需要 user 填入 email 後按下 submit
   (2) 收信後點擊 URL，代表此人一定是此帳號的擁有者。
   (3) 接著到 Home page 頁面，會有 prompt (類似 alert box)。
@@ -18,26 +18,36 @@ import _ from 'underscore'
 */
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
-  prefix: '/v1/forgot_password'
+  prefix: '/v1/reset_password'
 })
 
 router.post('/',
   validate({
-    'email:body': ['require', 'isEmail', 'email is required or not valid']
+    'email:body': ['require', 'isEmail', 'email is required or not valid'],
+    'password:body': ['require', 'password is required or not valid']
   }),
   async(ctx, next) => {
     try {
-      const { email } = ctx.request.body
+      const token = ctx.request.header.authorization.split(' ')[1]
+      const user = await verifyToken(token)
+      const { email, password } = ctx.request.body
+      if (user.email !== email) {
+        throw Boom.unauthorized('Bad way to hack')
+      }
+
       const accountExist = await User.findOne({ email })
       if (!accountExist) {
         throw Boom.notFound('We couldn\'t find your account')
       }
 
-      const emailToken = await getToken['EMAIL'](email)
-      const user = await User.findById(accountExist._id)
-      ctx.state.user = user
-      ctx.state.nodemailerInfo = await mailTransport({ email, nickname: user.nickname }, 'forgot-password', emailToken)
-      await next()
+      const result = await User.findOneAndUpdate({ email }, {
+        isEmailActived: true,
+        verifyEmailToken: undefined
+      })
+      // console.log(password)
+      ctx.response.body = {
+        status: 'success'
+      }
     } catch (err) {
       if (err.output.statusCode) {
         ctx.throw(err.output.statusCode, err)
@@ -45,8 +55,7 @@ router.post('/',
         ctx.throw(500, err)
       }
     }
-  },
-  checkEmailStatus
+  }
 )
 
 export default router

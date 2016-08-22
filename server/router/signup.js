@@ -53,7 +53,7 @@ router.get('/',
       if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
         const TokenError = Boom.unauthorized('Email Token is not valid or expired')
         ctx.throw(TokenError.output.statusCode, TokenError)
-      } else if (err.output.statusCode) {   //
+      } else if (err.output.statusCode) {
         ctx.throw(err.output.statusCode, err)
       } else {
         ctx.throw(500, err)
@@ -82,7 +82,7 @@ router.post('/',
   }),
   async(ctx, next) => {
     try {
-      const { email } = ctx.request.body
+      const { email, nickname } = ctx.request.body
       //1. Check the account is unique
       const accountExist = await isUserUnique(email)
       if (accountExist) {
@@ -92,7 +92,7 @@ router.post('/',
       const result = await User.findOne({ email, isEmailActived: false })
       const emailToken = await getToken['EMAIL'](email)
       let user
-      //If email account is not active, resend the registered email to user
+      //If email account is not active, resend email again.
       if (result) {
         user = await User.findById(result._id)
         _.extend(user, {
@@ -112,7 +112,7 @@ router.post('/',
         await user.save()
       }
       ctx.state.user = user
-      ctx.state.nodemailerInfo = await mailTransport(ctx.request.body, emailToken)
+      ctx.state.nodemailerInfo = await mailTransport({ email, nickname }, 'signup', emailToken)
       await next()
     } catch (err) {
       if (err.output.statusCode) {
