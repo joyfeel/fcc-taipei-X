@@ -1,0 +1,151 @@
+.mask {
+	filter: blur(10px);
+	-webkit-filter: blur(10px);
+	opacity: .6;
+	width: 100vw;
+	height: 100vh;
+	z-index: 3;
+	/*background-color: #f8f8f8;*/
+}
+
+.loader {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	z-index: 4;
+	/*filter: blur(10px);
+	-webkit-filter: blur(10px);
+	opacity: .6;
+	background-color: #f8f8f8;*/
+}
+
+.loading {
+	color: #111E25;
+	font-size:16px;
+	height: 20px;
+	line-height: 20px;
+	letter-spacing:1px;
+	text-align:center;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	z-index: 2;
+
+}
+span {
+	width:16px;
+	height:16px;
+	border-radius:50%;
+	display:inline-block;
+	position: fixed;
+	top: 40px;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	z-index: 3;
+
+	-webkit-animation:3s infinite linear;
+	-moz-animation:3s infinite linear;
+	-o-animation:3s infinite linear;
+
+}
+
+
+span:nth-child(2){
+	background:#d16868;
+	-webkit-animation:kiri 1.2s infinite linear;
+	-moz-animation:kiri 1.2s infinite linear;
+	-o-animation:kiri 1.2s infinite linear;
+
+}
+span:nth-child(3){
+	background:#ce3647;
+	z-index:100;
+}
+span:nth-child(4){
+	background:#a72125;
+	-webkit-animation:kanan 1.2s infinite linear;
+	-moz-animation:kanan 1.2s infinite linear;
+	-o-animation:kanan 1.2s infinite linear;
+}
+
+
+@-webkit-keyframes kanan {
+    0% {-webkit-transform:translateX(20px);
+    }
+
+	50%{-webkit-transform:translateX(-20px);
+	}
+
+	100%{-webkit-transform:translateX(20px);
+	z-index:200;
+	}
+}
+@-moz-keyframes kanan {
+    0% {-moz-transform:translateX(20px);
+    }
+
+	50%{-moz-transform:translateX(-20px);
+	}
+
+	100%{-moz-transform:translateX(20px);
+	z-index:200;
+	}
+}
+@-o-keyframes kanan {
+    0% {-o-transform:translateX(20px);
+    }
+
+	50%{-o-transform:translateX(-20px);
+	}
+
+	100%{-o-transform:translateX(20px);
+	z-index:200;
+	}
+}
+
+
+
+
+@-webkit-keyframes kiri {
+     0% {-webkit-transform:translateX(-20px);
+	z-index:200;
+    }
+	50%{-webkit-transform:translateX(20px);
+	}
+	100%{-webkit-transform:translateX(-20px);
+	}
+}
+
+@-moz-keyframes kiri {
+     0% {-moz-transform:translateX(-20px);
+	z-index:200;
+    }
+	50%{-moz-transform:translateX(20px);
+	}
+	100%{-moz-transform:translateX(-20px);
+	}
+}
+@-o-keyframes kiri {
+     0% {-o-transform:translateX(-20px);
+	z-index:200;
+    }
+	50%{-o-transform:translateX(20px);
+	}
+	100%{-o-transform:translateX(-20px);
+	}
+}
+
+
+._1 {
+
+	/*z-index: 4;*/
+	margin-top: 300px;
+	width: 100px;
+	height: 100vh;
+	/*background-color: #f0f;*/
+}

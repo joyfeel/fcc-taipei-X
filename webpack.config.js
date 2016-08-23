@@ -30,20 +30,30 @@ module.exports = {
     extensions: ['', '.js', '.jsx']
   },
   module: {
-    loaders: [{
-      test: /\.(jpg|png|woff|woff2|eot|ttf|svg)(\?vhibso)?$/,
-      loader: 'url-loader?limit=100000'
-    },
+    loaders: [
+    // {
+    //   test: /\.(jpg|png|woff|woff2|eot|ttf|svg)(\?vhibso)?$/,
+    //   loader: 'url-loader?limit=100000'
+    // },
     // {
     //   test: /\.scss$/,
     //   loader: 'style!css!autoprefixer!sass'
     // },
     {
+      test: /\.woff(2)?(\?[a-z0-9]+)?$/,
+      loader: "url-loader?limit=10000&mimetype=application/font-woff"
+    },
+    {
+      test: /\.(ttf|eot|svg)(\?[a-z0-9]+)?$/,
+      loader: "file-loader"
+    },
+    {
       test: /\.[s]?css$/,
       loaders: [
           'style?sourceMap',
-          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
-          'postcss'
+          // 'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+          'css?modules&importLoaders=1&localIdentName=[local]_[hash:base64:5]',
+          'postcss?sourceMap'
       ]
     },
     // {

@@ -1,3 +1,55 @@
-body {
-  color: #111E25;
+.root {
+  background-color: #f0f;
+}
+
+
+.aa {
+  background-color: #e6e6e6;
+}
+
+.bb {
+  background-color: #e1e1e1;
+}
+
+.text1 {
+  color: brown;
+  font-size: 24px;
+  font-family: helvetica, arial, sans-serif;
+  font-weight: 600;
+  composes: root;
+}
+
+.text2 {
+  color: blue;
+  font-size: 40px;
+  font-family: helvetica, arial, sans-serif;
+  font-weight: 600;
+  composes: root;
+  &:hover {
+    color: brown;
+    /*background-color: #e0f;*/
+  }
+}
+
+.text1 + p {
+  color: yellow;
+}
+
+
+.text4 {
+  color: #0ff;
+}
+
+.text3 {
+  color: #00f;
+  composes: text4;
+  /*composes: bb;*/
+  /*composes: aa;*/
+  /*composes: aa from './icomoon.css';*/
+  /*composes: aa from './logo/logo.css';*/
+  /*composes: github-7:before from './icomoon.css';*/
+}
+
+.authenticated {
+  height: 54px !important;
 }

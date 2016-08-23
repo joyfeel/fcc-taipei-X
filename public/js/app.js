@@ -11,9 +11,10 @@ import rootSaga from './sagas'
 //import '../css/main.css'
 
 //////////////////////////////////////////
-import App from "./components/App";
+import App from "./index2";
 import '../css/reset.css';
 import '../css/base.css';
+// import '../css/icomoon.css';
 
 const store = configureStore()
 store.runSaga(rootSaga)

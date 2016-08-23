@@ -1,0 +1,36 @@
+.member-nickname {
+  float: left;
+  display: inline-block;
+  max-width: 220px;
+  color: #111E25;
+  vertical-align: middle;
+  margin-right: 5px;
+  height: 40px;
+  line-height: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.member-nickname > span {
+  transition: color .3s;
+  color: #111;
+}
+
+/*.member-panel:hover .member-nickname > span {
+  color: #bb1515;
+}*/
+
+/*.member-panel:hover .member-nickname > .hi {
+  color: #bb1515;
+}*/
+
+/*.member-nickname:hover > .hi {
+  color: #bb1515;
+}*/
+
+
+  @media (max-width: 768px) {
+    .member-nickname {max-width: 120px;}
+    .member-nickname > span { display: none; }
+  }
