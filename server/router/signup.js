@@ -112,7 +112,7 @@ router.post('/',
         await user.save()
       }
       ctx.state.user = user
-      ctx.state.nodemailerInfo = await mailTransport({ email, nickname }, 'signup', emailToken)
+      ctx.state.nodemailerInfo = await mailTransport({ email, nickname }, 'signup', 'activate', emailToken)
       await next()
     } catch (err) {
       if (err.output.statusCode) {

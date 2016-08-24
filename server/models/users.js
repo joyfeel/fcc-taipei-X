@@ -107,4 +107,4 @@ UserSchema.methods.validatePassword = async function validatePassword(signinPass
   }
 }
 
-export default mongoose.model('user', UserSchema)
+export default mongoose.model('User', UserSchema)

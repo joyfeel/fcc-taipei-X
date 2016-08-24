@@ -16,7 +16,7 @@ export async function checkEmailStatus(ctx, next) {
   }
 }
 
-export function mailTransport(userInfo, routePath, emailToken = undefined) {
+export function mailTransport(userInfo, routePath, option, emailToken = undefined) {
   return new Promise((resolve, reject) => {
     const transporter = nodemailer.createTransport(Config.gmailConfig)
     let message
@@ -29,7 +29,7 @@ export function mailTransport(userInfo, routePath, emailToken = undefined) {
           `<h1>Hi ${userInfo.nickname}</h1>
            <h2>
              <a href='http://localhost:3000/${routePath}/${emailToken}'>
-               Click here to activate your account
+               Click here to ${option} your account
              </a>
            </h2>`
           //html: `<h1>Hi ${userInfo.nickname}</h1> ${Config.registerMailTemplate.html}`
