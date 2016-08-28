@@ -1,7 +1,7 @@
 import request from '../utils'
-import { getToken, verifyToken } from '../../../server/utils'
 import { expect } from 'chai'
 import User from '../../../server/models/users'
+import { getToken } from '../../../server/utils'
 
 describe('/signup', () => {
   //Create a fake account

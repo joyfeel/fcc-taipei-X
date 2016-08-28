@@ -1,10 +1,6 @@
 import jwt from 'koa-jwt'
 import Config from '../config'
 
-// Please note that exp is only set if the payload is an object liberal.
-// expiresIn: second (unit)
-// getToken['JWT'](email)
-//getToken['OAuth2'](user)
 export const getToken = {
   ['JWT'](email) {
     return jwt.sign({ email }, Config.jwt.jwtSecret, { algorithm: 'HS512', expiresIn: Config.jwt.jwtTokenExpiresIn })
@@ -50,5 +46,33 @@ export const getCleanUser = (user) => {
     edit_nickname_time: u.nicknameChangeLimit,
     created_time: u.createdAt,
     updated_time: u.updatedAt
+  }
+}
+
+export const getCleanPost = (post) => {
+  const { author, comments } = post
+  const p = post.toObject()
+  return {
+    id: p._id,
+    author: getCleanUser(author),
+    subject: p.subject,
+    content: p.content,
+    like_count: p.likeCount,
+    dislike_count: p.dislikeCount,
+    comments: comments.map(comment => getCleanComment(comment)),
+    created_time: p.createdAt,
+    updated_time: p.updatedAt
+  }
+}
+
+export const getCleanComment = (comment) => {
+  const { author } = comment
+  const c = comment.toObject()
+  return {
+    id: c._id,
+    author: getCleanUser(author),
+    content: c.content,
+    created_time: c.createdAt,
+    updated_time: c.updatedAt
   }
 }
