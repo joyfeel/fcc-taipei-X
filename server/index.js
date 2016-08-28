@@ -26,6 +26,9 @@ import resetPasswordRouter from '../server/router/reset-password'
 import googleRouter from '../server/router/auth/google'
 import githubRouter from '../server/router/auth/github'
 
+import postRouter from '../server/router/posts'
+import commentRouter from '../server/router/comments'
+
 import './config/database'
 import Config from './config'
 
@@ -139,6 +142,15 @@ app.use(googleRouter.allowedMethods({
 }))
 app.use(githubRouter.routes())
 app.use(githubRouter.allowedMethods({
+  throw: true
+}))
+
+app.use(postRouter.routes())
+app.use(postRouter.allowedMethods({
+  throw: true
+}))
+app.use(commentRouter.routes())
+app.use(commentRouter.allowedMethods({
   throw: true
 }))
 
