@@ -16,7 +16,7 @@ export async function checkEmailStatus(ctx, next) {
   }
 }
 
-export function mailTransport (userInfo, emailToken = undefined) {
+export function mailTransport(userInfo, routePath, option, emailToken = undefined) {
   return new Promise((resolve, reject) => {
     const transporter = nodemailer.createTransport(Config.gmailConfig)
     let message
@@ -28,8 +28,8 @@ export function mailTransport (userInfo, emailToken = undefined) {
         html:
           `<h1>Hi ${userInfo.nickname}</h1>
            <h2>
-             <a href='http://localhost:3000/signup/${emailToken}'>
-               Click here to activate your account
+             <a href='http://localhost:3000/${routePath}/${emailToken}'>
+               Click here to ${option} your account
              </a>
            </h2>`
           //html: `<h1>Hi ${userInfo.nickname}</h1> ${Config.registerMailTemplate.html}`
@@ -48,14 +48,14 @@ export function mailTransport (userInfo, emailToken = undefined) {
 
     transporter.verify((err, success) => {
       if (err) {
-        console.log('Verify SMTP configuration error')
-        console.log(err)
+        //console.log('Verify SMTP configuration error')
+        //console.log(err)
         const SMTPError = Boom.serverUnavailable('SMTP server unavailable to verify')
         return reject(SMTPError)
      } else {
        transporter.sendMail(message, (err, info) => {
          if (err) {
-           console.log('Send mail error')
+           //console.log('Send mail error')
            const SMTPError = Boom.serverUnavailable('SMTP server unavailable to send')
            return reject(SMTPError)
          }

@@ -5,6 +5,7 @@ if (!config.database) {
   throw 'Need the db name'
 }
 
+mongoose.Promise = global.Promise
 mongoose.connect(config.database)
 
 mongoose.connection.on('connected', () => {

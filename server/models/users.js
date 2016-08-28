@@ -3,8 +3,6 @@ import timestamps from 'mongoose-timestamp'
 import bcrypt from 'bcrypt-as-promised'
 import Boom from 'boom'
 
-mongoose.Promise = global.Promise
-
 const SALT_WORK_FACTOR = 10
 const Schema = mongoose.Schema
 
@@ -107,4 +105,4 @@ UserSchema.methods.validatePassword = async function validatePassword(signinPass
   }
 }
 
-export default mongoose.model('user', UserSchema)
+export default mongoose.model('User', UserSchema)

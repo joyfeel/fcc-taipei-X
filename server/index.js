@@ -22,8 +22,12 @@ import memberRouter from '../server/router/members'
 import reportRouter from '../server/router/reports'
 import accountSettingsRouter from '../server/router/account-settings'
 import forgotPasswordRouter from '../server/router/forgot-password'
+import resetPasswordRouter from '../server/router/reset-password'
 import googleRouter from '../server/router/auth/google'
 import githubRouter from '../server/router/auth/github'
+
+import postRouter from '../server/router/posts'
+import commentRouter from '../server/router/comments'
 
 import './config/database'
 import Config from './config'
@@ -98,6 +102,7 @@ app.use(convert(jwt({
     '/v1/auth/github',
     '/v1/auth/github/callback',
     '/v1/forgot_password',
+    //'/v1/reset_password',
     '/v1/reports',
     '/favicon.ico'
   ]
@@ -127,12 +132,25 @@ app.use(forgotPasswordRouter.routes())
 app.use(forgotPasswordRouter.allowedMethods({
   throw: true
 }))
+app.use(resetPasswordRouter.routes())
+app.use(resetPasswordRouter.allowedMethods({
+  throw: true
+}))
 app.use(googleRouter.routes())
 app.use(googleRouter.allowedMethods({
   throw: true
 }))
 app.use(githubRouter.routes())
 app.use(githubRouter.allowedMethods({
+  throw: true
+}))
+
+app.use(postRouter.routes())
+app.use(postRouter.allowedMethods({
+  throw: true
+}))
+app.use(commentRouter.routes())
+app.use(commentRouter.allowedMethods({
   throw: true
 }))
 

@@ -3,7 +3,7 @@ import { takeEvery } from 'redux-saga'
 import { v4 } from 'node-uuid'
 import url from 'url'
 import qs from 'querystring'
-import Boom from 'boom'
+import Boom from 'boom-browserify'
 import { browserHistory } from 'react-router'
 
 function oauth2() {
