@@ -24,13 +24,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*display on && off*/
-.off{display: none !important;}
-.on {display: block !important;}
+:global .off{display: none !important;}
+:global .on {display: block !important;}
 
 
 /*screen only*/
-.sr {font-size: 0; width: 0;height: 0;}
+:global .sr {font-size: 0; width: 0;height: 0;}
 
 
 /*for subtle user interaction %exclude*/
-.ts {transition: .3s; -webkit-transition: .3s;}
+/*.ts {transition: .3s; -webkit-transition: .3s;}*/

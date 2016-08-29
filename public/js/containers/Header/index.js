@@ -9,7 +9,7 @@ import Notification from '../../components/Header/Notification/';
 
 const Header = () =>
 <header styleName="header">
-  <div styleName="header-panel">
+  <div styleName="header-panel-login">
     <Logo />
     <MemberPanel />
     <Notification />
@@ -19,4 +19,4 @@ const Header = () =>
 export default CSSModules(Header, styles)
 
 
- //authenticated
+ //header-panel, header-panel-login

@@ -6,7 +6,7 @@ import MemberAvatar from '../MemberAvatar/';
 import MemberNickname from '../MemberNickname/';
 
 const MemberPanel = () =>
-<div styleName="member-panel">
+<div styleName="member-panel-login">
   <MemberNickname />
   <MemberAvatar />
 </div>

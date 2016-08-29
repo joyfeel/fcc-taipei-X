@@ -11,23 +11,17 @@
   bottom: 0;
   left: 0;
   margin: auto;
-  /*composes: animated from '../../../css/animate.css';*/
-  /*composes: fadeInDown from '../../../css/animate.css';*/
   animation-name: fadeInDown;
   animation-duration: 1s;
   animation-fill-mode: both;
+}
+
+.logo-login {
+  composes: logo;
   top: 17px;
   left: 2%;
   margin: initial;
 }
-
-.authenticated .logo {
-  top: 17px;
-  left: 2%;
-  margin: initial;
-}
-
-/*.aa {font-size: 30px;}*/
 
 
 @keyframes fadeInDown {

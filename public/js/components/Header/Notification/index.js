@@ -4,8 +4,10 @@ import styles from './style.css';
 
 
 const Notification = () =>
-  <div styleName="notification">9</div>
+  <div styleName="notification-login">9</div>
 
 
-// export default Notification
 export default CSSModules(Notification, styles)
+
+
+//  notification-login

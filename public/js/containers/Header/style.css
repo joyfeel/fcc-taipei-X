@@ -1,5 +1,3 @@
-/*.authenticated { height: 54px;}*/
-
 .header {
   position: fixed;
   top: 0;
@@ -13,15 +11,13 @@
 
 .header-panel {
   max-width: 1080px;
-  /*composes: authenticated from '../../../css/main.css';*/
   height: 49px;
-  /*height: 54px;*/
   margin: 0 auto;
   position: relative;
   overflow: hidden;
-  composes: authenticated from '../../../css/main.css';
-
-  /*composes: authenticated;*/
 }
 
-/*.authenticated { height: 54px; }*/
+.header-panel-login {
+  composes: header-panel;
+  height: 54px;
+}

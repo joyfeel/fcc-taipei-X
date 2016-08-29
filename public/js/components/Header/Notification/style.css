@@ -1,6 +1,7 @@
 .notification {
   position: absolute;
-  display: block;
+  /*temp*/
+  display: none;
   width: 18px;
   height: 18px;
   line-height: 18px;
@@ -21,6 +22,12 @@
   animation-delay: 1s;
   /*transform: scale(0.8);*/
 }
+
+.notification-login {
+  composes: notification;
+  display: block;
+}
+
 
 @media (max-width: 780px) {
 .notification {right: 1%;}

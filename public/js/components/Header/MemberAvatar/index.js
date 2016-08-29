@@ -5,3 +5,5 @@ import styles from './style.css';
 const MemberAvatar = () => <img src="images/_mado.jpg" styleName='member-avatar' alt="member-avatar" />
 
 export default CSSModules(MemberAvatar, styles)
+
+//member-avatar-login

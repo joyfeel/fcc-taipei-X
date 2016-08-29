@@ -9,10 +9,6 @@
   font-style: normal;
 }
 
-.aa {
-  background-color: #e6e6e6;
-}
-
 .icon {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
@@ -26,6 +22,19 @@
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.github-8:before {
+  content: "\e93b";
+}
+.g-plus-5:before {
+  content: "\e93c";
+}
+.twitter-6:before {
+  content: "\e93d";
+}
+.facebook-5:before {
+  content: "\e93e";
 }
 
 .github-7:before {

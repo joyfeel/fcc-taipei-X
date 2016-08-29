@@ -5,7 +5,7 @@ import styles from './style.css';
 
 const Logo = () =>
   <h1>
-    <a href="" styleName="logo">@meet, meet your need.</a>
+    <a href="" styleName="logo-login">@meet, MEET ALL YOUR NEED.</a>
   </h1>
 
 
