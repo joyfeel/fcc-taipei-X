@@ -1,0 +1,77 @@
+.member-panel {
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 2%;
+  cursor: pointer;
+  /*temp*/
+  /*display: block;*/
+
+  animation-name: fadeInDown;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+
+  &:hover {
+    > span > span {
+      color: #bb1515;
+    }
+
+    > img {
+      box-shadow:  1px 2px 4px 0 darkgrey;      
+    }
+  }
+}
+
+
+.member-panel-login {
+  composes: member-panel;
+  display: block;
+}
+
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+
+
+/*.member-panel {
+  &:hover > img {
+    box-shadow:  1px 2px 4px 0 darkgrey;
+  }
+}*/
+
+/*.authenticated .member-panel {
+  display: block;
+}*/
+
+
+
+/*.member-panel {
+  &:hover {
+    .member-nickname {
+      .hi {
+        color: #bb1515;
+      }
+    }
+  }
+}*/
+
+/*.member-panel:hover .member-nickname span {
+  color: #bb1515;
+}*/
+
+
+/*:global .member-panel:hover .hi {
+  color: #bb1515;
+}*/

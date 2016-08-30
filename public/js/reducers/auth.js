@@ -4,7 +4,6 @@ const initialState = {
 }
 
 const auth = (state = initialState, action) => {
-  console.log(action.auth)
   switch(action.type) {
     case 'LOGIN_SUCCESS':
       // console.log(action.auth.token)

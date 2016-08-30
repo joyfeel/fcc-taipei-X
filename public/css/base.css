@@ -1,0 +1,36 @@
+body, html {
+  font-size: 18px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  color: #111;
+  background-color: #f8f8f8;
+  /*for Chrome browser in OSX better user experience*/
+	-webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*::selection {background-color: $hightLight;}*/
+/*::-moz-selection {background-color: $hightLight;}*/
+
+a ,button {
+  transition: .3s;
+  -weblit-transition: .3s;
+}
+
+/*heading reset*/
+h1, h2, h3, h4, h5, h6 {
+  font-size: 24px;
+  color: #111E25;
+  font-weight: normal;
+}
+
+/*display on && off*/
+:global .off{display: none !important;}
+:global .on {display: block !important;}
+
+
+/*screen only*/
+:global .sr {font-size: 0; width: 0;height: 0;}
+
+
+/*for subtle user interaction %exclude*/
+/*.ts {transition: .3s; -webkit-transition: .3s;}*/

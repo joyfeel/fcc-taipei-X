@@ -1,10 +1,10 @@
 import React from 'react'
-import { Route, IndexRoute } from 'react-router'
-import App from './components/App'
-import Home from './components/Home'
+import { Route, IndexRoute, IndexRedirect } from 'react-router'
+import App from './containers/App'
+import SignForm from './components/LandingPart/SignForm'
+import SignInForm from './components/LandingPart/SignInForm'
 import About from './components/About'
-import Login from './components/Login'
-import NotFound from './components/NotFound'
+import AfterLogin from './components/LandingPart/AfterLogin'
 
 export default function getRoutes(store) {
   const ignoreWhenAuthenticated = (nextState, replace) => {
@@ -15,10 +15,14 @@ export default function getRoutes(store) {
 
   return (
     <Route path='/' component={App}>
-      <IndexRoute component={Home} />
-      <Route path='/about' component={About} />
-      <Route path='/login' component={Login} onEnter={ignoreWhenAuthenticated} />
-      <Route path='*' component={NotFound} />
+      <IndexRedirect to='/signin' />
+      <Route component={SignForm}>
+        <Route path='/signin' component={SignInForm} />
+        <Route path='/signup' component={About} />
+      </Route>
+      <Route component={AfterLogin}>
+        <Route path='/afterlogin' component={About} />
+      </Route>
     </Route>
   )
 }
