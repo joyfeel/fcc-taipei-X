@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import CSSModules from 'react-css-modules'
 import Header from './Header'
-import styles from './style.css'
+
+//temp
+// import SignForm from '../components/LandingPart/SignForm'
+
 
 class App extends Component {
   constructor(props) {
@@ -11,7 +13,7 @@ class App extends Component {
     return (
       <div>
         <Header />
-        <div styleName='wrapper'>
+        <div className='wrapper'>
           {this.props.children}
         </div>
       </div>
@@ -19,4 +21,4 @@ class App extends Component {
   }
 }
 
-export default CSSModules(App, styles)
+export default App

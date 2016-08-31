@@ -1,0 +1,50 @@
+.sign-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  text-align: center;
+
+  > a {
+    border: 1px solid #e6e6e6;
+    color: darkgrey;
+    height: 36px;
+    line-height: 36px;
+    background-color: #fff;
+
+    &:hover {
+      border-color: darkgrey;
+    }
+  }
+
+  .tab-sign-in {
+    flex: 1;
+    border-radius: 6px 0 0 6px;
+    border-right-color: transparent;
+    &:hover {
+      border-right-color: transparent;
+    }
+  }
+
+  .tab-sign-up  {
+    flex: 1;
+    border-radius: 0 6px 6px 0;
+    border-left-color: transparent;
+    &:hover {
+      border-left-color: transparent;
+    }
+  }
+
+}
+
+
+.sign-tabs > .active{
+  color: #bb1515;
+  border-color: #bb1515;
+  box-shadow: none;
+
+  &:hover {
+    border-color: #bb1515;
+    color: #bb1515;
+    background-color: #fff;
+  }
+
+}
