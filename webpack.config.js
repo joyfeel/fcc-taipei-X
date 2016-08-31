@@ -1,6 +1,6 @@
-var path = require('path');
-var webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
+var path = require('path')
+var webpack = require('webpack')
+var autoprefixer = require('autoprefixer')
 
 const env = process.env.NODE_ENV
 
@@ -22,7 +22,7 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(env)
     }),
     new webpack.ProvidePlugin({
-        'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+      'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
     })
   ],
   resolve: {
@@ -34,8 +34,8 @@ module.exports = {
         test: /\.[s]?css$/,
         loaders: [
           'style?sourceMap',
-          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
-          'postcss'
+          'css?modules&importLoaders=1&localIdentName=[local]_[hash:base64:5]',
+          'postcss?sourceMap'
         ]
       },
       {
