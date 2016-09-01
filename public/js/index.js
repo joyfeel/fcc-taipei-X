@@ -7,8 +7,11 @@ import routes from './routes'
 import configureStore from './store/configureStore'
 import getRoutes from './routes'
 import rootSaga from './sagas'
-import '../css/reset.css'
-import '../css/base.css'
+import '../css/main.scss'
+
+// temp
+// import App from './Containers/App';
+
 
 const store = configureStore()
 store.runSaga(rootSaga)
@@ -17,5 +20,6 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory} routes={getRoutes(store)} />
   </Provider>,
+  // <App />,
   document.getElementById('main')
 )

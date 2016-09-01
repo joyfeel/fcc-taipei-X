@@ -1,0 +1,22 @@
+.logo {
+  display: block;
+  width: 100px;
+  height: 20px;
+  font-size: 0;
+  background: url('../images/logo.svg') no-repeat center;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  @extend %animated;
+  @extend  %fadeInDown;
+}
+
+.login .logo {
+  top: 17px;
+  left: 2%;
+  margin: initial;
+}
