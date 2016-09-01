@@ -1,6 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var autoprefixer = require('autoprefixer')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const env = process.env.NODE_ENV
 
@@ -15,6 +16,7 @@ module.exports = {
     publicPath: '/dest/'
   },
   plugins: [
+    new ExtractTextPlugin("styles.css"),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
@@ -30,13 +32,11 @@ module.exports = {
   },
   module: {
     loaders: [
+
       {
-        test: /\.[s]?css$/,
-        loaders: [
-          'style?sourceMap',
-          'css?modules&importLoaders=1&localIdentName=[local]_[hash:base64:5]',
-          'postcss?sourceMap'
-        ]
+        test: /\.scss$/,
+        // loader: 'style!css?sourceMap!autoprefixer!sass?sourceMap'
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!autoprefixer!sass?sourceMap')
       },
       {
         test: /\.js$/,
@@ -45,18 +45,14 @@ module.exports = {
       },
       {
         test: /\.woff(2)?(\?[a-z0-9]+)?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+        loader: "url-loader?limit=10000&mimetype=application/font-woff"
       },
       {
         test: /\.(ttf|eot|svg)(\?[a-z0-9]+)?$/,
-        loader: 'file-loader'
+        loader: "file-loader"
       }
     ]
   },
-  devtool: 'source-map',
+  devtool: 'source-map'
   // devtool: 'cheap-module-eval-source-map',
-  postcss: [
-    require('postcss-nested'),
-    require('postcss-cssnext')
-  ]
 }
