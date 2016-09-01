@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Header from './Header'
 
 //temp
-import SignForm from '../components/LandingPart/SignForm'
+// import SignForm from '../components/LandingPart/SignForm'
 
 
 class App extends Component {
@@ -14,8 +14,7 @@ class App extends Component {
       <div>
         <Header />
         <div className='wrapper'>
-          <SignForm />
-          {/* {this.props.children} */}
+          {this.props.children}
         </div>
       </div>
     )

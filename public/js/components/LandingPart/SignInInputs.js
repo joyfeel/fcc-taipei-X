@@ -11,10 +11,10 @@ const SignInInputs = () =>
     <div className='sign-in-password'>
       <input type="password" name="password"  id="password" placeholder='password' className="password-input"/>
       <label className='password-icon' htmlFor="password"></label>
-      <i className='eye-opened'></i>
+      <i className='eye-closed'></i>
     </div>
 
-    <button className='submit' role="submit" disabled={true}>sign in</button>
+    <button className='submit' role='submit' disabled={true}>sign in</button>
     <a href="" className='forget-ps' alt='forget password'>forget password</a>
 
   </div>
