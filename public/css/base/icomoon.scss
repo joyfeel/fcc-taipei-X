@@ -9,7 +9,7 @@
   font-style: normal;
 }
 
-.icon {
+%icon {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
   speak: none;
@@ -46,19 +46,19 @@
 .facebook-5:before {
   content: "\e93e";
 }
-.github-7:before {
+%github-7:before {
   content: "\e939";
 }
-.g-plus-4:before {
+%g-plus-4:before {
   content: "\e93a";
 }
-.mail-4:before {
+%mail-4:before {
   content: "\e932";
 }
-.twitter-5:before {
+%twitter-5:before {
   content: "\e936";
 }
-.facebook-4:before {
+%facebook-4:before {
   content: "\e937";
 }
 .upload-avatar:before {
@@ -67,10 +67,10 @@
 .g-plus-3:before {
   content: "\e931";
 }
-.eye-closed-1:before {
+%eye-closed-1:before {
   content: "\e934";
 }
-.eye-opened-1:before {
+%eye-opened-1:before {
   content: "\e935";
 }
 .member-3:before {
@@ -130,7 +130,7 @@
 .checkin-1:before {
   content: "\e0c8";
 }
-.password-1:before {
+%password-1:before {
   content: "\e0da";
 }
 .mail-1:before {

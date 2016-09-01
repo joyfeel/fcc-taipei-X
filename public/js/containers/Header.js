@@ -5,7 +5,7 @@ import Notification from '../components/Header/Notification'
 
 const Header = () =>
   <header className="header">
-    <div className="header-panel-login">
+    <div className="header-panel login">
       <Logo />
       <MemberPanel />
       <Notification />

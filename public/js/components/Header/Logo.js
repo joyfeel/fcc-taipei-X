@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 const Logo = () =>
   <h1>
     {/* <Link to='/' styleName="logo-login">@meet, MEET ALL YOUR NEED.</Link> */}
-    <a className='logo'>@meet, MEET ALL YOUR NEED.</a>
+    <a href='' className='logo' alt=''>@meet, MEET ALL YOUR NEED.</a>
   </h1>
 
 export default Logo

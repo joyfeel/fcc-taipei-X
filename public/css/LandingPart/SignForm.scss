@@ -1,0 +1,26 @@
+.sign-form {
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 90%;
+  height: 80vh;
+  max-width: 400px;
+  max-height: 480px;
+  animation-duration: .8s;
+
+  @extend %animated;
+  @extend %flipInX;
+
+  animation-delay: .6s;
+}
+
+
+@media (min-width: 1080px) {
+  .sign-form {
+    top: -50px;
+  }
+}

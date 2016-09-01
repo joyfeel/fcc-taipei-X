@@ -1,0 +1,71 @@
+.sign-in-social-icon {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin: 5% 0;
+}
+
+.facebook, .twitter, .g-plus, .github, .email {
+  @extend %icon;
+  flex: 1 0 20%;
+  max-width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 1px solid #e6e6e6;
+  text-align: center;
+  background-color: #fff;
+  line-height: 60px;
+  font-size: 60px;
+
+  &:hover {
+    box-shadow:  1px 2px 4px 0 darkgrey;
+  }
+}
+
+.facebook {
+  @extend %facebook-4;
+  color: #395590;
+  margin-left: 3px;
+}
+
+.twitter {
+  @extend %twitter-5;
+  color: #3296D4;
+}
+
+.g-plus {
+  @extend %g-plus-4;
+  color: #D14B39;
+}
+
+.github {
+  @extend %github-7;
+  color: #323333;
+}
+
+.email {
+  @extend %mail-4;
+  color: #F5A536;
+  margin-right: 3px;
+}
+
+
+@media (max-width: 400px) {
+  .sign-in-social-icon {
+    justify-content: space-around;
+  }
+
+  .facebook, .twitter, .g-plus, .github, .email {
+    flex: 10 25%;
+    font-size: 55px;
+  }
+
+  .facebook {margin-left: 0;}
+  .email {margin-right: 0;}
+
+
+  .email {
+    display: none;
+  }
+
+}
