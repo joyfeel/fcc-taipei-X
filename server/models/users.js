@@ -101,6 +101,7 @@ UserSchema.methods.validatePassword = async function validatePassword(signinPass
   try {
     return await bcrypt.compare(signinPassword, this.hashedPassword)
   } catch (err) {
+    const err = Boom.unauthorized('Email or password is not valid')
     throw err
   }
 }
