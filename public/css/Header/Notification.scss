@@ -1,14 +1,14 @@
 .notification {
   position: absolute;
   display: none;
-  width: 18px;
-  height: 18px;
-  line-height: 18px;
-  font-size: 12px;
+  width: $mdFz;
+  height: $mdFz;
+  line-height: 20px;
+  font-size: $xsFz;
   top: 4px;
   right: 1.3%;
-  background-color: #ce3647;
-  color: #fff;
+  background-color: $active2;
+  color: $bgContain;
   border-radius: 50%;
   text-align: center;
   overflow: hidden;

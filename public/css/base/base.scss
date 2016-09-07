@@ -1,8 +1,8 @@
 body, html {
-  font-size: 18px;
-  font-family: 'Helvetica', 'Arial', sans-serif;
-  color: #111;
-  background-color: #f8f8f8;
+  font-size: $mdFz;
+  font-family: 'Lekton', sans-serif;
+  color: $font;
+  background-color: $bgBody;
   /*for Chrome browser in OSX better user experience*/
 	-webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -11,15 +11,17 @@ body, html {
 /*::selection {background-color: $hightLight;}*/
 /*::-moz-selection {background-color: $hightLight;}*/
 
-a ,button {
+a ,button, input {
   transition: .3s;
   -weblit-transition: .3s;
+  font-size: $smFz;
+  font-family: 'Lekton', sans-serif;
 }
 
 /*heading reset*/
 h1, h2, h3, h4, h5, h6 {
-  font-size: 24px;
-  color: #111E25;
+  font-size: $lgFz;
+  color: $heading;
   font-weight: normal;
 }
 

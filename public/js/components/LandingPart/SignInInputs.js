@@ -14,8 +14,8 @@ const SignInInputs = () =>
       <i className='eye-closed'></i>
     </div>
 
-    <button className='submit' role='submit' disabled={true}>sign in</button>
-    <a href="" className='forget-ps' alt='forget password'>forget password</a>
+    <button className='submit' role='submit' disabled={true}>SIGN IN</button>
+    <a href="" className='forget-ps' alt='forget password'>forget password?</a>
 
   </div>
 

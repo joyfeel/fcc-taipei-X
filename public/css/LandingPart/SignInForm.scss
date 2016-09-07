@@ -1,6 +1,6 @@
 .sign-in-indicated {
-  font-size: 16px;
-  color: #111;
+  font-size: $smFz;
+  color: $font;
   text-align: center;
   margin: 5% 0;
 }
@@ -8,7 +8,7 @@
 .note {
   text-align: center;
   font-size: 14px;
-  color: darkgrey;
+  color: $inActive;
   margin-top: 2%;
 }
 

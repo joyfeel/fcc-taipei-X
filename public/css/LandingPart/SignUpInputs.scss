@@ -1,18 +1,14 @@
-.sign-in-inputs {
-  display: none;
-}
-
-.sign-in-inputs.on {
-  display: block;
-}
-
-.sign-in-email, .sign-in-password {
+.sign-up-nickname, .sign-up-email, .sign-up-password {
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
   border-radius: 6px;
   transition: .3s;
-  margin-top: 5%;
+  margin-top: 7%;
+
+  > input, > button {
+    margin-right: 1px;
+  }
 
   &:hover {
     > label, > i {
@@ -29,9 +25,30 @@
   }
 }
 
+.sign-up-nickname {
+  margin-top: 0;
+}
 
-.email-icon, .password-icon, .eye-closed, .eye-opened {
+
+.nickname-icon, .email-icon, .password-icon, .eye-closed, .eye-opened {
   @extend %icon;
+}
+
+.nickname-icon {
+  @extend %member-3;
+  font-size: $mdFz;
+  line-height: 36px;
+  text-align: center;
+  max-width: 35px;
+  flex: 1;
+  order: 1;
+  color: $inActive;
+  background-color: $bgContain;
+  transition: .3s;
+  cursor: pointer;
+  border: 1px solid $border;
+  border-right: 0;
+  border-radius: 6px 0 0 6px;
 }
 
 .email-icon {
@@ -68,6 +85,23 @@
   border-radius:6px 0 0 6px;
 }
 
+.nickname-input {
+  order: 2;
+  font-size: $smFz;
+  color: $font;
+  padding-left: 4px;
+  flex: 1;
+  cursor: pointer;
+  transition: .3s;
+  border-radius: 0 6px 6px 0;
+  border: 1px solid $border;
+  border-left: 0;
+  &:focus + label {
+    color: #F5A536;
+    border-color: $inActive;
+  }
+}
+
 .email-input {
   order: 2;
   font-size: $smFz;
@@ -96,6 +130,7 @@
   border: 1px solid $border;
   border-right: 0;
   border-left: 0;
+  margin-right: 0;
 
   &:focus + label, &:focus ~ i {
     color: #F5A536;
@@ -125,17 +160,15 @@
 
 .eye-closed {
   @extend %eye-closed-1;
-  margin-left: -1px;
 }
 
 .eye-opened {
   @extend %eye-opened-1;
   font-size: 20px;
-  margin-left: -1px;
 }
 
-.submit {
-  margin: 5% 0 2%;
+.sign-up-inputs .submit {
+  margin-top: 7%;
   font-weight: 700;
   width: 100%;
   height: 38px;
@@ -145,36 +178,4 @@
   word-spacing: -3px;
   border-radius: 6px;
   background-color: $bgContain;
-}
-
-.forget-ps {
-  display: block;
-  width: 200px;
-  height: 40px;
-  line-height: 40px;
-  margin: 0 auto;
-  text-align: center;
-  color: $font;
-  font-size: $smFz;
-  text-transform: uppercase;
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-}
-
-@media (max-width: 400px) {
-  .sign-in-inputs {
-    display: block;
-  }
-
-  .sign-in-email, .sign-in-password {
-    display: flex;
-  }
-
-  .submit, .forget-ps {
-    display: block;
-  }
 }

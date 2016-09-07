@@ -9,11 +9,11 @@
 
   &:hover {
     > .member-nickname > span {
-      color: #bb1515;
+      color: $active1;
     }
 
     > .member-avatar {
-      box-shadow:  1px 2px 4px 0 darkgrey;
+      box-shadow:  1px 2px 4px 0 $inActive;
     }
   }
 }

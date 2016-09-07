@@ -10,10 +10,10 @@
   height: 80vh;
   max-width: 400px;
   max-height: 480px;
-  animation-duration: .8s;
+  // animation-duration: .8s;
 
   @extend %animated;
-  @extend %flipInX;
+  @extend %fadeIn;
 
   animation-delay: .6s;
 }

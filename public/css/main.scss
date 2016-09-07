@@ -1,4 +1,5 @@
 //base
+@import './base/variables';
 @import './base/reset';
 @import './base/base';
 @import './base/icomoon';
@@ -25,3 +26,6 @@
 @import "./LandingPart/SignInForm";
 @import "./LandingPart/SignInSocialIcon";
 @import "./LandingPart/SignInInputs";
+@import "./LandingPart/SignUpForm";
+@import "./LandingPart/UploadAvatar";
+@import "./LandingPart/SignUpInputs";

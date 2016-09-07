@@ -4,14 +4,16 @@
   text-align: center;
 
   > a {
-    border: 1px solid #e6e6e6;
-    color: darkgrey;
+    border: 1px solid $border;
+    color: $inActive;
     height: 36px;
-    line-height: 36px;
-    background-color: #fff;
+    line-height: 40px;
+    background-color: $bgContain;
+    font-weight: 700;
+    word-spacing: -3px;
 
     &:hover {
-      border-color: darkgrey;
+      border-color: $inActive;
     }
   }
 
@@ -25,6 +27,7 @@
   }
 
   .tab-sign-up  {
+    margin-right: 1px;
     flex: 1;
     border-radius: 0 6px 6px 0;
     border-left-color: transparent;
@@ -37,14 +40,14 @@
 
 
 .sign-tabs > .active{
-  color: #bb1515;
-  border-color: #bb1515;
+  color: $active1;
+  border-color: $active1;
   box-shadow: none;
 
   &:hover {
-    border-color: #bb1515;
-    color: #bb1515;
-    background-color: #fff;
+    border-color: $active1;
+    color: $active1;
+    background-color: $bgContain;
   }
 
 }
