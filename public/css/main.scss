@@ -4,7 +4,7 @@
 @import './base/base';
 @import './base/icomoon';
 @import './base/animate';
-@import './base/mixins';
+// @import './base/mixins';
 
 
 //Containers
@@ -13,11 +13,12 @@
 
 
 //Header
+@import "./Shared/MemberNickname";
+@import "./Shared/MemberAvatar";
 @import "./Header/Logo";
 @import "./Header/MemberPanel";
 @import "./Header/Notification";
-@import "./Header/MemberNickname";
-@import "./Header/MemberAvatar";
+
 
 
 //LandingPart

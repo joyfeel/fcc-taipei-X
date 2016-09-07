@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import MemberAvatar from './MemberAvatar'
-import MemberNickname from './MemberNickname'
+import MemberAvatar from '../Shared/MemberAvatar'
+import MemberNickname from '../Shared/MemberNickname'
 
 const MemberPanel = () =>
   <div className="member-panel">

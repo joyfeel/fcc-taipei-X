@@ -6,6 +6,8 @@ body, html {
   /*for Chrome browser in OSX better user experience*/
 	-webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  height: 100%;
 }
 
 /*::selection {background-color: $hightLight;}*/
