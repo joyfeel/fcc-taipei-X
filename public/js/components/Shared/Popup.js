@@ -24,34 +24,4 @@ class Popup extends Component {
 }
 
 
-const data = {
-  name : 'activate-success-popup',
-  txt: ''
-}
-
-
-//activate-success-popup
-//congratulation! register successful.
-
-//activate-email-send-popup
-//check your mailbox to get a registerd mail from @meet. &#9786;
-
-//forget-ps-popup
-//check your mailbox to get our confirm letter. &#9989;
-
-//sign-in-error-popup
-//invalid email or password. &#8264;
-
-//network-error-popup
-//network error.
-
-//repeated-register-popup
-//This email has been registered.
-
-//not-exist-popup
-//This account doesn't exist.
-
-//email-input-popup   ,{txt='SEND'}
-
-
 export default Popup
