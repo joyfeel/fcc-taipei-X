@@ -8,21 +8,37 @@ import AfterLogin from './components/LandingPart/AfterLogin'
 import About from './components/About'
 
 export default function getRoutes(store) {
-  const ignoreWhenAuthenticated = (nextState, replace) => {
-    if (store.getState().auth.token) {
-      replace('/')
+  const checkAuth = (nextState, replace) => {
+    const { token } = store.getState().auth
+
+    if (nextState.location.pathname !== '/afterlogin') {
+      if (token) {
+        if (nextState.location.state && nextState.location.pathname) {
+          replace(nextState.location.pathname)
+        }
+        replace('/')
+      }
+    } else {
+      if (!token) {
+        if (nextState.location.state && nextState.location.pathname) {
+          replace(nextState.location.pathname)
+        }
+        replace('/')
+      }
     }
   }
 
   return (
     <Route path='/' component={App}>
+      <Route onEnter={checkAuth}>
       <IndexRedirect to='/signin' />
-      <Route component={SignForm}>
-        <Route path='/signin' component={SignInForm} />
-        <Route path='/signup' component={SignUpForm} />
-      </Route>
-      <Route component={AfterLogin}>
-        <Route path='/afterlogin' component={About} />
+        <Route component={SignForm}>
+          <Route path='/signin' component={SignInForm} />
+          <Route path='/signup' component={SignUpForm} />
+        </Route>
+        <Route component={AfterLogin}>
+          <Route path='/afterlogin' component={About} />
+        </Route>
       </Route>
     </Route>
   )

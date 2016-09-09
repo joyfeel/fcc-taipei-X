@@ -21,6 +21,7 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  // http://duri.me/
   avatar: {
     type: String,
     required: true,
@@ -101,6 +102,7 @@ UserSchema.methods.validatePassword = async function validatePassword(signinPass
   try {
     return await bcrypt.compare(signinPassword, this.hashedPassword)
   } catch (err) {
+    const err = Boom.unauthorized('Email or password is not valid')
     throw err
   }
 }

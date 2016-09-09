@@ -48,9 +48,7 @@ app.use(async(ctx, next) => {
     ctx.status = err.status || 500
     ctx.body = {
       status: 'error',
-      errors: {
-        message: err.message
-      }
+      message: err.message
     }
     if (ctx.status >= 500) {
       ctx.app.emit('internalError', err, ctx)

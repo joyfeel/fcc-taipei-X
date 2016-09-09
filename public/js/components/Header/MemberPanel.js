@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import MemberAvatar from '../Shared/MemberAvatar'
 import MemberNickname from '../Shared/MemberNickname'
 
-const MemberPanel = () =>
+const MemberPanel = ({ profile }) =>
   <div className="member-panel">
-    <MemberNickname />
-    <MemberAvatar />
+    <MemberNickname nickname={profile.nickname} />
+    <MemberAvatar avatar={profile.avatar}  />
   </div>
 
 export default MemberPanel

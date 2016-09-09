@@ -1,12 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 
-const SubmitBtn = ({txt}) =>
-  <button className='submit-btn' role='submit'>{txt}</button>
-
+const SubmitBtn = (props) =>
+  <button className='submit-btn' role='submit' onClick={props.onClick}>{props.txt}</button>
 
 SubmitBtn.propTypes = {
-  txt: React.PropTypes.string.isRequired
+  txt: PropTypes.string.isRequired
 }
-
 
 export default SubmitBtn
