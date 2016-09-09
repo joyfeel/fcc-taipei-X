@@ -13,8 +13,8 @@ const router = new Router({
 
 router.post('/',
   validate({
-    'email:body': ['require', 'isEmail', 'email or password are not valid'],
-    'password:body': ['require', 'email or password are not valid']
+    'email:body': ['require', 'isEmail', 'Format of email address is wrong'],
+    'password:body': ['require']
   }),
   async(ctx, next) => {
     try {
@@ -26,7 +26,8 @@ router.post('/',
       }
       //However, the email account need to be actived.
       if (user.isEmailActived === false) {
-        throw Boom.unauthorized('Your email account is not actived')
+        //throw Boom.unauthorized('Your email account is not actived')
+        throw Boom.notFound('Your email account is not actived')
       }
 
       await user.validatePassword(password)

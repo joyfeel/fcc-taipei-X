@@ -1,10 +1,16 @@
-import { SENDING_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE } from '../actions'
+import { SENDING_REQUEST, SIGNIN_SUCCESS, SIGNIN_FAILURE } from '../actions'
 
 const initialState = {
   isFetching: false,
   profile: {
-    uid: null,
-    token: null
+    token: null,
+    id: null,
+    nickname: null,
+    email: null,
+    avatar: null,
+    edit_nickname_time: null,
+    created_time: null,
+    updated_time: null
   },
   error: null
 }
@@ -16,30 +22,22 @@ const auth = (state = initialState, action) => {
         ...state,
         isFetching: true
       }
-    case SIGNUP_SUCCESS:
+    case SIGNIN_SUCCESS:
+      const { auth } = action.response
       return {
         ...state,
-        profile: action.profile,
+        profile: auth,
         isFetching: false
       }
-    case SIGNUP_FAILURE:
+    case SIGNIN_FAILURE:
+      const error = {
+        message: action.error.message
+      }
       return {
         ...state,
-        error: action.error,
+        error,
         isFetching: false
       }
-    // case 'LOGIN_SUCCESS':
-    //   // console.log(action.auth.token)
-    //   // console.log(action.auth.user)
-    //   return {
-    //     ...state,
-    //     token: action.auth.token,
-    //     user: action.auth.user
-    //   }
-    // case 'LOGOUT_SUCCESS':
-    //   return initialState
-    // case 'LOGIN_ERROR':
-    //   return state
     default:
       return state
   }

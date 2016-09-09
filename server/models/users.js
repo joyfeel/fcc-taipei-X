@@ -21,6 +21,7 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  // http://duri.me/
   avatar: {
     type: String,
     required: true,
