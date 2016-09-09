@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 
-const MemberNickname = () =>
+const MemberNickname = ({ nickname }) =>
   <span className="member-nickname">
-    <span>Hi,&nbsp;</span>
-      Don Corleone
+    <span className='hi'>Hi,&nbsp;</span>
+      {nickname}
   </span>
 
 export default MemberNickname

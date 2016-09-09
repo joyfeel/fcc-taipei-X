@@ -13,57 +13,40 @@ const router = new Router({
 
 router.post('/',
   validate({
-    'email:body': ['require', 'isEmail', 'email or password are not valid'],
-    'password:body': ['require', 'email or password are not valid']
+    'email:body': ['require', 'isEmail', 'Format of email address is wrong'],
+    'password:body': ['require']
   }),
-  authenticate,
-  sendToken
-)
+  async(ctx, next) => {
+    try {
+      const { email, password } = ctx.request.body
+      //Ensure the email account exists in the DB.
+      const user = await User.findOne({ email })
+      if (!user) {
+        throw Boom.badRequest('Email or password is not valid')
+      }
+      //However, the email account need to be actived.
+      if (user.isEmailActived === false) {
+        //throw Boom.unauthorized('Your email account is not actived')
+        throw Boom.notFound('Your email account is not actived')
+      }
 
-async function authenticate(ctx, next) {
-  try {
-    const { email, password } = ctx.request.body
-    //Ensure the email is existed in the DB
-    const user = await User.findOne({ email })
-    if (!user) {
-      throw Boom.badRequest('email or password are not valid')
-    }
-
-    const isMatch = await user.validatePassword(password)
-    if (!isMatch) {
-      throw Boom.badImplementation('terrible implementation')
-    }
-
-    ctx.state.user = user
-    await next()
-  } catch (err) {
-    if (err.name === 'MismatchError') {
-      const BadRequest = Boom.badRequest('email or password are not valid')
-      ctx.throw(BadRequest.output.statusCode, BadRequest)
-    } else if (err.output.statusCode) {
-      ctx.throw(err.output.statusCode, err)
-    } else {
-      ctx.throw(500, err)
-    }
-  }
-}
-
-async function sendToken(ctx, next) {
-  try {
-    const { email } = ctx.request.body,
-      token = getToken['JWT'](email),
-      user = getCleanUser(ctx.state.user)
-
-    ctx.response.body = {
-      status: 'success',
-      auth: {
-        token,
-        ...user
+      await user.validatePassword(password)
+      const token = getToken['JWT'](email)
+      ctx.response.body = {
+        status: 'success',
+        auth: {
+          token,
+          ...getCleanUser(user)
+        }
+      }
+    } catch (err) {
+      if (err.output.statusCode) {
+        ctx.throw(err.output.statusCode, err)
+      } else {
+        ctx.throw(500, err)
       }
     }
-  } catch (err) {
-    ctx.throw(err)
   }
-}
+)
 
 export default router

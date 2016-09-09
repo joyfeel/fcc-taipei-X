@@ -1,3 +1,4 @@
+import * as actions from '../actions'
 import { take, call, put, fork, select } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
 import { v4 } from 'node-uuid'
@@ -5,6 +6,8 @@ import url from 'url'
 import qs from 'querystring'
 import Boom from 'boom-browserify'
 import { browserHistory } from 'react-router'
+
+const { sendingRequest, signInRequest, signInSuccess, signInFailure } = actions
 
 function oauth2() {
   const config = {
@@ -44,14 +47,11 @@ function openPopup(url, config) {
             left: window.screenX + ((window.outerWidth - (config.height || 640)) / 2)
           }
     const popup = window.open(url, '_blank', qs.stringify(options, ','))
-    //const popup = window.open(url, '_self', qs.stringify(options, ','))
-    //const popup = window.open(url, '_self')
     //popup.close()
     if (popup && popup.focus) {
       popup.focus()
     }
-    //if ()
-    //alert('A')
+
     resolve({
       window: popup
     })
@@ -63,62 +63,18 @@ function pollPopup2(window, config, requestToken = undefined) {
     const redirectUri = url.parse(config.redirectUri)
     const redirectUriPath = redirectUri.host + redirectUri.pathname
     if (!window || window.closed) {
-      alert('D')
       clearInterval(polling)
     }
     const popupUrlPath = window.location.host + window.location.pathname
-    alert('D1')
     alert(popupUrlPath)
     alert(redirectUriPath)
     alert(window.location.search)
     if (window.location.search) {
-      alert('D2')
       resolve({
         oauthData: query,
         interval: polling
       })
     }
-
-    // if (popupUrlPath === redirectUriPath) {
-    //   alert('E')
-    // }
-
-    // const polling = setInterval(() => {
-    //   alert('D')
-    //   if (!window || window.closed) {
-    //     //alert('E')
-    //     clearInterval(polling)
-    //   }
-    //   //alert('F')
-    //   try {
-    //     alert('G')
-    //     //console.log(window.location)
-    //     const popupUrlPath = window.location.host + window.location.pathname
-    //     //console.log(popupUrlPath)
-    //
-    //     if (popupUrlPath === redirectUriPath) {
-    //       alert('EE')
-    //       if (window.location.search) {
-    //         const query = qs.parse(window.location.search.substring(1))
-    //         //console.log(query)
-    //         if (query.error) {
-    //           return reject(new Error('query.error ERROR'))
-    //         } else {
-    //           resolve({
-    //             oauthData: query,
-    //             interval: polling
-    //           })
-    //         }
-    //       } else {
-    //         console.log('err1')
-    //         return reject(new Error('window.location.search ERROR'))
-    //       }
-    //     }
-    //   } catch (error) {
-    //     console.log(error)
-    //     //return reject(error)
-    //   }
-    // }, 500)
   })
 }
 
@@ -237,8 +193,29 @@ function* watchThirdPartyLogin() {
   yield* takeEvery('loginThirdParty', loginThirdParty)
 }
 
+const fetchBody = (api, form) => fetch(api, {
+  method: 'post',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(form)
+}).then(res => res.ok ? res.json() : res.json().then(err => Promise.reject(err)))
+
+function* signInFlow({ formData }) {
+  yield put(sendingRequest())
+  try {
+    const response = yield call(fetchBody, 'http://localhost:3000/v1/signin', formData)
+    yield put(signInSuccess(response))
+  } catch (error) {
+    yield put(signInFailure(error))
+  }
+}
+
+function* watchSignInFlow() {
+  yield* takeEvery(actions.SIGNIN_REQUEST, signInFlow)
+}
+
 export default function* root() {
   yield [
-    call(watchThirdPartyLogin)
+    fork(watchSignInFlow)
+    //call(watchThirdPartyLogin)
   ]
 }

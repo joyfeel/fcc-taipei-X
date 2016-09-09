@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?3s0994');
-  src:  url('../fonts/icomoon.eot?3s0994#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?3s0994') format('truetype'),
-    url('../fonts/icomoon.woff?3s0994') format('woff'),
-    url('../fonts/icomoon.svg?3s0994#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?s1kgjk');
+  src:  url('../fonts/icomoon.eot?s1kgjk#iefix') format('embedded-opentype'),
+  url('../fonts/icomoon.ttf?s1kgjk') format('truetype'),
+  url('../fonts/icomoon.woff?s1kgjk') format('woff'),
+  url('../fonts/icomoon.svg?s1kgjk#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -33,6 +33,38 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.activate-success-popup:before {
+  content: "\e942";
+}
+.activate-email-send-popup:before {
+  content: "\e943";
+}
+.forget-ps-popup:before {
+  content: "\e944";
+}
+.sign-in-error-popup:before {
+  content: "\e934";
+}
+.network-error-popup:before {
+  content: "\e940";
+}
+.repeated-register-popup:before {
+  content: "\e941";
+}
+.not-exist-popup:before {
+  content: "\e946";
+}
+.email-input-popup:before {
+  content: "\e947";
+}
+
+%eye-opened-1:before {
+  content: "\e949";
+}
+%loading-1:before {
+  content: "\e93f";
+}
+
 
 .github-8:before {
   content: "\e93b";
@@ -67,13 +99,11 @@
 .g-plus-3:before {
   content: "\e931";
 }
+
 %eye-closed-1:before {
-  content: "\e934";
-}
-%eye-opened-1:before {
   content: "\e935";
 }
-.member-3:before {
+%member-3:before {
   content: "\e933";
 }
 .cancel-1:before {

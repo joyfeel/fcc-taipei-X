@@ -129,7 +129,7 @@
   }
 }
 
-.pulse {
+%pulse {
   animation-name: pulse;
 }
 
@@ -1171,7 +1171,7 @@
   }
 }
 
-.fadeIn {
+%fadeIn {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
 }
@@ -2640,7 +2640,7 @@
   }
 }
 
-.zoomIn {
+%zoomIn {
   -webkit-animation-name: zoomIn;
   animation-name: zoomIn;
 }

@@ -7,17 +7,45 @@
   @extend %animated;
   @extend  %fadeInDown;
 
+  > .member-nickname {
+    float: left;
+    max-width: 220px;
+    margin-right: 5px;
+    height: 40px;
+    line-height: 44px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hi {
+    display: inline-block;
+  }
+
   &:hover {
-    > .member-nickname > span {
-      color: #bb1515;
+    .hi {
+      color: $active1;
     }
 
     > .member-avatar {
-      box-shadow:  1px 2px 4px 0 darkgrey;
+      float: left;
+      box-shadow: $bsh;
     }
   }
 }
 
 .login  .member-panel {
   display: block;
+}
+
+@media (max-width: 768px) {
+  .member-panel  {
+    > .member-nickname {
+        max-width: 120px;
+      }
+
+      .hi {
+        display: none;
+      }
+    }
 }
