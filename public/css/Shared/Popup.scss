@@ -1,0 +1,188 @@
+.popup {
+  position: fixed;
+  top: 0;
+  background: transparent;
+  width: 100vw;
+  height: 100vh;
+  z-index: 11;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .popup-panel {
+    position: relative;
+    width: 85vw;
+    height: 85vw;
+    max-width: 320px;
+    max-height: 320px;
+    background-color: $bgContain;
+    border: 1px solid $border;
+    border-radius: 6px;
+    box-shadow: $bsh;
+    @extend %animated;
+    @extend %fadeIn;
+  }
+}
+
+.popup-panel {
+  .cancel {
+    color: $active1;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 48px;
+    height: 48px;
+    // border: 1px solid $active1;
+    // border-radius: 50%;
+
+    &:before, &:after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: $active1;
+
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+    }
+    &:before {
+      transform: rotate(45deg)
+    }
+    &:after {
+      transform: rotate(-45deg)
+    }
+
+  }
+}
+
+.popup-panel {
+  > i {
+    @extend %icon;
+    position: absolute;
+    top: -20px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    //because flex
+    width: 120px;
+    height: 120px;
+    text-align: center;
+    color: $active1;
+    text-shadow: 3px 3px 6px $inActive;
+    @extend %animated;
+    @extend %flipInX;
+    animation-duration: .75s;
+  }
+
+  > .description {
+    position: absolute;
+    bottom: 27%;
+    width: 94%;
+    padding: 0 3%;
+    text-align: center;
+    font-size: $smFz;
+    line-height: 18px;
+
+    &:first-letter {
+      text-transform : uppercase;
+    }
+  }
+
+  > .sign-form-email {
+    display: none;
+  }
+
+  .submit-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    bottom: -75%;
+    height: 38px;
+    line-height: 40px;
+    width: 60%;
+    border: 1px solid $active1;
+    color: $active1;
+  }
+
+  .activate-success-popup {
+    font-size: 150px;
+    top: -120px;
+    left: -10px;
+  }
+
+  .activate-email-send-popup {
+    font-size: 150px;
+    top: -123px;
+    left: -72px;
+  }
+
+  .forget-ps-popup {
+    font-size: 150px;
+    top: -140px;
+    left: -100px;
+  }
+
+  .sign-in-error-popup {
+    font-size: 145px;
+    top: -110px;
+    left: -30px;
+  }
+
+  .network-error-popup {
+    font-size: 150px;
+    top: -115px;
+    left: -30px;
+  }
+
+  .repeated-register-popup {
+    font-size: 115px;
+    top: -75px;
+    left: 0px;
+  }
+
+  .not-exist-popup {
+    font-size: 145px;
+    top: -75px;
+    left: 0px;
+  }
+
+  .email-input-popup {
+    font-size: 50px;
+    top: 0px;
+    left: -74%;
+
+    &:after {
+      content: 'Enter your e-mail:';
+      position: absolute;
+      top: 24%;
+      left: 77%;
+      width: 155px;
+      font-family: 'Lekton', san-serif;
+      color: #111;
+      font-size: $smFz;
+      text-shadow: none;
+    }
+  }
+}
+
+.email-input-popup + .sign-form-email {
+  display: flex;
+  height: 38px;
+  width: 90%;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.email-input-popup ~ .description {display: none;}

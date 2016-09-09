@@ -1,7 +1,8 @@
 /******** global reset ********/
 html {
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
+  // -ms-text-size-adjust: 100%;
+  // -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 *{margin: 0;padding: 0; border: 0;}
@@ -35,16 +36,22 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 }
 
 :-moz-placeholder { /* Firefox 18- */
-  color: darkgrey;
+  color: $inActive;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-  color: darkgrey;
+  color: $inActive;
 }
 
 select, textarea, input, button:focus { outline: none; }
 
-input { line-height: normal;   border-radius: 0;}
+input {
+  line-height: normal;
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
 
 input[type="checkbox"], input[type="radio"] {
   box-sizing: border-box; /* 1 */

@@ -1,0 +1,11 @@
+.member-nickname {
+  display: inline-block;
+  color: $heading;
+  vertical-align: middle;
+}
+
+.member-nickname > .hi {
+  display: none;
+  transition: .3s;
+  color: $font;
+}
