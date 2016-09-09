@@ -45,7 +45,13 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 
 select, textarea, input, button:focus { outline: none; }
 
-input { line-height: normal;   border-radius: 0;}
+input {
+  line-height: normal;
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
 
 input[type="checkbox"], input[type="radio"] {
   box-sizing: border-box; /* 1 */

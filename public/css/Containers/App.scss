@@ -1,5 +1,6 @@
 .wrapper {
   position: relative;
-  margin-top: 50px;
+  // margin-top: 50px;
   height: calc(100vh - 50px);
+  transition: filter 3s;
 }

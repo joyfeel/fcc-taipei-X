@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import Header from './Header'
-
-//temp
-// import SignForm from '../components/LandingPart/SignForm'
-
+import Loading from '../components/Shared/Loading'
+import Popup from '../components/Shared/Popup'
 
 class App extends Component {
   constructor(props) {
@@ -13,9 +11,11 @@ class App extends Component {
     return (
       <div>
         <Header />
-        <div className='wrapper'>
+        <div className='wrapper mask'>
           {this.props.children}
         </div>
+        <Loading />
+        <Popup />
       </div>
     )
   }

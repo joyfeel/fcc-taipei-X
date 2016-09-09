@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
-
 import SignTabs from './SignTabs'
 
-//temp
-// import SignInForm from './SignInForm'
 
 
 

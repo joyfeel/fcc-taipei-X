@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 
-
 class UploadAvatar extends Component {
   constructor(props) {
     super(props)
@@ -14,30 +13,23 @@ class UploadAvatar extends Component {
   upload(e) {
     const bHaveFileAPI = (window.File && window.FileReader);
     const self = this;
-
     if (!bHaveFileAPI) {
         alert("This browser doesn't support the File API");
         return;
     }
-
     const thefile = e.target.files[0];
 
     // check to see if it is text
     if (!thefile.type.match("image.*")) {
         return;
     }
-
     var reader = new FileReader();
 
     reader.onload = function (evt) {
         let resultdata = evt.target.result;
-
         self.setState({src : resultdata})
-
     }
-
     reader.readAsDataURL(thefile);
-
   }
 
   render() {

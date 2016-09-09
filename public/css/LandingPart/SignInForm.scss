@@ -5,21 +5,42 @@
   margin: 5% 0;
 }
 
-.note {
+.forget-ps {
+  display: block;
+  width: 200px;
+  height: 40px;
+  line-height: 40px;
+  margin: 0 auto;
   text-align: center;
-  font-size: 14px;
-  color: $inActive;
+  color: $font;
+  font-size: $smFz;
+  text-transform: uppercase;
+  text-decoration: underline;
   margin-top: 2%;
+  &:hover {
+    text-decoration: underline;
+  }
+
 }
 
 @media (max-width: 400px) {
+  // .sign-in-inputs {
+  //   display: block;
+  // }
+
   .sign-in-indicated {
     display: none;
   }
 
+  .sign-form-email, .sign-form-password {
+    display: flex;
+  }
+
+  .submit-btn, .forget-ps {
+    display: block;
+  }
 
   .note {
     display: none;
   }
-
 }
