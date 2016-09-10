@@ -7,6 +7,7 @@
   @extend %animated;
   @extend  %fadeInDown;
 
+
   > .member-nickname {
     float: left;
     max-width: 220px;
@@ -38,6 +39,7 @@
   display: block;
 }
 
+
 @media (max-width: 768px) {
   .member-panel  {
     > .member-nickname {
@@ -47,5 +49,6 @@
       .hi {
         display: none;
       }
+
     }
 }

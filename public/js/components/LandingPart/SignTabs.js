@@ -6,5 +6,5 @@ const SignTabs = () =>
     <Link to='/signin' className='tab-sign-in' activeClassName='active'>SIGN IN</Link>
     <Link to='/signup' className='tab-sign-up' activeClassName='active'>SIGN UP</Link>
   </div>
-  
+
 export default SignTabs
