@@ -30,7 +30,7 @@
   &:hover {
     > label, > i {
       border-color: $inActive;
-      color: $hightLight;
+      color: $inActive;
     }
     > input {
       border-color: $inActive;
@@ -54,7 +54,7 @@
   border-left: 0;
   &:focus + label {
     border-color: $inActive;
-    color: $hightLight;
+    color: $inActive;
   }
 }
 
@@ -63,7 +63,7 @@
   @extend %icon;
   line-height: 36px;
   text-align: center;
-  color: $inActive;
+  color: $border;
   background-color: $bgContain;
   transition: .3s;
   cursor: pointer;
