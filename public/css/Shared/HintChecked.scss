@@ -1,0 +1,30 @@
+.hint-checked {
+  font-size: $xsFz;
+  height: 22px;
+  line-height: 24px;
+  margin-left: 8px;
+  opacity: 0;
+  transition: .3s;
+  color: #111;
+
+}
+
+.show {
+  opacity: 1;
+  > .hint-result {
+    color: #c9302c;
+  }
+}
+
+
+.valid {
+    font-weight: normal;
+  > .hint-result {
+    font-weight: normal;
+    @extend  %icon;
+    &:after {
+      content: '\f00c';
+      color: #449d44;
+    }
+  }
+}
