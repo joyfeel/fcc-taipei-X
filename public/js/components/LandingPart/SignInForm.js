@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import cx from 'classnames'
 import { signInRequest } from '../../actions'
 import SignInSocialIcon from './SignInSocialIcon'
 import SignFormEmail from '../Shared/SignFormEmail'
@@ -9,7 +10,29 @@ import SubmitBtn from '../Shared/SubmitBtn'
 class SignInForm extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      mailToggle: true
+    }
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleMailClick = this.handleMailClick.bind(this)
+    this.onResize = this.onResize.bind(this)
+  }
+  initWindowSize() {
+    if (window.innerWidth < 400) {
+      this.setState({
+        emailToggle: false
+      })
+    }
+  }
+  onResize() {
+    this.initWindowSize()
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.onResize, false)
+    this.initWindowSize()
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize)
   }
   handleSubmit(e) {
     e.preventDefault()
@@ -17,16 +40,24 @@ class SignInForm extends Component {
     const password = e.target.password.value.trim()
     this.props.dispatch(signInRequest({ email, password }))
   }
+  handleMailClick(e) {
+    e.preventDefault()
+    this.setState({
+      emailToggle: !this.state.emailToggle
+    })
+  }
   render() {
-    const { dispatch } = this.props
+    const emailToggleClasses = cx({
+      'off': this.state.emailToggle
+    })
     return (
       <form className='sign-in-form' onSubmit={this.handleSubmit}>
         <p className='sign-in-indicated'>Choosing 1 of these icons to sign in</p>
-        <SignInSocialIcon />
-        <SignFormEmail />
-        <SignFormPassword />
-        <SubmitBtn txt={'SIGN IN'} />
-        <a href="" className='forget-ps' alt='forget password'>forget password?</a>
+        <SignInSocialIcon onMailClick={this.handleMailClick} />
+        <SignFormEmail toggleEmail={emailToggleClasses} />
+        <SignFormPassword toggleEmail={emailToggleClasses} />
+        <SubmitBtn txt={'SIGN IN'} toggleEmail={emailToggleClasses} />
+        <a href="" className={`forget-ps ${emailToggleClasses}`} alt='forget password'>forget password?</a>
         <p className='note'>@meet created by Wesley, Joey, Ching, Cha, Doma</p>
       </form>
     )

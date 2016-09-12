@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
+import cx from 'classnames'
 
-const SignFormEmail = () =>
-  <div className='sign-form-email'>
-    <input type="email" name="email"  id="email" placeholder='email' className="email-input"/>
+const SignFormEmail = (props) =>
+  <div className={`sign-form-email ${props.toggleEmail}`}>
+    <input type="email" name="email"  id="email" placeholder='email' className="email-input" />
     <label className='email-icon' htmlFor="email"></label>
   </div>
 
