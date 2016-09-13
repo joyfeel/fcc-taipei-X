@@ -47,17 +47,17 @@ class SignInForm extends Component {
     })
   }
   render() {
-    const emailToggleClasses = cx({
-      'off': this.state.emailToggle
-    })
+    const emailToggleFlex = cx({ 'flex': this.state.emailToggle})
+    const emailToggleOn = cx({'on' : this.state.emailToggle})
+    console.log(emailToggleFlex, emailToggleOn)
     return (
       <form className='sign-in-form' onSubmit={this.handleSubmit}>
         <p className='sign-in-indicated'>Choosing 1 of these icons to sign in</p>
         <SignInSocialIcon onMailClick={this.handleMailClick} />
-        <SignFormEmail toggleEmail={emailToggleClasses} />
-        <SignFormPassword toggleEmail={emailToggleClasses} />
-        <SubmitBtn txt={'SIGN IN'} toggleEmail={emailToggleClasses} />
-        <a href="" className={`forget-ps ${emailToggleClasses}`} alt='forget password'>forget password?</a>
+        <SignFormEmail toggleEmail={emailToggleFlex} />
+        <SignFormPassword toggleEmail={emailToggleFlex} />
+        <SubmitBtn txt={'SIGN IN'} toggleEmail={emailToggleOn} />
+        <a href="" className={`forget-ps ${emailToggleOn}`} alt='forget password'>forget password?</a>
         <p className='note'>@meet created by Wesley, Joey, Ching, Cha, Doma</p>
       </form>
     )
