@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import cx from 'classnames'
 
-const HintChecked = ({show, count, valid}) => {
-  let hintClass = cx({
+const HintChecked = ({ show, count, valid }) => {
+  const hintClass = cx({
     'hint-checked': true,
     'show': show,
     'valid' : valid
@@ -13,7 +13,9 @@ const HintChecked = ({show, count, valid}) => {
       <span>
         {count}
       </span>/20
-      <span className="hint-result">&nbsp;{valid ? '' : '    At least 3 letters.'} </span>
+      <span className="hint-result">
+        &nbsp;{valid ? null : '    At least 3 letters.'}
+      </span>
     </p>
   )
 }

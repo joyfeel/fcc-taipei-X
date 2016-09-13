@@ -5,8 +5,15 @@
   margin: 5% 0;
 }
 
+.sign-in-form {
+  .sign-form-email, .sign-form-password, .submit-btn, .forget-ps {
+    display: none;
+  }
+}
+
+
+
 .forget-ps {
-  display: block;
   width: 200px;
   height: 40px;
   line-height: 40px;
@@ -24,23 +31,22 @@
 }
 
 @media (max-width: 400px) {
-  // .sign-in-inputs {
-  //   display: block;
-  // }
-
   .sign-in-indicated {
     display: none;
   }
 
-  .sign-form-email, .sign-form-password {
-    display: flex;
+  .sign-in-form {
+    .sign-form-email, .sign-form-password {
+      display: flex;
+    }
+    .submit-btn, .forget-ps  {
+      display: block;
+    }
+
+    .note {
+      display: none;
+    }
   }
 
-  .submit-btn, .forget-ps {
-    display: block;
-  }
 
-  .note {
-    display: none;
-  }
 }

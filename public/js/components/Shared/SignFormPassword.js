@@ -18,7 +18,7 @@ class SignFormPassword extends Component {
     })
 
     return (
-      <div className='sign-form-password'>
+      <div className={`sign-form-password ${this.props.toggleEmail}`}>
         <input type={eyeToggle ? 'text' : 'password'} name='password' id='password' placeholder='password' className='password-input' />
         <label className='password-icon' htmlFor='password'></label>
         <i className={eyeClasses} onClick={this.visible}></i>

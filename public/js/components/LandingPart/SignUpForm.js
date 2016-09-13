@@ -40,7 +40,8 @@ class SignUpForm extends Component {
   }
 
   render() {
-    const {show, count, valid} = this.state
+    const { show, count, valid } = this.state
+
 
     return (
       <form className='sign-up-form'>
@@ -58,7 +59,8 @@ class SignUpForm extends Component {
         <SignFormEmail />
         <SignFormPassword />
         <HintChecked />
-        <SubmitBtn txt={'SIGN UP'}/>
+
+        <SubmitBtn txt={'SIGN UP'} />
         <p className='signup note'>@meet created by Wesley, Joey, Ching, Cha, Doma</p>
       </form>
   )}
