@@ -5,8 +5,6 @@ import SignFormNickname from '../Shared/SignFormNickname'
 import SignFormEmail from '../Shared/SignFormEmail'
 import SignFormPassword from '../Shared/SignFormPassword'
 import SubmitBtn from '../Shared/SubmitBtn'
-import cx from 'classnames'
-
 
 class SignUpForm extends Component {
   constructor(props) {
@@ -42,7 +40,6 @@ class SignUpForm extends Component {
   render() {
     const { show, count, valid } = this.state
 
-
     return (
       <form className='sign-up-form'>
         <UploadAvatar />
@@ -59,7 +56,6 @@ class SignUpForm extends Component {
         <SignFormEmail />
         <SignFormPassword />
         <HintChecked />
-
         <SubmitBtn txt={'SIGN UP'} />
         <p className='signup note'>@meet created by Wesley, Joey, Ching, Cha, Doma</p>
       </form>

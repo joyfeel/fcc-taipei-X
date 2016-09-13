@@ -47,9 +47,9 @@ class SignInForm extends Component {
     })
   }
   render() {
-    const emailToggleFlex = cx({ 'flex': this.state.emailToggle})
-    const emailToggleOn = cx({'on' : this.state.emailToggle})
-    console.log(emailToggleFlex, emailToggleOn)
+    const emailToggleFlex = cx({ 'flex': this.state.emailToggle })
+    const emailToggleOn = cx({ 'on' : this.state.emailToggle })
+
     return (
       <form className='sign-in-form' onSubmit={this.handleSubmit}>
         <p className='sign-in-indicated'>Choosing 1 of these icons to sign in</p>
