@@ -95,7 +95,7 @@ router.get('/',
       })
 
       if (!result) {
-        throw Boom.unauthorized('Email Token is not valid or expired')
+        throw Boom.unauthorized('Email token is not valid or expired')
       }
       const user = getCleanUser(result)
       const jwtToken = await getToken['JWT'](email)

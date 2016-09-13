@@ -1,9 +1,9 @@
 import Router from 'koa-router'
-import User from '../models/users'
 import Boom from 'boom'
 import jwt from 'koa-jwt'
 import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
+import User from '../models/users'
 import { getToken, getCleanUser } from '../utils'
 
 const validate = (...args) => convert(_validate(...args))

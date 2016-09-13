@@ -18,8 +18,7 @@ import jwt from 'koa-jwt'
 import Router from 'koa-router'
 import signupRouter from '../server/router/signup'
 import signinRouter from '../server/router/signin'
-import memberRouter from '../server/router/members'
-import reportRouter from '../server/router/reports'
+import resendEmailRouter from '../server/router/resendEmail'
 import accountSettingsRouter from '../server/router/account-settings'
 import forgotPasswordRouter from '../server/router/forgot-password'
 import resetPasswordRouter from '../server/router/reset-password'
@@ -92,8 +91,9 @@ app.use(convert(jwt({
   // }
 }).unless({
   path: [
-    '/v1/signin',
     '/v1/signup',
+    '/v1/signin',
+    '/v1/resendEmail',
     new RegExp('/v1\/signup.*/', 'i'),
     '/v1/auth/google',
     '/v1/auth/google/callback',
@@ -101,7 +101,6 @@ app.use(convert(jwt({
     '/v1/auth/github/callback',
     '/v1/forgot_password',
     //'/v1/reset_password',
-    '/v1/reports',
     '/favicon.ico'
   ]
 })))
@@ -114,12 +113,8 @@ app.use(signinRouter.routes())
 app.use(signinRouter.allowedMethods({
   throw: true
 }))
-app.use(memberRouter.routes())
-app.use(memberRouter.allowedMethods({
-  throw: true
-}))
-app.use(reportRouter.routes())
-app.use(reportRouter.allowedMethods({
+app.use(resendEmailRouter.routes())
+app.use(resendEmailRouter.allowedMethods({
   throw: true
 }))
 app.use(accountSettingsRouter.routes())
