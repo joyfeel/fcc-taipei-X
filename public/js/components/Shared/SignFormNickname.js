@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 
-const SignFormNickname = ({ focus, blur, count }) =>
+const SignFormNickname = ({ focus, blur, change }) =>
   <div className='sign-form-nickname'>
     <input
       type='text'
@@ -11,9 +11,16 @@ const SignFormNickname = ({ focus, blur, count }) =>
       className='nickname-input'
       onFocus={focus}
       onBlur={blur}
-      onChange={count}
+      onChange={change}
     />
     <label className='nickname-icon' htmlFor='nickname'></label>
   </div>
+
+SignFormNickname.propTypes = {
+  focus: PropTypes.func,
+  blur: PropTypes.func,
+  change: PropTypes.func
+}
+
 
 export default SignFormNickname

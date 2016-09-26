@@ -11,28 +11,34 @@ class SignFormPassword extends Component {
     this.setState({ eyeToggle : !this.state.eyeToggle })
   }
   render() {
+    const { toggleEmail, focus, blur, change } = this.props
     const { eyeToggle } = this.state
-    const eyeClasses = cx({
-      'eye-opened': eyeToggle,
-      'eye-closed': !eyeToggle
-    })
-    const passwordClasses = cx(
-      'sign-form-password',
-      this.props.toggleEmail
-    )
 
     return (
-      <div className={passwordClasses}>
-        <input type={eyeToggle ? 'text' : 'password'} name='password' id='password' placeholder='password' className='password-input' />
+      <div className={cx('sign-form-password', toggleEmail)}>
+        <input
+          type={eyeToggle ? 'text' : 'password'}
+          name='password'
+          id='password'
+          placeholder='password'
+          className='password-input'
+          maxLength='12'
+          onFocus={focus}
+          onBlur={blur}
+          onChange={change}
+        />
         <label className='password-icon' htmlFor='password'></label>
-        <i className={eyeClasses} onClick={this.visible}></i>
+        <i className={cx(eyeToggle ? 'eye-opened' : 'eye-closed')} onClick={this.visible}></i>
       </div>
     )
   }
 }
 
 SignFormPassword.propTypes = {
-  toggleEmail: PropTypes.string
+  toggleEmail: PropTypes.string,
+  focus: PropTypes.func,
+  blur: PropTypes.func,
+  change: PropTypes.func
 }
 SignFormPassword.defaultProps = {
   toggleEmail: null
