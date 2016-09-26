@@ -1,4 +1,4 @@
-import { SENDING_REQUEST, SIGNIN_SUCCESS, SIGNIN_FAILURE, CLEAR_ERROR } from '../actions'
+import * as ActionTypes from '../actions'
 
 const initialState = {
   isFetching: false,
@@ -17,19 +17,22 @@ const initialState = {
 
 const auth = (state = initialState, action) => {
   switch(action.type) {
-    case SENDING_REQUEST:
+    case ActionTypes.SENDING_REQUEST:
       return {
         ...state,
         isFetching: true
       }
-    case SIGNIN_SUCCESS:
-      const { auth } = action.response
+    case ActionTypes.SIGNIN_SUCCESS:
+    case ActionTypes.REFRESH_TOKEN_SUCCESS:
+    case ActionTypes.VERIFY_EMAIL_TOKEN_SUCCESS:
       return {
         ...state,
-        profile: auth,
+        profile: action.response.auth,
         isFetching: false
       }
-    case SIGNIN_FAILURE:
+    case ActionTypes.SIGNIN_FAILURE:
+    case ActionTypes.REFRESH_TOKEN_FAILURE:
+    case ActionTypes.VERIFY_EMAIL_TOKEN_FAILURE:
       return {
         ...state,
         error: {
@@ -37,10 +40,16 @@ const auth = (state = initialState, action) => {
         },
         isFetching: false
       }
-    case CLEAR_ERROR:
+    case ActionTypes.CLEAR_ERROR:
       return {
         ...state,
         error: null
+      }
+    case ActionTypes.LOGOUT_NORMAL:
+      return {
+        ...state,
+        profile: initialState.profile,
+        isFetching: false
       }
     default:
       return state

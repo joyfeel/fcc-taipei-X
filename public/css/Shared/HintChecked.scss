@@ -7,14 +7,39 @@
   transition: .3s;
   color: #111;
 
-}
-
-.show {
-  opacity: 1;
   > .hint-result {
     color: #c9302c;
   }
+
 }
+
+.hint-checked.nickname,
+.hint-checked.hint-email,
+.hint-checked.hint-password {
+  opacity: 1;
+  > i {
+    font-size: 0;
+  }
+}
+
+// .hint-checked.hint-email {
+//   position: relative;
+//
+//   > i {
+//     @extend  %icon;
+//     @extend %mail-4;
+//     position: absolute;
+//     top: 3px;
+//     left: 2px;
+//     color: $inActive;
+//     font-size: $smFz;
+//   }
+//
+//   > .hint-result {
+//     margin-left: 12px;
+//   }
+// }
+
 
 
 .valid {

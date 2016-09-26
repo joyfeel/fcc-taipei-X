@@ -6,7 +6,7 @@ import _validate from 'koa-req-validator'
 import { getToken, verifyToken } from '../utils'
 import { mailTransport, checkEmailStatus } from '../utils/email'
 import Config from '../config'
-import _ from 'underscore'
+import _ from 'lodash'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({

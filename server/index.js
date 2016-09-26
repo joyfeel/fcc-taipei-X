@@ -22,6 +22,7 @@ import resendEmailRouter from '../server/router/resendEmail'
 import accountSettingsRouter from '../server/router/account-settings'
 import forgotPasswordRouter from '../server/router/forgot-password'
 import resetPasswordRouter from '../server/router/reset-password'
+import verifyTokenRouter from '../server/router/verifyToken'
 import googleRouter from '../server/router/auth/google'
 import githubRouter from '../server/router/auth/github'
 
@@ -100,6 +101,7 @@ app.use(convert(jwt({
     '/v1/auth/github',
     '/v1/auth/github/callback',
     '/v1/forgot_password',
+    '/v1/verifyToken',
     //'/v1/reset_password',
     '/favicon.ico'
   ]
@@ -127,6 +129,10 @@ app.use(forgotPasswordRouter.allowedMethods({
 }))
 app.use(resetPasswordRouter.routes())
 app.use(resetPasswordRouter.allowedMethods({
+  throw: true
+}))
+app.use(verifyTokenRouter.routes())
+app.use(verifyTokenRouter.allowedMethods({
   throw: true
 }))
 app.use(googleRouter.routes())

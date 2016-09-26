@@ -17,7 +17,7 @@ class Popup extends Component {
     this.setState({
       offPopup: true
     })
-    this.props.dispatch(clearError())
+    this.props.clearError()
   }
   render() {
     const errorMessage = this.props.error.message

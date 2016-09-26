@@ -1,4 +1,5 @@
 import jwt from 'koa-jwt'
+import Boom from 'boom'
 import Config from '../config'
 
 export const getToken = {
@@ -29,7 +30,8 @@ export const verifyToken = (token) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, Config.jwt.jwtSecret, (err, decoded) => {
       if (err) {
-        return reject(err)
+        const TokenError = Boom.unauthorized('Token is not valid or expired')
+        return reject(TokenError)
       }
       resolve(decoded)
     })

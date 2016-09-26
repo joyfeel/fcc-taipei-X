@@ -28,7 +28,7 @@ export function mailTransport(userInfo, routePath, option, emailToken = undefine
         html:
           `<h1>Hi ${userInfo.nickname}</h1>
            <h2>
-             <a href='http://localhost:3000/${routePath}/${emailToken}'>
+             <a href='http://localhost:3000/${routePath}?token=${emailToken}'>
                Click here to ${option} your account
              </a>
            </h2>`

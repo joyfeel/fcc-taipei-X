@@ -6,7 +6,7 @@ import _validate from 'koa-req-validator'
 import { getCleanUser } from '../utils'
 import { mailTransport, checkEmailStatus } from '../utils/email'
 import Config from '../config'
-import _ from 'underscore'
+import _ from 'lodash'
 /*
   account-settings (!!!此 component 頁面可跟 register component 頁面共用，差別在於 email 不能改)
   (1) Login => jwt token

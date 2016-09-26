@@ -1,4 +1,3 @@
-import * as actions from '../actions'
 import { take, call, put, fork, select } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
 import { v4 } from 'node-uuid'
@@ -6,8 +5,19 @@ import url from 'url'
 import qs from 'querystring'
 import Boom from 'boom-browserify'
 import { browserHistory } from 'react-router'
+import * as actions from '../actions'
+import auth from '../utils/auth'
 
-const { sendingRequest, signInRequest, signInSuccess, signInFailure } = actions
+const {
+  sendingRequest,
+  signInRequest, signInSuccess, signInFailure,
+  logoutRequest, logoutNormal,
+  refreshTokenRequest, refreshTokenSuccess, refreshTokenFailure,
+  verifyEmailTokenRequest, verifyEmailTokenSuccess, verifyEmailTokenFailure } = actions
+
+function forwardTo (location) {
+  browserHistory.push(location)
+}
 
 function oauth2() {
   const config = {
@@ -193,29 +203,80 @@ function* watchThirdPartyLogin() {
   yield* takeEvery('loginThirdParty', loginThirdParty)
 }
 
-const fetchBody = (api, form) => fetch(api, {
-  method: 'post',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(form)
-}).then(res => res.ok ? res.json() : res.json().then(err => Promise.reject(err)))
-
 function* signInFlow({ formData }) {
+  // if (auth.loggedIn()) {
+  //   return
+  // }
   yield put(sendingRequest())
   try {
-    const response = yield call(fetchBody, 'http://localhost:3000/v1/signin', formData)
-    yield put(signInSuccess(response))
+    const response = yield call(auth.login, formData)
+    if (response && response.auth && response.auth.token) {
+      yield call(auth.setToken, response.auth.token)
+      yield put(signInSuccess(response))
+    }
   } catch (error) {
     yield put(signInFailure(error))
   }
 }
-
 function* watchSignInFlow() {
   yield* takeEvery(actions.SIGNIN_REQUEST, signInFlow)
 }
 
+function* refreshFlow() {
+  if (!auth.loggedIn()) {
+    return
+  }
+  yield put(sendingRequest())
+  try {
+    const response = yield call(auth.verifyAccessToken)
+    if (response && response.auth && response.auth.token) {
+      yield call(auth.setToken, response.auth.token)
+      yield put(refreshTokenSuccess(response))
+    }
+  } catch (error) {
+    yield put(refreshTokenFailure(error))
+    yield call(auth.logout)
+  }
+}
+function* watchRefreshFlow() {
+  yield* takeEvery(actions.REFRESH_TOKEN_REQUEST, refreshFlow)
+}
+
+function* logoutFlow() {
+  yield put(sendingRequest())
+  yield call(auth.logout)
+  yield put(logoutNormal())
+  forwardTo('/')
+}
+function* watchLogoutFlow() {
+  yield* takeEvery(actions.LOGOUT_REQUEST, logoutFlow)
+}
+
+function* verifyEmailTokenFlow() {
+  yield put(sendingRequest())
+  if (auth.loggedIn()) {
+    yield call(auth.logout)
+  }
+  try {
+    const response = yield call(auth.verifyEmailToken)
+    if (response && response.auth && response.auth.token) {
+      yield call(auth.setToken, response.auth.token)
+      yield put(verifyEmailTokenSuccess(response))
+    }
+  } catch (error) {
+    yield put(verifyEmailTokenFailure(error))
+  }
+  forwardTo('/')
+}
+function* watchVerifyEmailTokenFlow() {
+  yield* takeEvery(actions.VERIFY_EMAIL_TOKEN_REQUEST, verifyEmailTokenFlow)
+}
+
 export default function* root() {
   yield [
-    fork(watchSignInFlow)
-    //call(watchThirdPartyLogin)
+    fork(watchSignInFlow),
+    fork(watchRefreshFlow),
+    fork(watchLogoutFlow),
+    fork(watchVerifyEmailTokenFlow)
   ]
 }

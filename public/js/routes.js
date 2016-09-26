@@ -5,6 +5,7 @@ import SignForm from './components/LandingPart/SignForm'
 import SignInForm from './components/LandingPart/SignInForm'
 import SignUpForm from './components/LandingPart/SignUpForm'
 import AfterLogin from './components/LandingPart/AfterLogin'
+import VerifyToken from './components/LandingPart/VerifyToken'
 import About from './components/About'
 
 export default function getRoutes(store) {
@@ -35,6 +36,7 @@ export default function getRoutes(store) {
         <Route component={SignForm}>
           <Route path='/signin' component={SignInForm} />
           <Route path='/signup' component={SignUpForm} />
+          <Route path='/verifyToken' component={VerifyToken} />
         </Route>
         <Route component={AfterLogin}>
           <Route path='/afterlogin' component={About} />

@@ -7,7 +7,7 @@ import _validate from 'koa-req-validator'
 import { getToken, verifyToken, getCleanUser } from '../../utils'
 import { mailTransport, checkEmailStatus } from '../../utils/email'
 import Config from '../../config'
-import _ from 'underscore'
+import _ from 'lodash'
 
 import passport from 'koa-passport'
 

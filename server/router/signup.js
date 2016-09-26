@@ -1,7 +1,7 @@
 import Router from 'koa-router'
 import User from '../models/users'
 import Boom from 'boom'
-import _ from 'underscore'
+import _ from 'lodash'
 import nodemailer from 'nodemailer'
 import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
@@ -61,7 +61,7 @@ router.post('/',
         await user.save()
       }
       ctx.state.user = user
-      ctx.state.nodemailerInfo = await mailTransport({ email, nickname }, 'signup', 'activate', emailToken)
+      ctx.state.nodemailerInfo = await mailTransport({ email, nickname }, 'verifyToken', 'activate', emailToken)
       await next()
     } catch (err) {
       if (err.output.statusCode) {
@@ -98,20 +98,18 @@ router.get('/',
         throw Boom.unauthorized('Email token is not valid or expired')
       }
       const user = getCleanUser(result)
-      const jwtToken = await getToken['JWT'](email)
+      const accessToken = await getToken['JWT'](email)
 
       ctx.response.body = {
         status: 'success',
         auth: {
-          token: jwtToken,
+          token: accessToken,
           ...user
         }
       }
     } catch(err) {
       if (err.output.statusCode) {
         ctx.throw(err.output.statusCode, err)
-      } else if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
-        const TokenError = Boom.unauthorized('Email Token is not valid or expired')
       } else {
         ctx.throw(500, err)
       }

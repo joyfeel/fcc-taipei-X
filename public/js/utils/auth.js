@@ -1,48 +1,42 @@
-export function loggedIn() {
-  console.log(localStorage.token)
-  console.log(!localStorage.token)
-  console.log(!!localStorage.token)
-  return !!localStorage.token
-}
+import { fetchBody, fetchGet } from './fetch'
 
-function onChange() {
-  console.log('..?')
-}
-
-function pretendRequest(email, pass, cb) {
-  setTimeout(() => {
-    if (email === 'joybee210@gmail.com' && pass === 'p') {
-      cb({
-        authenticated: true,
-        token: Math.random().toString(36).substring(7)
-      })
-    } else {
-      cb({
-        authenticated: false
-      })
+const auth = {
+  login(formData) {
+    return fetchBody('http://localhost:3000/v1/signin', formData)
+  },
+  verifyAccessToken() {
+    const accessToken = auth.getToken()
+    return fetchGet(`http://localhost:3000/v1/verifyToken?token=${accessToken}`)
+  },
+  verifyEmailToken() {
+    const emailToken = location.search.split('?token=')[1]
+    return fetchGet(`http://localhost:3000/v1/signup?token=${emailToken}`)
+  },
+  loggedIn() {
+    return !!localStorage.token
+  },
+  logout() {
+    localStorage.removeItem('token')
+  },
+  getToken() {
+    try {
+      const serializedState = localStorage.getItem('token')
+      if (serializedState === null) {
+        return undefined
+      }
+      return JSON.parse(serializedState)
+    } catch (err) {
+      return undefined
     }
-  }, 0)
-}
-
-export function login(email, pass, cb) {
-  //console.log(cb)
-  //cb = arguments[arguments.length -1]
-  if (localStorage.token) {
-    if (cb) cb(true)
-    onChange(true)
-    return
+  },
+  setToken(token) {
+    try {
+      const serializedState = JSON.stringify(token);
+      localStorage.setItem('token', serializedState);
+    } catch (err) {
+      // Ignore write errors.
+    }
   }
-
-  pretendRequest(email, pass, (res) => {
-    if (res.authenticated) {
-      localStorage.token = res.token
-      if (cb) cb(true)
-      onChange(true)
-    } else {
-      if (cb) cb(false)
-      onChange(false)
-    }
-  })
-
-  //console.log(arguments)
 }
+
+export default auth
