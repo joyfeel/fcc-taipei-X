@@ -13,7 +13,8 @@ const {
   signInRequest, signInSuccess, signInFailure,
   logoutRequest, logoutNormal,
   refreshTokenRequest, refreshTokenSuccess, refreshTokenFailure,
-  verifyEmailTokenRequest, verifyEmailTokenSuccess, verifyEmailTokenFailure } = actions
+  verifyEmailTokenRequest, verifyEmailTokenSuccess, verifyEmailTokenFailure,
+  signUpRequest, signUpSuccess, signUpFailure } = actions
 
 function forwardTo (location) {
   browserHistory.push(location)
@@ -272,11 +273,32 @@ function* watchVerifyEmailTokenFlow() {
   yield* takeEvery(actions.VERIFY_EMAIL_TOKEN_REQUEST, verifyEmailTokenFlow)
 }
 
+function* signUpFlow({ formData }) {
+  yield put(sendingRequest())
+
+  try {
+    const response = yield call(auth.signup, formData)
+    console.log(response)
+      yield put(signUpSuccess(response))
+    // }
+
+    } catch(error) {
+    yield put(signUpFailure(error))
+  }
+}
+function* watchSignUpFlow() {
+  yield* takeEvery(actions.SIGNUP_REQUEST, signUpFlow)
+}
+
+
+
+
 export default function* root() {
   yield [
     fork(watchSignInFlow),
     fork(watchRefreshFlow),
     fork(watchLogoutFlow),
-    fork(watchVerifyEmailTokenFlow)
+    fork(watchVerifyEmailTokenFlow),
+    fork(watchSignUpFlow)
   ]
 }

@@ -1,46 +1,16 @@
 import React, { Component } from 'react'
+import cx from 'classnames'
 
-class UploadAvatar extends Component {
-  constructor(props) {
-    super(props)
-    this.state ={
-      src : './images/default-upload-avatar.svg'
-    }
+const UploadAvatar = ({ upload, src }) => {
+  //如果有上傳avatar，default icon會移除。
+  const flag = src ? false : true
 
-    this.upload = this.upload.bind(this)
-  }
-
-  upload(e) {
-    const bHaveFileAPI = (window.File && window.FileReader)
-    const self = this
-    if (!bHaveFileAPI) {
-      alert("This browser doesn't support the File API")
-      return
-    }
-    const thefile = e.target.files[0]
-
-    // check to see if it is text
-    if (!thefile.type.match("image.*")) {
-      alert("This type of the upload file is not support")
-      return
-    }
-    var reader = new FileReader()
-
-    reader.onload = function (evt) {
-      let resultdata = evt.target.result
-      self.setState({src : resultdata})
-    }
-    reader.readAsDataURL(thefile)
-  }
-
-  render() {
-    return (
-      <div className='upload-avatar-panel'>
-        <input type='file' name='upload_avatar' className='upload-avatar-input' onChange={this.upload} />
-        <img className='avatar-preview' alt='member avatar preview' src={this.state.src} />
-      </div>
-    )
-  }
-}
+  return (
+    <div className='upload-avatar-panel'>
+      <input type='file' name='upload_avatar' className='upload-avatar-input' onChange={upload} />
+      <img className='avatar-preview' alt='member avatar preview' src={src} />
+      <i className={cx({'default-upload-avatar': flag})}></i>
+    </div>
+)}
 
 export default UploadAvatar

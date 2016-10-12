@@ -1,5 +1,5 @@
 export default {
-  gmailSender: 'joybee210@gmail.com',
+  gmailSender: 'yakyu12s@gmail.com',
   gmailConfig: {
     service: 'Gmail',
     auth: {

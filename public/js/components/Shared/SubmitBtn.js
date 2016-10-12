@@ -6,6 +6,7 @@ const SubmitBtn = (props) =>
     className={cx('submit-btn', props.toggleEmail)}
     role='submit'
     onClick={props.onClick}
+    disabled={props.valid}
   >
     {props.txt}
   </button>
@@ -15,7 +16,8 @@ SubmitBtn.propTypes = {
   txt: PropTypes.string.isRequired
 }
 SubmitBtn.defaultProps = {
-  toggleEmail: null
+  toggleEmail: null,
+  valid: true
 }
 
 export default SubmitBtn

@@ -14,7 +14,6 @@ const initialState = {
   },
   error: null
 }
-
 const auth = (state = initialState, action) => {
   switch(action.type) {
     case ActionTypes.SENDING_REQUEST:
@@ -31,6 +30,7 @@ const auth = (state = initialState, action) => {
         isFetching: false
       }
     case ActionTypes.SIGNIN_FAILURE:
+    case ActionTypes.SIGNUP_FAILURE:
     case ActionTypes.REFRESH_TOKEN_FAILURE:
     case ActionTypes.VERIFY_EMAIL_TOKEN_FAILURE:
       return {
@@ -49,6 +49,12 @@ const auth = (state = initialState, action) => {
       return {
         ...state,
         profile: initialState.profile,
+        isFetching: false
+      }
+    case ActionTypes.SIGNUP_SUCCESS:
+      return {
+        ...state,
+        status: action.response.status,
         isFetching: false
       }
     default:

@@ -4,6 +4,9 @@ const auth = {
   login(formData) {
     return fetchBody('http://localhost:3000/v1/signin', formData)
   },
+  signup(formData) {
+    return fetchBody('http://localhost:3000/v1/signup', formData)
+  },
   verifyAccessToken() {
     const accessToken = auth.getToken()
     return fetchGet(`http://localhost:3000/v1/verifyToken?token=${accessToken}`)

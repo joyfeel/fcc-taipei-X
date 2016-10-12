@@ -21,6 +21,7 @@ class Popup extends Component {
   }
   render() {
     const errorMessage = this.props.error.message
+    const message = this.props.message
     const popupClasses = cx({
       'popup': true,
       'off': this.state.offPopup
@@ -28,7 +29,9 @@ class Popup extends Component {
     const popupIconClasses = cx({
       'sign-in-error-popup': errorMessage === 'Email or password is not valid' ||
                              errorMessage === 'Format of email address is wrong',
-      'network-error-popup': errorMessage === 'Failed to fetch'
+      'network-error-popup': errorMessage === 'Failed to fetch',
+      'repeated-register-popup': errorMessage === 'The email has already been registered',
+      'activate-email-send-popup': message === 'Please check a access link via your email'
     })
 
     return (
@@ -37,8 +40,10 @@ class Popup extends Component {
           <span className='cancel' onClick={this.handlePopupClick}></span>
           <i className={popupIconClasses}></i>
           <SignFormEmail />
-          <p className='description'>{this.props.error.message}</p>
-          <SubmitBtn txt={'OK'} onClick={this.handlePopupClick} />
+          <p className='description'>
+            {errorMessage}
+          </p>
+          <SubmitBtn txt={'OK'} onClick={this.handlePopupClick} valid={false}/>
         </div>
       </div>
   )}
