@@ -4,7 +4,8 @@ import jwt from 'koa-jwt'
 import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
 import User from '../models/users'
-import { verifyToken, getCleanUser } from '../utils'
+import { verifyToken } from '../utils/auth'
+import { getCleanUser } from '../utils/mixed'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
@@ -17,21 +18,21 @@ router.get('/',
   }),
   async(ctx, next) => {
     try {
-      const accessToken = ctx.request.query.token
-      const verifyResult = await verifyToken(accessToken)
+      const jwtToken = ctx.request.query.token
+      const verifyResult = await verifyToken(jwtToken)
       if (!verifyResult) {
-        throw Boom.unauthorized('Access token is not valid or expired')
+        throw Boom.unauthorized('Token is not valid or expired')
       }
       const { email } = verifyResult
       const result = await User.findOne({ email })
       if (!result) {
-        throw Boom.unauthorized('Access token is not valid or expired')
+        throw Boom.unauthorized('Account is not valid or expired')
       }
       const user = getCleanUser(result)
       ctx.response.body = {
         status: 'success',
         auth: {
-          token: accessToken,
+          token: jwtToken,
           ...user
         }
       }

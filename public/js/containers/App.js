@@ -5,14 +5,14 @@ import cx from 'classnames'
 import Header from './Header'
 import Loading from '../components/Shared/Loading'
 import Popup from '../components/Shared/Popup'
-import * as Actions from '../actions'
+import * as AuthActions from '../actions/auth'
 
 class App extends Component {
   constructor(props) {
     super(props)
   }
   componentDidMount() {
-    this.props.refreshTokenRequest()
+    this.props.auth.refreshTokenRequest()
   }
   render() {
     const { isFetching, error, clearError } = this.props
@@ -20,7 +20,6 @@ class App extends Component {
       'wrapper': true,
       'mask': isFetching
     })
-
     return (
       <div>
         <Header />
@@ -41,9 +40,10 @@ const mapStateToProps = (state) => {
     error
   }
 }
-
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(Actions, dispatch)
+  return {
+    auth: bindActionCreators(AuthActions, dispatch)
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

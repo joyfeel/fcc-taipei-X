@@ -1,64 +1,32 @@
 import Router from 'koa-router'
-import User from '../../models/users'
-import Boom from 'boom'
-import nodemailer from 'nodemailer'
-import convert from 'koa-convert'
-import _validate from 'koa-req-validator'
-import { getToken, verifyToken, getCleanUser } from '../../utils'
-import { mailTransport, checkEmailStatus } from '../../utils/email'
-import Config from '../../config'
 import _ from 'lodash'
 import fetch from 'node-fetch'
 import qs from 'querystring'
-
-//import request from 'request'
-
-import passport from 'koa-passport'
+import Boom from 'boom'
+import convert from 'koa-convert'
+import _validate from 'koa-req-validator'
+import User from '../../models/users'
+import { getToken } from '../../utils/auth'
+import { encodeRemoteImg } from '../../utils/mixed'
+import Config from '../../config'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
   prefix: '/v1/auth/google'
 })
 
-router.get('/callback',
-  // validate({
-  //   'token:query': ['require', 'token is required']
-  // }),
-  async(ctx, next) => {
-    try {
-      ctx.response.body = {
-        results: 'Successlly google callback',
-        status: 'OK'
-      }
-    } catch(err) {
-      if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
-        const TokenError = Boom.unauthorized('Email Token is not valid or expired')
-        ctx.throw(TokenError.output.statusCode, TokenError)
-      } else if (err.output.statusCode) {
-        ctx.throw(err.output.statusCode, err)
-      } else {
-        ctx.throw(500, err)
-      }
-    }
-  }
-)
-
 router.post('/',
-  // validate({
-  //   'token:query': ['require', 'token is required']
-  // }),
+  validate({
+    'code:body': ['require', 'code is required']
+  }),
   async(ctx, next) => {
     try {
-      console.log(ctx.request.headers)
-      const accessTokenUrl = 'https://www.googleapis.com/oauth2/v4/token',
-            peopleApiUrl = 'https://www.googleapis.com/oauth2/v2/userinfo'
+      const { code } = ctx.request.body
+      const { accessTokenUrl, peopleApiUrl } = Config.google
 
       const params = {
-        code: ctx.request.body.code,
-        client_id: ctx.request.body.clientId,
-        client_secret: 'u8yj8r01dKIExw-al9OEigYU',
-        redirect_uri: ctx.request.body.redirectUri,
-        grant_type: 'authorization_code'
+        code,
+        ...Config.google,
       }
       const accessTokenResponse = await fetch(accessTokenUrl, {
         method: 'post',
@@ -77,33 +45,52 @@ router.post('/',
         })
         if (userInfoResponse.ok) {
           const userInfo = await userInfoResponse.json()
-          const token = getToken['OAuth2'](userInfo)
-          //const a = await verifyToken(token)
-          //console.log('aaaaaaaaaaaaaaaaaaaaaa')
-          //console.log(a)
-          ctx.response.body = {
-            token,
-            user: userInfo
+          const { name, email, picture, id } = userInfo
+
+          const accountExist = await User.findOne({ email, social: false })
+          if (accountExist) {
+            throw Boom.forbidden('The email has already been registered in our web approach')
           }
-        } else {
-          if (userInfoResponse.status === 400) {
-            const BadRequestError = Boom.badRequest(`${userInfoResponse.statusText} ${userInfoResponse.url}`)
-            ctx.throw(BadRequestError.output.statusCode, BadRequestError)
+          const socialAccountExist = await User.findOne({ googleId: id })
+          const base64URI = await encodeRemoteImg(picture)
+          const userBdy = {
+            nickname: name,
+            email,
+            avatar: base64URI,
           }
-        }
-      } else {
-        if (accessTokenResponse.status === 400) {
-          const BadRequestError = Boom.badRequest(`${accessTokenResponse.statusText} ${accessTokenResponse.url}`)
-          ctx.throw(BadRequestError.output.statusCode, BadRequestError)
+          const token = getToken['JWT'](email)
+          if (socialAccountExist) {
+            return ctx.response.body = {
+              status: 'success',
+              auth: {
+                token,
+                ...userBdy
+              }
+            }
+          }
+
+          const user = new User(_.extend(userBdy, {
+            isEmailActived: true,
+            social: true,
+            googleAccessToken: access_token,
+            googleId: id
+          }))
+          await user.save()
+
+          return ctx.response.body = {
+            status: 'success',
+            auth: {
+              token,
+              ...userBdy
+            }
+          }
         }
       }
+      /* Bad */
+      const BadRequestError = Boom.badRequest(`${userInfoResponse.statusText} ${userInfoResponse.url}`)
+      ctx.throw(BadRequestError.output.statusCode, BadRequestError)
     } catch(err) {
-      console.log('BACK ERR')
-      console.log(err)
-      if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
-        const TokenError = Boom.unauthorized('Email Token is not valid or expired')
-        ctx.throw(TokenError.output.statusCode, TokenError)
-      } else if (err.output.statusCode) {
+      if (err.output.statusCode) {
         ctx.throw(err.output.statusCode, err)
       } else {
         ctx.throw(500, err)

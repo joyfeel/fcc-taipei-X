@@ -4,7 +4,8 @@ import jwt from 'koa-jwt'
 import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
 import User from '../models/users'
-import { getToken, getCleanUser } from '../utils'
+import { getToken } from '../utils/auth'
+import { getCleanUser } from '../utils/mixed'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
@@ -19,6 +20,10 @@ router.post('/',
   async(ctx, next) => {
     try {
       const { email, password } = ctx.request.body
+      const socialAccountExist = await User.findOne({ email, social: true })
+      if (socialAccountExist) {
+        throw Boom.forbidden('The email has already been registered in social account')
+      }
       //Ensure the email account exists in the DB.
       const user = await User.findOne({ email })
       if (!user) {

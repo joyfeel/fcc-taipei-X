@@ -1,5 +1,5 @@
 import 'babel-polyfill'
-import React, { Component, PropTypes } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { browserHistory, Router } from 'react-router'

@@ -1,4 +1,4 @@
-import * as ActionTypes from '../actions'
+import * as ActionTypes from '../actions/auth'
 
 const initialState = {
   isFetching: false,
@@ -21,6 +21,11 @@ const auth = (state = initialState, action) => {
       return {
         ...state,
         isFetching: true
+      }
+    case ActionTypes.CANCEL_REQUEST:
+      return {
+        ...state,
+        isFetching: false
       }
     case ActionTypes.SIGNIN_SUCCESS:
     case ActionTypes.REFRESH_TOKEN_SUCCESS:

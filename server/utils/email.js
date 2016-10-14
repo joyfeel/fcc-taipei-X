@@ -1,6 +1,6 @@
 import Boom from 'boom'
 import nodemailer from 'nodemailer'
-import { getCleanUser } from '../utils'
+import { getCleanUser } from '../utils/mixed'
 import Config from '../config'
 
 export async function checkEmailStatus(ctx, next) {

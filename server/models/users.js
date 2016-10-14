@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import timestamps from 'mongoose-timestamp'
-import bcrypt from 'bcrypt-as-promised'
+import bcrypt from 'bcryptjs-then'
 import Boom from 'boom'
 
 const SALT_WORK_FACTOR = 10
@@ -44,16 +44,23 @@ const UserSchema = new Schema({
     //ms
     //default: Date.now() + 3600000 * 24 * 3
   },
-  facebook: {
-    type: String
+  social: {
+    type: Boolean,
+    default: false
   },
-  google: {
+  facebook: {
     type: String
   },
   github: {
     type: String
   },
   twitter: {
+    type: String
+  },
+  googleAccessToken: {
+    type: String
+  },
+  googleId: {
     type: String
   }
 })
@@ -74,14 +81,21 @@ UserSchema.virtual('password')
 UserSchema.pre('validate', function (next) {
   let err
 
-  if (!this.password) {
-    err = Boom.badData('Password is required')
-    next(err)
-  } else if (this.password.length < 6) {
-    err = Boom.badData('Length of password must >= 6')
-    next(err)
+  if (this.password) {
+    if (this.password.length < 6) {
+      err = Boom.badData('Length of password must >= 6')
+      next(err)
+    }
   }
   next()
+  // if (!this.password) {
+  //   err = Boom.badData('Password is required')
+  //   next(err)
+  // } else if (this.password.length < 6) {
+  //   err = Boom.badData('Length of password must >= 6')
+  //   next(err)
+  // }
+  // next()
 })
 
 UserSchema.pre('save', async function (next) {

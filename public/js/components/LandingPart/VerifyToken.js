@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../../actions'
+import * as AuthActions from '../../actions/auth'
 
 class VerifyToken extends Component {
   constructor(props) {
     super(props)
   }
   componentDidMount() {
-    this.props.verifyEmailTokenRequest()
+    this.props.auth.verifyEmailTokenRequest()
   }
   render() {
     return null
@@ -16,7 +16,9 @@ class VerifyToken extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(Actions, dispatch)
+  return {
+    auth: bindActionCreators(AuthActions, dispatch)
+  }
 }
 
 export default connect(null, mapDispatchToProps)(VerifyToken)

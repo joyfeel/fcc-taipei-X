@@ -1,4 +1,5 @@
 //mongod --dbpath ~/data/db/
+//import session from 'koa-generic-session'
 import Koa from 'koa'
 import convert from 'koa-convert'
 import path from 'path'
@@ -24,7 +25,6 @@ import forgotPasswordRouter from '../server/router/forgot-password'
 import resetPasswordRouter from '../server/router/reset-password'
 import verifyTokenRouter from '../server/router/verifyToken'
 import googleRouter from '../server/router/auth/google'
-import githubRouter from '../server/router/auth/github'
 
 import postRouter from '../server/router/posts'
 import commentRouter from '../server/router/comments'
@@ -97,12 +97,9 @@ app.use(convert(jwt({
     '/v1/resendEmail',
     new RegExp('/v1\/signup.*/', 'i'),
     '/v1/auth/google',
-    '/v1/auth/google/callback',
-    '/v1/auth/github',
-    '/v1/auth/github/callback',
+    //'/v1/auth/google/callback',
     '/v1/forgot_password',
     '/v1/verifyToken',
-    //'/v1/reset_password',
     '/favicon.ico'
   ]
 })))
@@ -137,10 +134,6 @@ app.use(verifyTokenRouter.allowedMethods({
 }))
 app.use(googleRouter.routes())
 app.use(googleRouter.allowedMethods({
-  throw: true
-}))
-app.use(githubRouter.routes())
-app.use(githubRouter.allowedMethods({
   throw: true
 }))
 

@@ -1,7 +1,7 @@
 export default {
   user: {
     nicknameChangeLimit: () => {
-        return Date.now() + (1000 * 30)
+      return Date.now() + (1000 * 30)
     }
   }
 }

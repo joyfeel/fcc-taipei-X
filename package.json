@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/joyfeel/fcc-taipei-X#readme",
   "dependencies": {
-    "bcrypt-as-promised": "1.1.0",
+    "bcryptjs-then": "1.0.1",
     "boom": "3.2.2",
     "boom-browserify": "1.0.1",
     "chai-things": "0.2.0",
@@ -29,13 +29,10 @@
     "koa-bodyparser": "2.2.0",
     "koa-connect-history-api-fallback": "0.3.1",
     "koa-convert": "1.2.0",
-    "koa-generic-session": "1.11.3",
     "koa-jwt": "1.2.0",
     "koa-logger": "2.0.0",
-    "koa-passport": "2.1.1",
     "koa-req-validator": "0.1.4",
     "koa-router": "7.0.1",
-    "koa-session": "3.3.1",
     "koa-static": "3.0.0",
     "lodash": "4.16.2",
     "mongoose": "4.5.10",
@@ -55,7 +52,6 @@
     "react-router": "2.7.0",
     "redux": "3.5.2",
     "redux-saga": "0.11.0",
-    "request": "2.74.0",
     "validator": "5.5.0"
   },
   "devDependencies": {
@@ -78,6 +74,7 @@
     "koa-webpack-dev-middleware": "1.2.2",
     "koa-webpack-hot-middleware": "1.0.3",
     "mocha": "3.0.2",
+    "node-base64-image": "1.0.1",
     "node-sass": "^3.8.0",
     "postcss-apply": "^0.3.0",
     "postcss-cssnext": "^2.7.0",

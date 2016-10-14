@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import cx from 'classnames'
-import { clearError } from '../../actions'
 import SubmitBtn from './SubmitBtn'
 import SignFormEmail from './SignFormEmail'
+import * as AuthActions from '../../actions/auth'
 
 class Popup extends Component {
   constructor(props) {
@@ -17,7 +19,7 @@ class Popup extends Component {
     this.setState({
       offPopup: true
     })
-    this.props.clearError()
+    this.props.auth.clearError()
   }
   render() {
     const errorMessage = this.props.error.message
@@ -41,7 +43,14 @@ class Popup extends Component {
           <SubmitBtn txt={'OK'} onClick={this.handlePopupClick} />
         </div>
       </div>
-  )}
+    )
+  }
 }
 
-export default Popup
+const mapDispatchToProps = (dispatch) => {
+  return {
+    auth: bindActionCreators(AuthActions, dispatch)
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Popup)

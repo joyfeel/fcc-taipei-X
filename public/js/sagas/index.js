@@ -5,145 +5,52 @@ import url from 'url'
 import qs from 'querystring'
 import Boom from 'boom-browserify'
 import { browserHistory } from 'react-router'
-import * as actions from '../actions'
+import * as AuthActions from '../actions/auth'
+import * as OauthActions from '../actions/oauth'
 import auth from '../utils/auth'
+import openPopup from '../utils/popup'
+import { googleConfig, googleUrl } from '../utils/oauth_config'
 
 const {
-  sendingRequest,
+  sendingRequest, cancelRequest,
   signInRequest, signInSuccess, signInFailure,
   logoutRequest, logoutNormal,
   refreshTokenRequest, refreshTokenSuccess, refreshTokenFailure,
-  verifyEmailTokenRequest, verifyEmailTokenSuccess, verifyEmailTokenFailure } = actions
+  verifyEmailTokenRequest, verifyEmailTokenSuccess, verifyEmailTokenFailure } = AuthActions
 
 function forwardTo (location) {
   browserHistory.push(location)
 }
 
-function oauth2() {
-  const config = {
-    //post to backend URL
-    url: 'http://localhost:3000/v1/auth/google',
-    clientId: '524481294139-03nll8r7ohb5hnb94m89jdtj8b319svc.apps.googleusercontent.com',
-    redirectUri: 'http://localhost:3000/v1/auth/google/callback',
-    authorizationUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
-    scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-    state: v4(),
-    width: 480,
-    height: 640
-  }
-  console.log(config.state)
-  const params = {
-    client_id: config.clientId,
-    redirect_uri: config.redirectUri,
-    scope: config.scope,
-    state: config.state,
-    //display: 'popup',
-    response_type: 'code'
-  }
-
-  const url = config.authorizationUrl + '?' + qs.stringify(params)
-
-  return {
-    url,
-    config
-  }
-}
-
-//http://front-end.leanote.com/post/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E9%AB%98%E5%BA%A6%E5%AE%BD%E5%BA%A6
-function openPopup(url, config) {
+const pollingPopup = (popWin) => {
   return new Promise((resolve, reject) => {
-    const options = {
-            top: window.screenY + ((window.outerHeight - (config.width || 480)) / 2),
-            left: window.screenX + ((window.outerWidth - (config.height || 640)) / 2)
-          }
-    const popup = window.open(url, '_blank', qs.stringify(options, ','))
-    //popup.close()
-    if (popup && popup.focus) {
-      popup.focus()
-    }
-
-    resolve({
-      window: popup
-    })
-  })
-}
-
-function pollPopup2(window, config, requestToken = undefined) {
-  return new Promise((resolve, reject) => {
-    const redirectUri = url.parse(config.redirectUri)
-    const redirectUriPath = redirectUri.host + redirectUri.pathname
-    if (!window || window.closed) {
-      clearInterval(polling)
-    }
-    const popupUrlPath = window.location.host + window.location.pathname
-    alert(popupUrlPath)
-    alert(redirectUriPath)
-    alert(window.location.search)
-    if (window.location.search) {
-      resolve({
-        oauthData: query,
-        interval: polling
-      })
-    }
-  })
-}
-
-function pollPopup(window, config, requestToken = undefined) {
-  return new Promise((resolve, reject) => {
-    const redirectUri = url.parse(config.redirectUri)
-    const redirectUriPath = redirectUri.host + redirectUri.pathname
-    //alert('C')
-    const polling = setInterval(() => {
-      //alert('D')
-      if (!window || window.closed) {
-        //alert('E')
-        clearInterval(polling)
-      }
-      //alert('F')
+    const intervalId = setInterval(() => {
       try {
-        //alert('G')
-        //console.log(window.location)
-        const popupUrlPath = window.location.host + window.location.pathname
-        //console.log(popupUrlPath)
-
-        if (popupUrlPath === redirectUriPath) {
-          //alert('EE')
-          if (window.location.search) {
-            const query = qs.parse(window.location.search.substring(1))
-            //console.log(query)
-            if (query.error) {
-              return reject(new Error('query.error ERROR'))
-            } else {
-              resolve({
-                oauthData: query,
-                interval: polling
-              })
-            }
-          } else {
-            console.log('err1')
-            return reject(new Error('window.location.search ERROR'))
-          }
+        if (!popWin.location.search) {
+          clearInterval(intervalId)
+          resolve(null)
         }
-      } catch (error) {
-        console.log(error)
-        //return reject(error)
+        const query = popWin.location.search.substring(1)
+        const parsedQuery = qs.parse(query)
+        if (parsedQuery.code) {
+          clearInterval(intervalId)
+          popWin.close()
+          resolve(parsedQuery.code)
+        }
+      } catch (e) {
       }
-    }, 500)
+    }, 1000)
   })
 }
 
-function exchangeCodeForToken(oauthData, config, window, interval) {
-  const data = {
-    ...oauthData,
-    ...config
-  }
-  return fetch(config.url, {
+function exchangeCodeForToken(code) {
+  return fetch(googleConfig.url, {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: JSON.stringify({ code })
   }).then(response => {
     if (response.ok) {
-      return response.json().then(json => ({ token: json.token, user: json.user }))
+      return response.json().then(json => json)
     }
 
     return response.json()
@@ -152,64 +59,48 @@ function exchangeCodeForToken(oauthData, config, window, interval) {
   }).catch(error => Promise.reject(error))
 }
 
-function signIn(token, user) {
-  localStorage.token = token
-  browserHistory.push('/')
-}
-
-function closePopup(window, interval) {
-  return new Promise(resolve => {
-    clearInterval(interval)
-    window.close()
-    resolve()
-  })
-}
-
 const providerStrategy = {
   'google': function* () {
-    const { url, config } = yield call(oauth2)
-    const { window } = yield call(openPopup, url, config)
-    const { oauthData, interval } = yield call(pollPopup, window, config)
-    const { token, user } = yield call(exchangeCodeForToken, oauthData, config, window, interval)
-    yield call(signIn, token, user)
-    yield call(closePopup, window, interval)
-
-    return { token, user }
-  },
-  'facebook': function* () {
-    console.log('FACEBOOK')
+    const popup = yield call(openPopup, googleUrl, '_blank', 'google')
+    const code = yield call(pollingPopup, popup)
+    if (code) {
+      return yield call(exchangeCodeForToken, code)
+    } else {
+      return null
+    }
   }
 }
 
-function* loginThirdParty(action) {
+function* oauthFlow({ provider }) {
+  yield put(sendingRequest())
   try {
-    const {token, user} = yield call(providerStrategy[action.provider])
-    yield put({
-      type: 'LOGIN_SUCCESS',
-      auth: {
-        token,
-        user
-      }
-    })
+    const response = yield call(providerStrategy[provider])
+    if (response && response.auth && response.auth.token) {
+      yield call(auth.setToken, response.auth.token)
+      yield put(signInSuccess(response))
+    } else {
+      yield put(cancelRequest())
+    }
   } catch (error) {
-    //這邊當有錯誤時 可以做 put error action 的動作 (dispatch error action)
-    yield put({ type: 'LOGIN_ERROR' })
-    console.dir(error)
-    console.log('saga err')
+    yield put(signInFailure(error))
   }
 }
 
-function* watchThirdPartyLogin() {
-  yield* takeEvery('loginThirdParty', loginThirdParty)
+function* watchOauthLogin() {
+  yield* takeEvery(OauthActions.OAUTH_REQUEST, oauthFlow)
 }
 
+/**************************************************************************/
+/******************************* Auth *************************************/
+/**************************************************************************/
 function* signInFlow({ formData }) {
-  // if (auth.loggedIn()) {
-  //   return
-  // }
+  if (auth.loggedIn()) {
+    return
+  }
   yield put(sendingRequest())
   try {
     const response = yield call(auth.login, formData)
+    console.log(response)
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(signInSuccess(response))
@@ -219,7 +110,7 @@ function* signInFlow({ formData }) {
   }
 }
 function* watchSignInFlow() {
-  yield* takeEvery(actions.SIGNIN_REQUEST, signInFlow)
+  yield* takeEvery(AuthActions.SIGNIN_REQUEST, signInFlow)
 }
 
 function* refreshFlow() {
@@ -239,7 +130,7 @@ function* refreshFlow() {
   }
 }
 function* watchRefreshFlow() {
-  yield* takeEvery(actions.REFRESH_TOKEN_REQUEST, refreshFlow)
+  yield* takeEvery(AuthActions.REFRESH_TOKEN_REQUEST, refreshFlow)
 }
 
 function* logoutFlow() {
@@ -249,7 +140,7 @@ function* logoutFlow() {
   forwardTo('/')
 }
 function* watchLogoutFlow() {
-  yield* takeEvery(actions.LOGOUT_REQUEST, logoutFlow)
+  yield* takeEvery(AuthActions.LOGOUT_REQUEST, logoutFlow)
 }
 
 function* verifyEmailTokenFlow() {
@@ -269,11 +160,12 @@ function* verifyEmailTokenFlow() {
   forwardTo('/')
 }
 function* watchVerifyEmailTokenFlow() {
-  yield* takeEvery(actions.VERIFY_EMAIL_TOKEN_REQUEST, verifyEmailTokenFlow)
+  yield* takeEvery(AuthActions.VERIFY_EMAIL_TOKEN_REQUEST, verifyEmailTokenFlow)
 }
 
 export default function* root() {
   yield [
+    fork(watchOauthLogin),
     fork(watchSignInFlow),
     fork(watchRefreshFlow),
     fork(watchLogoutFlow),

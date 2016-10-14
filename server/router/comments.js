@@ -4,7 +4,7 @@ import Comment from '../models/comments'
 import Boom from 'boom'
 import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
-import { getCleanComment } from '../utils'
+import { getCleanComment } from '../utils/mixed'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
