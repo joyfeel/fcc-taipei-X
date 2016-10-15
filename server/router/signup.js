@@ -31,18 +31,12 @@ router.post('/',
     'avatar:body': ['require', 'isDataURI', 'avatar is required or not dataURI'],
   }),
   async(ctx, next) => {
-    console.log('X1')
     try {
-      console.log('X2')
       const { email, nickname } = ctx.request.body
-      console.log('X3')
       const socialAccountExist = await User.findOne({ email, social: true })
-      console.log('X4')
       if (socialAccountExist) {
-        console.log('X5')
         throw Boom.forbidden('The email has already been registered in social account')
       }
-      console.log('X6')
 
       //1. Check the account is unique
       const accountExist = await User.findOne({ email, isEmailActived: true })
@@ -128,16 +122,5 @@ router.get('/',
     }
   }
 )
-
-// function isUserUnique(email) {
-//   return new Promise((resolve, reject) => {
-//     User.findOne({ email, isEmailActived: true }, (err, user) => {
-//       if (err) {
-//         return reject(err)
-//       }
-//       resolve(user)
-//     })
-//   })
-// }
 
 export default router

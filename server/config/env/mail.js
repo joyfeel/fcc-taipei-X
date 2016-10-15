@@ -1,5 +1,5 @@
 export default {
-  gmailSender: 'joybee210@gmail.com',
+  gmailSender: process.env.GMAIL_USERNAME,
   gmailConfig: {
     service: 'Gmail',
     auth: {

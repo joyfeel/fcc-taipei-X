@@ -1,6 +1,7 @@
 .sign-form .submit-btn:disabled {
   color: $hightLight;
   border-color: $hightLight;
+  cursor: default;
   // background-color: $bgBody;
 }
 

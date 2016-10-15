@@ -95,3 +95,25 @@ export const logoutNormal = () => {
     type: LOGOUT_NORMAL
   }
 }
+
+export const SIGNUP_REQUEST = 'SIGNUP_REQUEST'
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
+export const SIGNUP_FAILURE = 'SIGNUP_FAILURE'
+export const signUpRequest = (formData) => {
+  return {
+    type: SIGNUP_REQUEST,
+    formData
+  }
+}
+export const signUpSuccess = (response) => {
+  return {
+    type: SIGNUP_SUCCESS,
+    response
+  }
+}
+export const signUpFailure = (error) => {
+  return {
+    type: SIGNUP_FAILURE,
+    error
+  }
+}

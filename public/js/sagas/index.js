@@ -16,7 +16,9 @@ const {
   signInRequest, signInSuccess, signInFailure,
   logoutRequest, logoutNormal,
   refreshTokenRequest, refreshTokenSuccess, refreshTokenFailure,
-  verifyEmailTokenRequest, verifyEmailTokenSuccess, verifyEmailTokenFailure } = AuthActions
+  verifyEmailTokenRequest, verifyEmailTokenSuccess, verifyEmailTokenFailure,
+  signUpRequest, signUpSuccess, signUpFailure
+} = AuthActions
 
 function forwardTo (location) {
   browserHistory.push(location)
@@ -100,10 +102,11 @@ function* signInFlow({ formData }) {
   yield put(sendingRequest())
   try {
     const response = yield call(auth.login, formData)
-    console.log(response)
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(signInSuccess(response))
+    } else {
+      yield put(cancelRequest())
     }
   } catch (error) {
     yield put(signInFailure(error))
@@ -123,6 +126,8 @@ function* refreshFlow() {
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(refreshTokenSuccess(response))
+    } else {
+      yield put(cancelRequest())
     }
   } catch (error) {
     yield put(refreshTokenFailure(error))
@@ -153,6 +158,8 @@ function* verifyEmailTokenFlow() {
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(verifyEmailTokenSuccess(response))
+    } else {
+      yield put(cancelRequest())
     }
   } catch (error) {
     yield put(verifyEmailTokenFailure(error))
@@ -163,12 +170,30 @@ function* watchVerifyEmailTokenFlow() {
   yield* takeEvery(AuthActions.VERIFY_EMAIL_TOKEN_REQUEST, verifyEmailTokenFlow)
 }
 
+function* signUpFlow({ formData }) {
+  yield put(sendingRequest())
+  try {
+    const response = yield call(auth.signup, formData)
+    if (response) {
+      yield put(signUpSuccess(response))
+    } else {
+      yield put(cancelRequest())
+    }
+  } catch(error) {
+    yield put(signUpFailure(error))
+  }
+}
+function* watchSignUpFlow() {
+  yield* takeEvery(AuthActions.SIGNUP_REQUEST, signUpFlow)
+}
+
 export default function* root() {
   yield [
     fork(watchOauthLogin),
     fork(watchSignInFlow),
     fork(watchRefreshFlow),
     fork(watchLogoutFlow),
-    fork(watchVerifyEmailTokenFlow)
+    fork(watchVerifyEmailTokenFlow),
+    fork(watchSignUpFlow)
   ]
 }
