@@ -9,10 +9,12 @@ export async function checkEmailStatus(ctx, next) {
 
   if (nodemailerInfo.rejected.length === 0) {
     ctx.response.body = {
-      status: 'success'
+      status: 'success',
+      code: 200001,
+      message: 'You can go to check your email'
     }
   } else {
-    throw Boom.badImplementation('Your data is bad and you should feel bad')
+    throw Boom.create(500, 'Your data is bad and you should feel bad', { code: 500002 })
   }
 }
 
@@ -48,15 +50,12 @@ export function mailTransport(userInfo, routePath, option, emailToken = undefine
 
     transporter.verify((err, success) => {
       if (err) {
-        //console.log('Verify SMTP configuration error')
-        //console.log(err)
-        const SMTPError = Boom.serverUnavailable('SMTP server unavailable to verify')
+        const SMTPError = Boom.create(500, 'SMTP server unavailable to verify', { code: 503001 })
         return reject(SMTPError)
      } else {
        transporter.sendMail(message, (err, info) => {
          if (err) {
-           //console.log('Send mail error')
-           const SMTPError = Boom.serverUnavailable('SMTP server unavailable to send')
+           const SMTPError = Boom.create(500, 'SMTP server unavailable to send', { code: 503002 })
            return reject(SMTPError)
          }
          resolve(info)

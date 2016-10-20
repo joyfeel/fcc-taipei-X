@@ -45,7 +45,7 @@ class Popup extends Component {
           <p className='description'>
             {errorMessage}
           </p>
-          <SubmitBtn txt={'OK'} onClick={this.handlePopupClick} valid={false}/>
+          <SubmitBtn txt={'OK'} onClick={this.handlePopupClick} valid={false} />
         </div>
       </div>
     )

@@ -1,7 +1,9 @@
 import * as ActionTypes from '../actions/auth'
+import codeTable from '../utils/apicode'
 
 const initialState = {
   isFetching: false,
+  isPopup: false,
   profile: {
     token: null,
     id: null,
@@ -12,7 +14,8 @@ const initialState = {
     created_time: null,
     updated_time: null
   },
-  error: null
+  error: null,
+  statusText: null
 }
 const auth = (state = initialState, action) => {
   switch(action.type) {
@@ -48,7 +51,8 @@ const auth = (state = initialState, action) => {
     case ActionTypes.CLEAR_ERROR:
       return {
         ...state,
-        error: null
+        isPopup: false,
+        statusText: null
       }
     case ActionTypes.LOGOUT_NORMAL:
       return {
@@ -59,8 +63,9 @@ const auth = (state = initialState, action) => {
     case ActionTypes.SIGNUP_SUCCESS:
       return {
         ...state,
-        status: action.response.status,
-        isFetching: false
+        isFetching: false,
+        isPopup: true,
+        statusText: codeTable[action.response.code],
       }
     default:
       return state

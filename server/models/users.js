@@ -83,19 +83,12 @@ UserSchema.pre('validate', function (next) {
 
   if (this.password) {
     if (this.password.length < 6) {
-      err = Boom.badData('Length of password must >= 6')
+      //err = Boom.badData('Length of password must >= 6')
+      const err = Boom.create(422, 'Length of password must >= 6', { code: 422001 })
       next(err)
     }
   }
   next()
-  // if (!this.password) {
-  //   err = Boom.badData('Password is required')
-  //   next(err)
-  // } else if (this.password.length < 6) {
-  //   err = Boom.badData('Length of password must >= 6')
-  //   next(err)
-  // }
-  // next()
 })
 
 UserSchema.pre('save', async function (next) {
@@ -107,7 +100,7 @@ UserSchema.pre('save', async function (next) {
     this.hashedPassword = await bcrypt.hash(this.password)
     next()
   } catch (err) {
-    const err = Boom.badImplementation('bcrypt error')
+    const err = Boom.create(500, 'Bcrypt error', { code: 500001 })
     next(err)
   }
 })
@@ -116,7 +109,7 @@ UserSchema.methods.validatePassword = async function validatePassword(signinPass
   try {
     return await bcrypt.compare(signinPassword, this.hashedPassword)
   } catch (err) {
-    const err = Boom.unauthorized('Email or password is not valid')
+    const err = Boom.create(401, 'Email or password is not valid', { code: 401001 })
     throw err
   }
 }

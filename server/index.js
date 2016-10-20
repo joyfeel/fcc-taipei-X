@@ -42,13 +42,22 @@ app.use(async(ctx, next) => {
       ctx.throw(404)
     }
   } catch (err) {
-    //console.log(err.message)  //real error message
-    //console.log(err.status)   //status code
-    //console.log(err.name)     //status code name
+    // console.log(err.message)    //real error message
+    // console.log(err.status)   //status code
+    // console.log(err.name)     //status code name
     ctx.status = err.status || 500
-    ctx.body = {
-      status: 'error',
-      message: err.message
+    if (err.data && err.data.code) {
+      ctx.body = {
+        status: 'error',
+        message: err.message,
+        code: err.data.code
+      }
+    } else {
+      ctx.body = {
+        status: 'error',
+        message: err.message,
+        code: -1
+      }
     }
     if (ctx.status >= 500) {
       ctx.app.emit('internalError', err, ctx)

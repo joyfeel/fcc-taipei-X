@@ -1,5 +1,4 @@
 import Router from 'koa-router'
-import User from '../models/users'
 import Boom from 'boom'
 import _ from 'lodash'
 import nodemailer from 'nodemailer'
@@ -9,6 +8,7 @@ import { getToken, verifyToken } from '../utils/auth'
 import { getCleanUser } from '../utils/mixed'
 import { mailTransport, checkEmailStatus } from '../utils/email'
 import Config from '../config'
+import User from '../models/users'
 
 /*
   Signup
@@ -35,13 +35,13 @@ router.post('/',
       const { email, nickname } = ctx.request.body
       const socialAccountExist = await User.findOne({ email, social: true })
       if (socialAccountExist) {
-        throw Boom.forbidden('The email has already been registered in social account')
+        throw Boom.create(403, 'The email has already been registered in social account', { code: 403001 })
       }
 
       //1. Check the account is unique
       const accountExist = await User.findOne({ email, isEmailActived: true })
       if (accountExist) {
-        throw Boom.forbidden('The email has already been registered')
+        throw Boom.create(403, 'The email has already been registered', { code: 403002 })
       }
       //2. The user may forget to receive their email to authentication
       const result = await User.findOne({ email, isEmailActived: false })
@@ -72,12 +72,6 @@ router.post('/',
     } catch (err) {
       if (err.output.statusCode) {
         ctx.throw(err.output.statusCode, err)
-      } else if (err.code === 11000) {
-        const MongoError = Boom.conflict('DB Conflict')
-        ctx.throw(MongoError.output.statusCode, MongoError)
-      } else if (err.name === 'ValidationError') {
-        const UserInputError = Boom.badData('Your data is bad and you should feel bad')
-        ctx.throw(UserInputError.output.statusCode, UserInputError)
       } else {
         ctx.throw(500, err)
       }
@@ -94,18 +88,20 @@ router.get('/',
   async(ctx, next) => {
     try {
       const emailToken = ctx.request.query.token
-      const { email } = await verifyToken(emailToken)
+      const verifyResult = await verifyToken(emailToken)
+      if (!verifyResult) {
+        throw Boom.create(401, 'Token is not valid or expired', { code: 401002 })
+      }
+      const { email } = verifyResult
       const result = await User.findOneAndUpdate({ email }, {
         isEmailActived: true,
-        verifyEmailToken: undefined
+        verifyEmailToken: null
       })
-
       if (!result) {
-        throw Boom.unauthorized('Email token is not valid or expired')
+        throw Boom.create(401, 'Email token is not valid or expired', { code: 401003 })
       }
       const user = getCleanUser(result)
       const accessToken = await getToken['JWT'](email)
-
       ctx.response.body = {
         status: 'success',
         auth: {

@@ -1,0 +1,127 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Meet API",
+        "description": "Move your app forward with the Meet API\n\n## API Success Code\n\nCode  | HTTP Code | Message\n----- | --------- | --------\n200001 | 200 | You can go to check your email\n\n\n## API Error Code\n\nError Code  | HTTP Code | Message\n------| --- | -----------------------------------\n401001 | 401 | Email or password is not valid\n401002 | 401 | Token is not valid or expired\n401003 | 401 | Email token is not valid or expired\n403001 | 403 | The email has already been registered in social account\n403002 | 403 | The email has already been registered\n422001 | 422 | Length of password must >= 6\n500001 | 500 | Bcrypt error\n500002 | 500 | Your data is bad and you should feel bad\n503001 | 503 | SMTP server unavailable to verify\n503002 | 503 | SMTP server unavailable to send\n",
+        "version": "1.0.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/v1",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/signup": {
+            "post": {
+                "summary": "Signup a new account",
+                "description": "Signup a new account locally",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User account information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Signup"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/SignupResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Verify the email token",
+                "description": "After the user signup a new account, ........",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "token",
+                        "description": "email token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "schema": {
+                            "$ref": "#/definitions/SignupResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Signup": {
+            "type": "object",
+            "properties": {
+                "nickname": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "avatar": {
+                    "type": "string"
+                }
+            }
+        },
+        "SignupResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

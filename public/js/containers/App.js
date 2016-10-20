@@ -15,7 +15,7 @@ class App extends Component {
     this.props.auth.refreshTokenRequest()
   }
   render() {
-    const { isFetching, error, clearError } = this.props
+    const { isFetching, isPopup, clearError, statusText } = this.props
     const wrapperClasses = cx({
       'wrapper': true,
       'mask': isFetching
@@ -27,17 +27,20 @@ class App extends Component {
           {this.props.children}
         </div>
         {isFetching ? <Loading /> : null}
-        {error ? <Popup error={error} clearError={clearError} /> : null}
+        {isPopup ? <Popup error={error} clearError={clearError} /> : null}
+        {/*error ? <Popup error={error} clearError={clearError} /> : null*/}
       </div>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { isFetching, error } = state.auth
+  const { isFetching, isPopup, statusText } = state.auth
   return {
     isFetching,
-    error
+    isPopup,
+    statusText
+    //error
   }
 }
 const mapDispatchToProps = (dispatch) => {
