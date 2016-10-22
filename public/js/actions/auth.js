@@ -34,10 +34,10 @@ export const signInFailure = (error) => {
   }
 }
 
-export const CLEAR_ERROR = 'CLEAR_ERROR'
-export const clearError = () => {
+export const CLEAR_RESPONSE = 'CLEAR_RESPONSE'
+export const clearResponse = () => {
   return {
-    type: CLEAR_ERROR
+    type: CLEAR_RESPONSE
   }
 }
 

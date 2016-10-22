@@ -14,8 +14,7 @@ const initialState = {
     created_time: null,
     updated_time: null
   },
-  error: null,
-  statusText: null
+    res: null
 }
 const auth = (state = initialState, action) => {
   switch(action.type) {
@@ -43,16 +42,15 @@ const auth = (state = initialState, action) => {
     case ActionTypes.VERIFY_EMAIL_TOKEN_FAILURE:
       return {
         ...state,
-        error: {
-          message: action.error.message
-        },
-        isFetching: false
+        isFetching: false,
+        isPopup: true,
+        res: codeTable(action.error.code)
       }
-    case ActionTypes.CLEAR_ERROR:
+    case ActionTypes.CLEAR_RESPONSE:
       return {
         ...state,
         isPopup: false,
-        statusText: null
+        res: null
       }
     case ActionTypes.LOGOUT_NORMAL:
       return {
@@ -65,7 +63,7 @@ const auth = (state = initialState, action) => {
         ...state,
         isFetching: false,
         isPopup: true,
-        statusText: codeTable[action.response.code],
+        res: codeTable(action.response.code)
       }
     default:
       return state

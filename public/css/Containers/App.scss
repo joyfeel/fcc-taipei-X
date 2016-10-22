@@ -2,5 +2,11 @@
   position: relative;
   margin-top: 50px;
   height: calc(100vh - 50px);
-  transition: filter 3s;
+  transition: filter .35s;
+}
+
+.mask {
+		filter: blur(7px);
+		opacity: .25;
+		z-index: 3;
 }

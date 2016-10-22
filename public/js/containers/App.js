@@ -15,32 +15,27 @@ class App extends Component {
     this.props.auth.refreshTokenRequest()
   }
   render() {
-    const { isFetching, isPopup, clearError, statusText } = this.props
-    const wrapperClasses = cx({
-      'wrapper': true,
-      'mask': isFetching
-    })
+    const { isFetching, isPopup, clearResponse, res } = this.props
+
     return (
       <div>
         <Header />
-        <div className={wrapperClasses}>
+        <div className={cx('wrapper', {mask: isFetching || isPopup})}>
           {this.props.children}
         </div>
         {isFetching ? <Loading /> : null}
-        {isPopup ? <Popup error={error} clearError={clearError} /> : null}
-        {/*error ? <Popup error={error} clearError={clearError} /> : null*/}
+        {isPopup ? <Popup res={res} clearResponse={clearResponse} isPopup={isPopup}/> : null}
       </div>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { isFetching, isPopup, statusText } = state.auth
+  const { isFetching, isPopup, res } = state.auth
   return {
     isFetching,
     isPopup,
-    statusText
-    //error
+    res
   }
 }
 const mapDispatchToProps = (dispatch) => {

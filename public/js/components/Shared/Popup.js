@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
@@ -10,7 +10,7 @@ class Popup extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      offPopup: !this.props.error
+      offPopup: !this.props.isPopup
     }
     this.handlePopupClick = this.handlePopupClick.bind(this)
   }
@@ -19,31 +19,19 @@ class Popup extends Component {
     this.setState({
       offPopup: true
     })
-    this.props.auth.clearError()
+    this.props.auth.clearResponse()
   }
   render() {
-    const errorMessage = this.props.error.message
-    const message = this.props.message
-    const popupClasses = cx({
-      'popup': true,
-      'off': this.state.offPopup
-    })
-    const popupIconClasses = cx({
-      'sign-in-error-popup': errorMessage === 'Email or password is not valid' ||
-                             errorMessage === 'Format of email address is wrong',
-      'network-error-popup': errorMessage === 'Failed to fetch',
-      'repeated-register-popup': errorMessage === 'The email has already been registered',
-      'activate-email-send-popup': message === 'Please check a access link via your email'
-    })
+    const { res } = this.props
 
     return (
-      <div className={popupClasses}>
+      <div className={cx('popup', { off: this.state.offPopup })}>
         <div className='popup-panel'>
           <span className='cancel' onClick={this.handlePopupClick}></span>
-          <i className={popupIconClasses}></i>
+          <i className={res.icon}></i>
           <SignFormEmail />
           <p className='description'>
-            {errorMessage}
+            {res.message}
           </p>
           <SubmitBtn txt={'OK'} onClick={this.handlePopupClick} valid={false} />
         </div>
@@ -59,3 +47,13 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(null, mapDispatchToProps)(Popup)
+
+Popup.propTypes = {
+  isFetching: PropTypes.bool,
+  isPopup: PropTypes.bool,
+  res: PropTypes.object
+}
+
+Popup.defaultProps = {
+  res: null
+}

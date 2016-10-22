@@ -1,9 +1,3 @@
-.mask {
-		filter: blur(7px);
-		opacity: .25;
-		z-index: 3;
-}
-
 .loader {
 	@extend %animated;
 	@extend %fadeIn;
