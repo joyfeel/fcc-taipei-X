@@ -25,10 +25,10 @@ const router = new Router({
 
 router.post('/',
   validate({
-    'nickname:body': ['require', 'isAlphanumeric', 'nickname is required or not alphanumeric'],
-    'email:body': ['require', 'isEmail', 'email is required or not valid'],
-    'password:body': ['require', 'password is required'],
-    'avatar:body': ['require', 'isDataURI', 'avatar is required or not dataURI'],
+    'nickname:body': ['require', 'isAlphanumeric', 'Nickname is required or not alphanumeric'],
+    'email:body': ['require', 'isEmail', 'Format of email address is wrong'],
+    'password:body': ['require', 'Password is required'],
+    'avatar:body': ['require', 'isDataURI', 'Avatar is required or not dataURI'],
   }),
   async(ctx, next) => {
     try {
@@ -107,7 +107,9 @@ router.get('/',
         auth: {
           token: accessToken,
           ...user
-        }
+        },
+        code: 200002,
+        message: 'Account validation success'
       }
     } catch(err) {
       if (err.output.statusCode) {

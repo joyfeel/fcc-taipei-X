@@ -105,13 +105,8 @@ UserSchema.pre('save', async function (next) {
   }
 })
 
-UserSchema.methods.validatePassword = async function validatePassword(signinPassword) {
-  try {
-    return await bcrypt.compare(signinPassword, this.hashedPassword)
-  } catch (err) {
-    const err = Boom.create(401, 'Email or password is not valid', { code: 401001 })
-    throw err
-  }
+UserSchema.methods.validatePassword = async function validatePassword(_password) {
+  return await bcrypt.compare(_password, this.hashedPassword)
 }
 
 export default mongoose.model('User', UserSchema)

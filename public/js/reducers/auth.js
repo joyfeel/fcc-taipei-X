@@ -14,7 +14,7 @@ const initialState = {
     created_time: null,
     updated_time: null
   },
-    res: null
+  popupMsg: null
 }
 const auth = (state = initialState, action) => {
   switch(action.type) {
@@ -44,13 +44,13 @@ const auth = (state = initialState, action) => {
         ...state,
         isFetching: false,
         isPopup: true,
-        res: codeTable(action.error.code)
+        popupMsg: codeTable(action.error)
       }
-    case ActionTypes.CLEAR_RESPONSE:
+    case ActionTypes.CLEAR_POPUPMSG:
       return {
         ...state,
         isPopup: false,
-        res: null
+        popupMsg: null
       }
     case ActionTypes.LOGOUT_NORMAL:
       return {
@@ -63,7 +63,7 @@ const auth = (state = initialState, action) => {
         ...state,
         isFetching: false,
         isPopup: true,
-        res: codeTable(action.response.code)
+        popupMsg: codeTable(action.response)
       }
     default:
       return state

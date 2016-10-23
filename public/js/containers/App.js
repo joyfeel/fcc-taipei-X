@@ -15,7 +15,7 @@ class App extends Component {
     this.props.auth.refreshTokenRequest()
   }
   render() {
-    const { isFetching, isPopup, clearResponse, res } = this.props
+    const { isFetching, isPopup, clearPopupMsg, popupMsg } = this.props
 
     return (
       <div>
@@ -24,18 +24,18 @@ class App extends Component {
           {this.props.children}
         </div>
         {isFetching ? <Loading /> : null}
-        {isPopup ? <Popup res={res} clearResponse={clearResponse} isPopup={isPopup}/> : null}
+        {isPopup ? <Popup popupMsg={popupMsg} isPopup={isPopup} /> : null}
       </div>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { isFetching, isPopup, res } = state.auth
+  const { isFetching, isPopup, popupMsg } = state.auth
   return {
     isFetching,
     isPopup,
-    res
+    popupMsg
   }
 }
 const mapDispatchToProps = (dispatch) => {

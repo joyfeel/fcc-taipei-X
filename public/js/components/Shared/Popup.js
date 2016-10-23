@@ -19,19 +19,19 @@ class Popup extends Component {
     this.setState({
       offPopup: true
     })
-    this.props.auth.clearResponse()
+    this.props.auth.clearPopupMsg()
   }
   render() {
-    const { res } = this.props
+    const { icon, message } = this.props.popupMsg
 
     return (
       <div className={cx('popup', { off: this.state.offPopup })}>
         <div className='popup-panel'>
           <span className='cancel' onClick={this.handlePopupClick}></span>
-          <i className={res.icon}></i>
+          <i className={icon}></i>
           <SignFormEmail />
           <p className='description'>
-            {res.message}
+            {message}
           </p>
           <SubmitBtn txt={'OK'} onClick={this.handlePopupClick} valid={false} />
         </div>
@@ -49,11 +49,10 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(null, mapDispatchToProps)(Popup)
 
 Popup.propTypes = {
-  isFetching: PropTypes.bool,
-  isPopup: PropTypes.bool,
-  res: PropTypes.object
+  popupMsg: PropTypes.object.isRequired,
+  isPopup: PropTypes.bool.isRequired
 }
 
 Popup.defaultProps = {
-  res: null
+  popupMsg: null
 }

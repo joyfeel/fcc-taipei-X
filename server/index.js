@@ -1,5 +1,4 @@
 //mongod --dbpath ~/data/db/
-//import session from 'koa-generic-session'
 import Koa from 'koa'
 import convert from 'koa-convert'
 import path from 'path'
@@ -15,6 +14,7 @@ import WebpackHotMiddleware from "koa-webpack-hot-middleware"
 import webpackConfig from '../webpack.config'
 
 import jwt from 'koa-jwt'
+import cors from 'kcors'
 
 import Router from 'koa-router'
 import signupRouter from '../server/router/signup'
@@ -71,6 +71,7 @@ app.on('internalError', (err, ctx) => {
 })
 
 //app.use(logger())
+app.use(convert(cors()))
 app.use(convert(bodyParser()))
 app.use(convert(historyApiFallback({
   verbose: false
@@ -90,7 +91,6 @@ app.use(convert(WebpackHotMiddleware(compiler, {
   heartbeat: 10 * 1000
 })))
 
-//app.use('/api', expressJwt({secret: secret}).unless({path: new RegExp('/api\/public.*/', 'i') }))
 app.use(serve(__dirname + '/../public'))
 app.use(convert(jwt({
   secret: process.env.JWT_SECRET
@@ -106,7 +106,6 @@ app.use(convert(jwt({
     '/v1/resendEmail',
     new RegExp('/v1\/signup.*/', 'i'),
     '/v1/auth/google',
-    //'/v1/auth/google/callback',
     '/v1/forgot_password',
     '/v1/verifyToken',
     '/favicon.ico'

@@ -109,7 +109,6 @@ function* signInFlow({ formData }) {
       yield put(cancelRequest())
     }
   } catch (error) {
-    console.log(error)
     yield put(signInFailure(error))
   }
 }
@@ -175,14 +174,12 @@ function* signUpFlow({ formData }) {
   yield put(sendingRequest())
   try {
     const response = yield call(auth.signup, formData)
-    console.log('saga: ',response)
     if (response) {
       yield put(signUpSuccess(response))
     } else {
       yield put(cancelRequest())
     }
   } catch(error) {
-    console.log(error)
     yield put(signUpFailure(error))
   }
 }

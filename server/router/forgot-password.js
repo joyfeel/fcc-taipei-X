@@ -15,14 +15,19 @@ const router = new Router({
 
 router.post('/',
   validate({
-    'email:body': ['require', 'isEmail', 'email is required or not valid']
+    'email:body': ['require', 'isEmail', 'Format of email address is wrong']
   }),
   async(ctx, next) => {
     try {
       const { email } = ctx.request.body
+      const socialAccountExist = await User.findOne({ email, social: true })
+      if (socialAccountExist) {
+        throw Boom.create(403, 'The email has already been registered in social account', { code: 403001 })
+      }
+
       const accountExist = await User.findOne({ email })
       if (!accountExist) {
-        throw Boom.notFound('We couldn\'t find your account')
+        throw Boom.create(404, 'We could not find your account', { code: 404002 })
       }
 
       const emailToken = await getToken['EMAIL'](email)

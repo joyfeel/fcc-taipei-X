@@ -34,10 +34,10 @@ export const signInFailure = (error) => {
   }
 }
 
-export const CLEAR_RESPONSE = 'CLEAR_RESPONSE'
-export const clearResponse = () => {
+export const CLEAR_POPUPMSG = 'CLEAR_POPUPMSG'
+export const clearPopupMsg = () => {
   return {
-    type: CLEAR_RESPONSE
+    type: CLEAR_POPUPMSG
   }
 }
 

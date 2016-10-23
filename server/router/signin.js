@@ -15,34 +15,38 @@ const router = new Router({
 router.post('/',
   validate({
     'email:body': ['require', 'isEmail', 'Format of email address is wrong'],
-    'password:body': ['require']
+    'password:body': ['require', 'Password is required']
   }),
   async(ctx, next) => {
     try {
       const { email, password } = ctx.request.body
       const socialAccountExist = await User.findOne({ email, social: true })
       if (socialAccountExist) {
-        throw Boom.forbidden('The email has already been registered in social account')
+        throw Boom.create(403, 'The email has already been registered in social account', { code: 403001 })
       }
       //Ensure the email account exists in the DB.
       const user = await User.findOne({ email })
       if (!user) {
-        throw Boom.badRequest('Email or password is not valid')
+        throw Boom.create(401, 'Email or password is not valid', { code: 401001 })
       }
       //However, the email account need to be actived.
       if (user.isEmailActived === false) {
-        //throw Boom.unauthorized('Your email account is not actived')
-        throw Boom.notFound('Your email account is not actived')
+        throw Boom.create(404, 'Your email account is not activated', { code: 404001 })
       }
 
-      await user.validatePassword(password)
+      const isPassword = await user.validatePassword(password)
+      if (!isPassword) {
+        throw Boom.create(401, 'Email or password is not valid', { code: 401001 })
+      }
       const token = getToken['JWT'](email)
       ctx.response.body = {
         status: 'success',
         auth: {
           token,
           ...getCleanUser(user)
-        }
+        },
+        code: 200003,
+        message: 'Signin success'
       }
     } catch (err) {
       if (err.output.statusCode) {
