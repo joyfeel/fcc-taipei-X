@@ -17,7 +17,7 @@ const {
   logoutRequest, logoutNormal,
   refreshTokenRequest, refreshTokenSuccess, refreshTokenFailure,
   verifyEmailTokenRequest, verifyEmailTokenSuccess, verifyEmailTokenFailure,
-  signUpRequest, signUpSuccess, signUpFailure
+  signUpRequest, signUpSuccess, signUpFailure, forgetPSSuccess, forgetPSFailure
 } = AuthActions
 
 function forwardTo (location) {
@@ -187,6 +187,25 @@ function* watchSignUpFlow() {
   yield* takeEvery(AuthActions.SIGNUP_REQUEST, signUpFlow)
 }
 
+function* forgetPsFlow({ email }) {
+  yield put(sendingRequest())
+  try {
+    const response = yield call(auth.forgetPS, email)
+    if (response) {
+      yield put(forgetPSSuccess(response))
+    } else {
+      yield put(cancelRequest())
+    }
+  } catch(error) {
+    yield put(forgetPSFailure(error))
+  }
+}
+function* watchForgetPsFlow() {
+  yield* takeEvery(AuthActions.FORGET_PS_REQUEST, forgetPsFlow)
+}
+
+
+
 export default function* root() {
   yield [
     fork(watchOauthLogin),
@@ -194,6 +213,7 @@ export default function* root() {
     fork(watchRefreshFlow),
     fork(watchLogoutFlow),
     fork(watchVerifyEmailTokenFlow),
-    fork(watchSignUpFlow)
+    fork(watchSignUpFlow),
+    fork(watchForgetPsFlow)
   ]
 }

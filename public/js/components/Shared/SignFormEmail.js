@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import cx from 'classnames'
 
-const SignFormEmail = ({toggleEmail, focus, blur, change}) =>
+const SignFormEmail = ({ toggleEmail, focus, blur, change, keydown }) =>
   <div className={cx('sign-form-email', toggleEmail)}>
     <input
       type='email'
@@ -12,6 +12,7 @@ const SignFormEmail = ({toggleEmail, focus, blur, change}) =>
       onFocus={focus}
       onBlur={blur}
       onChange={change}
+      onKeyDown={keydown}
     />
   <label className='email-icon' htmlFor='email'></label>
   </div>
@@ -20,10 +21,12 @@ SignFormEmail.propTypes = {
   toggleEmail: PropTypes.string,
   focus: PropTypes.func,
   blur: PropTypes.func,
-  change: PropTypes.func
+  change: PropTypes.func,
+  keydown: PropTypes.func
 }
 SignFormEmail.defaultProps = {
-  toggleEmail: null
+  toggleEmail: null,
+  keydown: null
 }
 
 export default SignFormEmail

@@ -117,3 +117,32 @@ export const signUpFailure = (error) => {
     error
   }
 }
+export const FORGET_PS_POPUP = 'FORGET_PS_POPUP'
+export const forgetPSPopup = () => {
+  return {
+    type: FORGET_PS_POPUP,
+    code: 100001
+  }
+}
+
+export const FORGET_PS_REQUEST = 'FORGET_PS_REQUEST'
+export const FORGET_PS_SUCCESS = 'FORGET_PS_SUCCESS'
+export const FORGET_PS_FAILURE = 'FORGET_PS_FAILURE'
+export const forgetPSRequest = (email) => {
+  return {
+    type: FORGET_PS_REQUEST,
+    email
+  }
+}
+export const forgetPSSuccess = (response) => {
+  return {
+    type: FORGET_PS_SUCCESS,
+    response
+  }
+}
+export const forgetPSFailure = (error) => {
+  return {
+    type: FORGET_PS_FAILURE,
+    error
+  }
+}

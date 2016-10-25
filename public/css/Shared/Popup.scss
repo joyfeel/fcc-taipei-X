@@ -26,37 +26,18 @@
 
 .popup-panel {
   .cancel {
+    @extend %icon;
+    @extend %cancel-3;
     color: $active1;
     cursor: pointer;
+    font-size: 18px;
+    text-align: center;
     position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 48px;
-    height: 48px;
-    // border: 1px solid $active1;
-    // border-radius: 50%;
-
-    &:before, &:after {
-      content: '';
-      display: block;
-      width: 100%;
-      height: 1px;
-      background-color: $active1;
-
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      margin: auto;
-    }
-    &:before {
-      transform: rotate(45deg)
-    }
-    &:after {
-      transform: rotate(-45deg)
-    }
-
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
   }
 }
 
