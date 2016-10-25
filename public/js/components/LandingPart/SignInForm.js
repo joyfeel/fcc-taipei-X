@@ -25,6 +25,8 @@ class SignInForm extends Component {
     this.handleOauthClick = this.handleOauthClick.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onBlur = this.onBlur.bind(this)
+
+    this.forgetPsClick = this.forgetPsClick.bind(this)
   }
   initWindowSize() {
     if (window.innerWidth < 400) {
@@ -74,6 +76,12 @@ class SignInForm extends Component {
   handleOauthClick(provider) {
     this.props.oauth.oauthRequest(provider)
   }
+  forgetPsClick(e) {
+    e.preventDefault()
+    // for invoking foget=password popup without sending request to server
+    this.props.auth.forgetPSPopup()
+  }
+
   render() {
     const emailToggleFlex = cx({ 'flex': this.state.emailToggle })
     const emailToggleOn = cx({ 'on': this.state.emailToggle })
@@ -83,11 +91,16 @@ class SignInForm extends Component {
     return (
       <form className='sign-in-form' onSubmit={this.handleSubmit}>
         <p className='sign-in-indicated'>Choosing 1 of these icons to sign in</p>
+
         <SignInSocialIcon onMailClick={this.handleMailClick} onOauthClick={this.handleOauthClick} />
+
         <SignFormEmail toggleEmail={emailToggleFlex} change={this.onChange} blur={this.onBlur} />
+
         <SignFormPassword toggleEmail={emailToggleFlex} change={this.onChange} blur={this.onBlur} />
+
         <SubmitBtn txt={'SIGN IN'} toggleEmail={emailToggleOn} valid={valid} />
-        <a href="" className={`forget-ps ${emailToggleOn}`} alt='forget password'>forget password?</a>
+
+        <a href="" className={`forget-ps ${emailToggleOn}`} alt='forget password' onClick={this.forgetPsClick}>forget password?</a>
         <p className='note'>@meet created by Wesley, Joey, Ching, Cha, Doma</p>
       </form>
     )

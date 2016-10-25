@@ -40,6 +40,7 @@ const auth = (state = initialState, action) => {
     case ActionTypes.SIGNUP_FAILURE:
     case ActionTypes.REFRESH_TOKEN_FAILURE:
     case ActionTypes.VERIFY_EMAIL_TOKEN_FAILURE:
+    case ActionTypes.FORGET_PS_FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -59,12 +60,21 @@ const auth = (state = initialState, action) => {
         isFetching: false
       }
     case ActionTypes.SIGNUP_SUCCESS:
+    case ActionTypes.FORGET_PS_SUCCESS:
+
       return {
         ...state,
         isFetching: false,
         isPopup: true,
         popupMsg: codeTable(action.response)
       }
+    case ActionTypes.FORGET_PS_POPUP:
+      return {
+        ...state,
+        isPopup: true,
+        popupMsg: codeTable(action)
+      }
+
     default:
       return state
   }

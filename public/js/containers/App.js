@@ -16,7 +16,7 @@ class App extends Component {
   }
   render() {
     const { isFetching, isPopup, clearPopupMsg, popupMsg } = this.props
-
+    
     return (
       <div>
         <Header />

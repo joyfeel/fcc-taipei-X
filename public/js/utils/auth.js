@@ -11,6 +11,9 @@ const auth = {
   signup(formData) {
     return fetchBody('http://localhost:3000/v1/signup', formData)
   },
+  forgetPS(email) {
+    return fetchBody('http://localhost:3000/v1/forgot_password', email)
+  },
   verifyAccessToken() {
     const accessToken = auth.getToken()
     return fetchGet(`http://localhost:3000/v1/verifyToken?token=${accessToken}`)
