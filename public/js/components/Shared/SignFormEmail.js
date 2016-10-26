@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import cx from 'classnames'
 
-const SignFormEmail = ({toggleEmail, focus, blur, change, keydown}) =>
+const SignFormEmail = ({ toggleEmail, focus, blur, change, keydown }) =>
   <div className={cx('sign-form-email', toggleEmail)}>
     <input
       type='email'

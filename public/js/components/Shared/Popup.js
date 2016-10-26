@@ -29,12 +29,7 @@ class Popup extends Component {
   }
   detectEmailState(e) {
     const val  = e.target.value.trim()
-
-    if(val.length > 0) {
-      this.setUpEmailState(true, val)
-    } else {
-      this.setUpEmailState(false, undefined)
-    }
+    val.length > 0 ? this.setUpEmailState(true, val) : this.setUpEmailState(false, undefined)
   }
 
   handlePopupClick(e) {
