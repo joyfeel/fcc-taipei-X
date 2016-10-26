@@ -4,11 +4,11 @@ import _ from 'lodash'
 import nodemailer from 'nodemailer'
 import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
-import { getToken, verifyToken } from '../utils/auth'
-import { getCleanUser } from '../utils/mixed'
-import { mailTransport, checkEmailStatus } from '../utils/email'
-import Config from '../config'
-import User from '../models/users'
+import { getToken, verifyToken } from '../../utils/auth'
+import { getCleanUser } from '../../utils/mixed'
+import { mailTransport, checkEmailStatus } from '../../utils/email'
+import Config from '../../config'
+import User from '../../models/users'
 
 /*
   Signup

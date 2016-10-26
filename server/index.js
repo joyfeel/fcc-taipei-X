@@ -17,17 +17,15 @@ import jwt from 'koa-jwt'
 import cors from 'kcors'
 
 import Router from 'koa-router'
-import signupRouter from '../server/router/signup'
-import signinRouter from '../server/router/signin'
-import resendEmailRouter from '../server/router/resendEmail'
-import accountSettingsRouter from '../server/router/account-settings'
-import forgotPasswordRouter from '../server/router/forgot-password'
-import resetPasswordRouter from '../server/router/reset-password'
-import verifyTokenRouter from '../server/router/verifyToken'
-import googleRouter from '../server/router/auth/google'
+import signupRouter from './router/member/signup'
+import signinRouter from './router/member/signin'
+import accountSettingsRouter from './router/member/account-settings'
+import forgotPasswordRouter from './router/member/forgot-password'
+import verifyTokenRouter from './router/member/verifyToken'
+import googleRouter from './router/oauth/google'
 
-import postRouter from '../server/router/posts'
-import commentRouter from '../server/router/comments'
+import postRouter from './router/blog/posts'
+import commentRouter from './router/blog/comments'
 
 import './config/database'
 import Config from './config'
@@ -103,12 +101,10 @@ app.use(convert(jwt({
   path: [
     '/v1/signup',
     '/v1/signin',
-    '/v1/resendEmail',
-    new RegExp('/v1\/signup.*/', 'i'),
-    '/v1/auth/google',
     '/v1/forgot_password',
     '/v1/verifyToken',
-    '/favicon.ico'
+    '/v1/auth/google',
+    '/favicon.ico',
   ]
 })))
 
@@ -120,20 +116,12 @@ app.use(signinRouter.routes())
 app.use(signinRouter.allowedMethods({
   throw: true
 }))
-app.use(resendEmailRouter.routes())
-app.use(resendEmailRouter.allowedMethods({
-  throw: true
-}))
 app.use(accountSettingsRouter.routes())
 app.use(accountSettingsRouter.allowedMethods({
   throw: true
 }))
 app.use(forgotPasswordRouter.routes())
 app.use(forgotPasswordRouter.allowedMethods({
-  throw: true
-}))
-app.use(resetPasswordRouter.routes())
-app.use(resetPasswordRouter.allowedMethods({
   throw: true
 }))
 app.use(verifyTokenRouter.routes())

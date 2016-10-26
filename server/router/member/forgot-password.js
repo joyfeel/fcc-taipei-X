@@ -1,11 +1,11 @@
 import Router from 'koa-router'
-import User from '../models/users'
 import Boom from 'boom'
 import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
-import { getToken } from '../utils/auth'
-import { mailTransport, checkEmailStatus } from '../utils/email'
-import Config from '../config'
+import User from '../../models/users'
+import { getToken } from '../../utils/auth'
+import { mailTransport, checkEmailStatus } from '../../utils/email'
+import Config from '../../config'
 import _ from 'lodash'
 
 const validate = (...args) => convert(_validate(...args))
@@ -33,7 +33,7 @@ router.post('/',
       const emailToken = await getToken['EMAIL'](email)
       const user = await User.findById(accountExist._id)
       ctx.state.user = user
-      ctx.state.nodemailerInfo = await mailTransport({ email, nickname: user.nickname }, 'forgot-password', 'recover', emailToken)
+      ctx.state.nodemailerInfo = await mailTransport({ email, nickname: user.nickname }, 'verifyToken', 'recover', emailToken)
       await next()
     } catch (err) {
       if (err.output.statusCode) {
