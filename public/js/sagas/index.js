@@ -105,6 +105,7 @@ function* signInFlow({ formData }) {
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(signInSuccess(response))
+      forwardTo('/')
     } else {
       yield put(cancelRequest())
     }
@@ -176,6 +177,7 @@ function* signUpFlow({ formData }) {
     const response = yield call(auth.signup, formData)
     if (response) {
       yield put(signUpSuccess(response))
+      forwardTo('/signin')
     } else {
       yield put(cancelRequest())
     }
@@ -203,8 +205,6 @@ function* forgetPsFlow({ email }) {
 function* watchForgetPsFlow() {
   yield* takeEvery(AuthActions.FORGET_PS_REQUEST, forgetPsFlow)
 }
-
-
 
 export default function* root() {
   yield [

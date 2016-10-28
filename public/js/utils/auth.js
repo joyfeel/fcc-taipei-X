@@ -1,10 +1,6 @@
-import { fetchBody, fetchGet, fetchGetSimple, fetchGetQQ } from './fetch'
+import { fetchBody, fetchGet } from './fetch'
 
 const auth = {
-  loginFB() {
-    //return fetchGet('http://localhost:3000/v1/auth/facebook')
-    return fetchGetQQ('http://localhost:3000/v1/auth/facebook')
-  },
   login(formData) {
     return fetchBody('http://localhost:3000/v1/signin', formData)
   },
