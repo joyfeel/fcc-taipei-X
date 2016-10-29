@@ -4,25 +4,19 @@ import { v4 } from 'node-uuid'
 import url from 'url'
 import qs from 'querystring'
 import Boom from 'boom-browserify'
-import { browserHistory } from 'react-router'
-import * as AuthActions from '../actions/auth'
 import * as OauthActions from '../actions/oauth'
 import auth from '../utils/auth'
 import openPopup from '../utils/popup'
 import { googleConfig, googleUrl } from '../utils/oauth_config'
-
-const {
-  sendingRequest, cancelRequest,
-  signInRequest, signInSuccess, signInFailure,
-  logoutRequest, logoutNormal,
-  refreshTokenRequest, refreshTokenSuccess, refreshTokenFailure,
-  verifyEmailTokenRequest, verifyEmailTokenSuccess, verifyEmailTokenFailure,
-  signUpRequest, signUpSuccess, signUpFailure, forgetPSSuccess, forgetPSFailure
-} = AuthActions
-
-function forwardTo (location) {
-  browserHistory.push(location)
-}
+import { watchCreatePostFlow } from './post'
+import {
+  watchSignInFlow,
+  watchRefreshFlow,
+  watchLogoutFlow,
+  watchVerifyEmailTokenFlow,
+  watchSignUpFlow,
+  watchForgetPsFlow
+} from './auth'
 
 const pollingPopup = (popWin) => {
   return new Promise((resolve, reject) => {
@@ -74,14 +68,14 @@ const providerStrategy = {
 }
 
 function* oauthFlow({ provider }) {
-  yield put(sendingRequest())
+  yield put(sendingAuthRequest())
   try {
     const response = yield call(providerStrategy[provider])
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(signInSuccess(response))
     } else {
-      yield put(cancelRequest())
+      yield put(cancelAuthRequest())
     }
   } catch (error) {
     yield put(signInFailure(error))
@@ -92,120 +86,6 @@ function* watchOauthLogin() {
   yield* takeEvery(OauthActions.OAUTH_REQUEST, oauthFlow)
 }
 
-/**************************************************************************/
-/******************************* Auth *************************************/
-/**************************************************************************/
-function* signInFlow({ formData }) {
-  if (auth.loggedIn()) {
-    return
-  }
-  yield put(sendingRequest())
-  try {
-    const response = yield call(auth.login, formData)
-    if (response && response.auth && response.auth.token) {
-      yield call(auth.setToken, response.auth.token)
-      yield put(signInSuccess(response))
-      forwardTo('/')
-    } else {
-      yield put(cancelRequest())
-    }
-  } catch (error) {
-    yield put(signInFailure(error))
-  }
-}
-function* watchSignInFlow() {
-  yield* takeEvery(AuthActions.SIGNIN_REQUEST, signInFlow)
-}
-
-function* refreshFlow() {
-  if (!auth.loggedIn()) {
-    return
-  }
-  yield put(sendingRequest())
-  try {
-    const response = yield call(auth.verifyAccessToken)
-    if (response && response.auth && response.auth.token) {
-      yield call(auth.setToken, response.auth.token)
-      yield put(refreshTokenSuccess(response))
-    } else {
-      yield put(cancelRequest())
-    }
-  } catch (error) {
-    yield put(refreshTokenFailure(error))
-    yield call(auth.logout)
-  }
-}
-function* watchRefreshFlow() {
-  yield* takeEvery(AuthActions.REFRESH_TOKEN_REQUEST, refreshFlow)
-}
-
-function* logoutFlow() {
-  yield put(sendingRequest())
-  yield call(auth.logout)
-  yield put(logoutNormal())
-  forwardTo('/')
-}
-function* watchLogoutFlow() {
-  yield* takeEvery(AuthActions.LOGOUT_REQUEST, logoutFlow)
-}
-
-function* verifyEmailTokenFlow() {
-  yield put(sendingRequest())
-  if (auth.loggedIn()) {
-    yield call(auth.logout)
-  }
-  try {
-    const response = yield call(auth.verifyEmailToken)
-    if (response && response.auth && response.auth.token) {
-      yield call(auth.setToken, response.auth.token)
-      yield put(verifyEmailTokenSuccess(response))
-    } else {
-      yield put(cancelRequest())
-    }
-  } catch (error) {
-    yield put(verifyEmailTokenFailure(error))
-  }
-  forwardTo('/')
-}
-function* watchVerifyEmailTokenFlow() {
-  yield* takeEvery(AuthActions.VERIFY_EMAIL_TOKEN_REQUEST, verifyEmailTokenFlow)
-}
-
-function* signUpFlow({ formData }) {
-  yield put(sendingRequest())
-  try {
-    const response = yield call(auth.signup, formData)
-    if (response) {
-      yield put(signUpSuccess(response))
-      forwardTo('/signin')
-    } else {
-      yield put(cancelRequest())
-    }
-  } catch(error) {
-    yield put(signUpFailure(error))
-  }
-}
-function* watchSignUpFlow() {
-  yield* takeEvery(AuthActions.SIGNUP_REQUEST, signUpFlow)
-}
-
-function* forgetPsFlow({ email }) {
-  yield put(sendingRequest())
-  try {
-    const response = yield call(auth.forgetPS, email)
-    if (response) {
-      yield put(forgetPSSuccess(response))
-    } else {
-      yield put(cancelRequest())
-    }
-  } catch(error) {
-    yield put(forgetPSFailure(error))
-  }
-}
-function* watchForgetPsFlow() {
-  yield* takeEvery(AuthActions.FORGET_PS_REQUEST, forgetPsFlow)
-}
-
 export default function* root() {
   yield [
     fork(watchOauthLogin),
@@ -214,6 +94,7 @@ export default function* root() {
     fork(watchLogoutFlow),
     fork(watchVerifyEmailTokenFlow),
     fork(watchSignUpFlow),
-    fork(watchForgetPsFlow)
+    fork(watchForgetPsFlow),
+    fork(watchCreatePostFlow),
   ]
 }

@@ -60,7 +60,6 @@ class SignUpForm extends Component {
     this.validState = this.changeState.bind(this) */
   }
 
-
   msgState(targetId) {
     const { valid, msg } = this.state
     const infoMsg = info[`${targetId}Msg`] //找到info對應this.state.msg的字串
@@ -77,7 +76,6 @@ class SignUpForm extends Component {
     //如valid state驗證改變 msg提示字串就需要改變
     this.msgState(targetId)
   }
-
 
   focus(e) {
     //把HintChecked component 打開
@@ -100,7 +98,6 @@ class SignUpForm extends Component {
     //判斷是否合regxp
     const patternTest = txt.match(info[`${e.target.id}Pattern`]) //找到info對應valid的判別式
     const flag = !!patternTest  // 判斷是否合regxp 如果是null轉 false
-
 
     //計算nickname和password inputs裡value的長度(含空白鍵)
     this.setState({

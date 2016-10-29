@@ -108,10 +108,12 @@ app.use(convert(jwt({
   ]
 })))
 
+//  /v1/signup
 app.use(signupRouter.routes())
 app.use(signupRouter.allowedMethods({
   throw: true
 }))
+//  /v1/signin
 app.use(signinRouter.routes())
 app.use(signinRouter.allowedMethods({
   throw: true

@@ -35,7 +35,6 @@ function getPopupSize(provider) {
 function getPopupDimensions(provider) {
   const { width, height } = getPopupSize(provider)
   const { top, left } = getPopupOffset(width, height)
-
   return `width=${width},height=${height},top=${top},left=${left}`
 }
 
@@ -46,5 +45,3 @@ export default function openPopup(url, name, provider) {
   }
   return popup
 }
-
-//openPopup('google', )

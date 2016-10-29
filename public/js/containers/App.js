@@ -15,14 +15,14 @@ class App extends Component {
     this.props.auth.refreshTokenRequest()
   }
   render() {
-    const { isFetching, isPopup, clearPopupMsg, popupMsg } = this.props
+    const { globalFetching, isPopup, clearPopupMsg, popupMsg } = this.props
     return (
       <div>
         <Header />
-        <div className={cx('wrapper', {mask: isFetching || isPopup})}>
+        <div className={cx('wrapper', {mask: globalFetching || isPopup})}>
           {this.props.children}
         </div>
-        {isFetching ? <Loading /> : null}
+        {globalFetching ? <Loading /> : null}
         {isPopup ? <Popup popupMsg={popupMsg} isPopup={isPopup} /> : null}
       </div>
     )
@@ -30,11 +30,12 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { isFetching, isPopup, popupMsg } = state.auth
+  const { isPopup, popupMsg } = state.auth
+  console.log(state.post.isFetching)
   return {
-    isFetching,
+    globalFetching: state.auth.isFetching || state.post.isFetching,
     isPopup,
-    popupMsg
+    popupMsg,
   }
 }
 const mapDispatchToProps = (dispatch) => {

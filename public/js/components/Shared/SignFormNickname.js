@@ -22,5 +22,4 @@ SignFormNickname.propTypes = {
   change: PropTypes.func
 }
 
-
 export default SignFormNickname

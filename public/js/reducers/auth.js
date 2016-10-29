@@ -12,18 +12,18 @@ const initialState = {
     avatar: null,
     edit_nickname_time: null,
     created_time: null,
-    updated_time: null
+    updated_time: null,
   },
-  popupMsg: null
+  popupMsg: null,
 }
 const auth = (state = initialState, action) => {
   switch(action.type) {
-    case ActionTypes.SENDING_REQUEST:
+    case ActionTypes.SENDING_AUTH_REQUEST:
       return {
         ...state,
         isFetching: true
       }
-    case ActionTypes.CANCEL_REQUEST:
+    case ActionTypes.CANCEL_AUTH_REQUEST:
       return {
         ...state,
         isFetching: false
@@ -61,7 +61,6 @@ const auth = (state = initialState, action) => {
       }
     case ActionTypes.SIGNUP_SUCCESS:
     case ActionTypes.FORGET_PS_SUCCESS:
-
       return {
         ...state,
         isFetching: false,
@@ -74,7 +73,6 @@ const auth = (state = initialState, action) => {
         isPopup: true,
         popupMsg: codeTable(action)
       }
-
     default:
       return state
   }

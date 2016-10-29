@@ -1,14 +1,13 @@
-export const SENDING_REQUEST = 'SENDING_REQUEST'
-export const sendingRequest = () => {
+export const SENDING_AUTH_REQUEST = 'SENDING_AUTH_REQUEST'
+export const sendingAuthRequest = () => {
   return {
-    type: SENDING_REQUEST
+    type: SENDING_AUTH_REQUEST
   }
 }
-
-export const CANCEL_REQUEST = 'CANCEL_REQUEST'
-export const cancelRequest = () => {
+export const CANCEL_AUTH_REQUEST = 'CANCEL_AUTH_REQUEST'
+export const cancelAuthRequest = () => {
   return {
-    type: CANCEL_REQUEST
+    type: CANCEL_AUTH_REQUEST
   }
 }
 
