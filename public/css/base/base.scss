@@ -20,7 +20,7 @@ body, html {
 /*::selection {background-color: $hightLight;}*/
 /*::-moz-selection {background-color: $hightLight;}*/
 
-a ,button, input {
+a ,button, input, textarea {
   transition: .3s;
   -weblit-transition: .3s;
   font-size: $smFz;

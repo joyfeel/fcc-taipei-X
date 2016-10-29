@@ -16,5 +16,5 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory} routes={getRoutes(store)} />
   </Provider>,
-  document.getElementById('main')
+  document.getElementById('root')
 )

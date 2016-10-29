@@ -6,14 +6,14 @@ import MemberPanel from '../components/Header/MemberPanel'
 import Notification from '../components/Header/Notification'
 
 const Header = (props) => {
-  const { profile } = props
+  const { profile, filter } = props
   const headerPanelClasses = cx({
     'header-panel': true,
-    'login': profile.token
+    'login': profile.token,
   })
 
   return (
-    <header className="header">
+    <header className={cx('header',{ mask: filter })}>
       <div className={headerPanelClasses}>
         <Logo />
         <MemberPanel profile={profile} />
@@ -24,10 +24,9 @@ const Header = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  const { isFetching, profile } = state.auth
+  const { profile } = state.auth
   return {
     profile,
-    isFetching
   }
 }
 
