@@ -28,6 +28,7 @@ function* signInFlow({ formData }) {
   yield put(sendingAuthRequest())
   try {
     const response = yield call(auth.login, formData)
+    console.log(response.auth.token)
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(signInSuccess(response))

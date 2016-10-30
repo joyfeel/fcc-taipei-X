@@ -1,0 +1,144 @@
+.wrapper .main {
+	max-width: 580px;
+	width: 95%;
+	margin: 0 auto;
+	padding-top: 75px;
+	padding-bottom: 10px;
+}
+
+.main .article {
+	background-color: $bgContain;
+	box-shadow: $bsh;
+	border-radius: 6px;
+	position: relative;
+	margin-bottom: 10px;
+}
+
+.article {
+	> .article-avatar {
+			display: inline-block;
+			width: 40px;
+			height: 40px;
+			margin: 10px;
+			border-radius: 50%;
+			transition: box-shadow .3s;
+		&:hover {
+			box-shadow: $bsh;
+		}
+	}
+	> .article-author {
+			display: inline-block;
+			font-size: $mdFz;
+			color: $active1;
+			max-width: calc(100% - 60px - 40px);
+			height: 20px;
+			line-height: 30px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		&:hover {
+			color: $active2;
+		}
+	}
+	> .article-time {
+			position: absolute;
+			top: 35px;
+			left: 59px;
+			color: $inActive;
+			font-size: $xsFz;
+	}
+	> .more-2 {
+			@extend %icon;
+			display: block;
+			width: 40px;
+			height: 40px;
+			line-height: 40px;
+			color: $hightLight;
+			cursor: pointer;
+			text-align: right;
+			font-size: 26px;
+			position: absolute;
+			right: 0;
+			top: 4px;
+			transition: color .3s;
+		&:hover {
+			color: $active1;
+		}
+	}
+	> .article-title {
+			width: calc(100% - 15px);
+			margin: 0 5px 0 10px;
+			color: $heading;
+			font-size: $mdFz;
+			font-weight: bold;
+			word-break: break-all;
+	}
+	> .article-content {
+			width: calc(100% - 15px);
+			margin: 0 5px 0px 10px;
+			padding-bottom: 5px;
+			font-size: $ssFz;
+			color: $font;
+	}
+	> .article-analysis {
+			margin: 5px 10px 0;
+			width: calc( 100% - 20px);
+			border-top: 1px solid $hightLight;
+			border-bottom: 1px solid $bgContain;
+			height: 35px;
+			transition: border-color .3s;
+			cursor: pointer;
+			clear: both;
+	}
+	> .comment-toggle {
+			border-bottom-color: $hightLight;
+	}
+
+	> .article-analysis:hover {
+		border-top-color: $active1;
+		border-bottom-color: $bgContain;
+	}
+
+	> .comment-toggle:hover {
+		border-top-color: $active1;
+		border-bottom-color: $active1;
+	}
+}
+
+.article-analysis {
+	> i {
+		color: $hightLight;
+		transition: color .3s;
+		font-style: normal;
+		font-size: $smFz;
+		line-height: 30px;
+		margin-top: 5px;
+		vertical-align: bottom;
+		&:hover {
+			color: $active1;
+		}
+		&:first-child {
+			float: left;
+			margin-left: 3px;
+		}
+		&:before {
+			@extend %icon;
+			font-size: $mdFz;
+			margin-right: 5px;
+		}
+	}
+
+	> .thumb-down-1 {
+		float: right;
+		margin-right: 3px;
+	}
+
+	> .thumb-up-1 {
+		float: right;
+		margin-right: 12px;
+	}
+
+	.active {
+		color: $active2;
+	}
+}
