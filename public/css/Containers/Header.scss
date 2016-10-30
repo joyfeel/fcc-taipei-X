@@ -7,6 +7,7 @@
   background: linear-gradient(rgba(255,255,255,1) 0%, rgba(241,241,241,1) 100%);
   border-bottom: 1px solid $border;
   z-index: 9;
+  transition: filter .35s;
 }
 
 .header-panel {

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router'
-import * as PostActions from '../../actions/post'
+import * as PostActions from '../actions/post'
+import Article from '../components/Article/Article'
 
 class AfterLogin extends Component {
   constructor(props) {
@@ -21,9 +22,7 @@ class AfterLogin extends Component {
   render() {
     return (
       <div>
-        <h1>You have already logged</h1>
-        <Link to='/about'>about</Link>
-        <div onClick={this.handleSendPost}>Send the post</div>
+        <Article />
       </div>
     )
   }
