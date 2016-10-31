@@ -13,9 +13,8 @@ const router = new Router({
 
 router.post('/',
   validate({
-    'author:body': ['require', 'isMongoId', 'authorId is required or not a mongo objectId'],
     'post:body': ['require', 'isMongoId', 'postId is required or not a mongo objectId'],
-    'content:body': ['require', 'content is required or not valid']
+    'content:body': ['require', 'content is required or not valid'],
   }),
   async(ctx, next) => {
     try {
@@ -31,7 +30,7 @@ router.post('/',
       await targetPost.save()
 
       await comment.populate('author').execPopulate()
-      ctx.response.body = {
+      ctx.body = {
         status: 'success',
         comment: getCleanComment(comment)
       }

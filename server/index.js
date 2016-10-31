@@ -17,11 +17,11 @@ import jwt from 'koa-jwt'
 import cors from 'kcors'
 
 import Router from 'koa-router'
-import signupRouter from './router/member/signup'
-import signinRouter from './router/member/signin'
-import accountSettingsRouter from './router/member/account-settings'
-import forgotPasswordRouter from './router/member/forgot-password'
-import verifyTokenRouter from './router/member/verifyToken'
+import signupRouter from './router/auth/signup'
+import signinRouter from './router/auth/signin'
+import accountSettingsRouter from './router/auth/account-settings'
+import forgotPasswordRouter from './router/auth/forgot-password'
+import verifyTokenRouter from './router/auth/verifyToken'
 import googleRouter from './router/oauth/google'
 
 import postRouter from './router/blog/posts'
@@ -40,7 +40,7 @@ app.use(async(ctx, next) => {
       ctx.throw(404)
     }
   } catch (err) {
-    // console.log(err.message)    //real error message
+    // console.log(err.message)  //real error message
     // console.log(err.status)   //status code
     // console.log(err.name)     //status code name
     ctx.status = err.status || 500
@@ -48,13 +48,20 @@ app.use(async(ctx, next) => {
       ctx.body = {
         status: 'error',
         message: err.message,
-        code: err.data.code
+        code: err.data.code,
+      }
+    } else if (err.status === 401) {
+      // JWT Error Catcher
+      ctx.body = {
+        status: 'error',
+        message: err.message,
+        code: 401004,
       }
     } else {
       ctx.body = {
         status: 'error',
         message: err.message,
-        code: -1
+        code: -1,
       }
     }
     if (ctx.status >= 500) {
@@ -92,11 +99,6 @@ app.use(convert(WebpackHotMiddleware(compiler, {
 app.use(serve(__dirname + '/../public'))
 app.use(convert(jwt({
   secret: process.env.JWT_SECRET
-  //credentialsRequired: false,
-  // getToken: function(req) {
-  //   console.log(req)
-  //   console.log('...............?')
-  // }
 }).unless({
   path: [
     '/v1/signup',
@@ -108,39 +110,29 @@ app.use(convert(jwt({
   ]
 })))
 
-//  /v1/signup
-app.use(signupRouter.routes())
-app.use(signupRouter.allowedMethods({
+app.use(signupRouter.routes()).use(signupRouter.allowedMethods({
   throw: true
 }))
-//  /v1/signin
-app.use(signinRouter.routes())
-app.use(signinRouter.allowedMethods({
+app.use(signinRouter.routes()).use(signinRouter.allowedMethods({
   throw: true
 }))
-app.use(accountSettingsRouter.routes())
-app.use(accountSettingsRouter.allowedMethods({
+app.use(accountSettingsRouter.routes()).use(accountSettingsRouter.allowedMethods({
   throw: true
 }))
-app.use(forgotPasswordRouter.routes())
-app.use(forgotPasswordRouter.allowedMethods({
+app.use(forgotPasswordRouter.routes()).use(forgotPasswordRouter.allowedMethods({
   throw: true
 }))
-app.use(verifyTokenRouter.routes())
-app.use(verifyTokenRouter.allowedMethods({
+app.use(verifyTokenRouter.routes()).use(verifyTokenRouter.allowedMethods({
   throw: true
 }))
-app.use(googleRouter.routes())
-app.use(googleRouter.allowedMethods({
+app.use(googleRouter.routes()).use(googleRouter.allowedMethods({
   throw: true
 }))
 
-app.use(postRouter.routes())
-app.use(postRouter.allowedMethods({
+app.use(postRouter.routes()).use(postRouter.allowedMethods({
   throw: true
 }))
-app.use(commentRouter.routes())
-app.use(commentRouter.allowedMethods({
+app.use(commentRouter.routes()).use(commentRouter.allowedMethods({
   throw: true
 }))
 

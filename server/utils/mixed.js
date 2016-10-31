@@ -19,7 +19,7 @@ export const getCleanPost = (post) => {
   return {
     id: p._id,
     author: getCleanUser(author),
-    subject: p.subject,
+    title: p.title,
     content: p.content,
     like_count: p.likeCount,
     dislike_count: p.dislikeCount,

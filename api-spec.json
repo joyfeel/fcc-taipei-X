@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "Meet API",
-        "description": "Move your app forward with the Meet API\n\n## API Success Code\n\nCode  | HTTP Code | Message\n----- | --------- | --------\n200001 | 200 | You can go to check your email\n200002 | 200 | Account validation success\n200003 | 200 | Signin success\n\n\n## API Error Code - 400\n\nError Code  | HTTP Code | Message\n------| --- | -----------------------------------\n401001 | 401 | Email or password is not valid\n401002 | 401 | Token is not valid or expired\n401003 | 401 | Email token is not valid or expired\n403001 | 403 | The email has already been registered in social account\n403002 | 403 | The email has already been registered\n404001 | 404 | Your email account is not activated\n404002 | 404 | We could not find your account\n422001 | 422 | Length of password must >= 6\n\n## API Error Code - 500\n\nError Code  | HTTP Code | Message\n------| --- | -----------------------------------    \n500001 | 500 | Bcrypt error\n500002 | 500 | Your data is bad and you should feel bad\n503001 | 503 | SMTP server unavailable to verify\n503002 | 503 | SMTP server unavailable to send\n",
+        "description": "Move your app forward with the Meet API\n\n## API Success Code\n\nCode  | HTTP Code | Message\n----- | --------- | --------\n200001 | 200 | You can go to check your email\n200002 | 200 | Account validation success\n200003 | 200 | Signin success\n200004 | 200 | Create a new post successfully\n\n\n## API Error Code - 400\n\nError Code  | HTTP Code | Message\n------| --- | -----------------------------------\n401001 | 401 | Email or password is not valid\n401002 | 401 | Token is not valid or expired\n401003 | 401 | Email token is not valid or expired\n401004 | 401 | No Authorization header found\n401004 | 401 | Invalid Token\n403001 | 403 | The email has already been registered in social account\n403002 | 403 | The email has already been registered\n404001 | 404 | Your email account is not activated\n404002 | 404 | We could not find your account\n422001 | 422 | Length of password must >= 6\n\n## API Error Code - 500\n\nError Code  | HTTP Code | Message\n------| --- | -----------------------------------    \n500001 | 500 | Bcrypt error\n500002 | 500 | Your data is bad and you should feel bad\n503001 | 503 | SMTP server unavailable to verify\n503002 | 503 | SMTP server unavailable to send\n\n ## API Error Code - Bonus\n \nError Code  | HTTP Code | Message\n------| --- | -----------------------------------    \n-1 | Unknow | Unknow\n",
         "version": "1.0.0"
     },
     "host": "localhost:3000",
@@ -11,6 +11,13 @@
         "http",
         "https"
     ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
     "consumes": [
         "application/json"
     ],
@@ -18,6 +25,42 @@
         "application/json"
     ],
     "paths": {
+        "/posts": {
+            "post": {
+                "summary": "Post a new article",
+                "description": "Post a new article",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Article information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PostRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/newPostResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/signup": {
             "post": {
                 "summary": "Signup a new account",
@@ -215,6 +258,94 @@
                 "created_time": {
                     "type": "string",
                     "format": "date"
+                },
+                "updated_time": {
+                    "type": "string",
+                    "format": "date"
+                }
+            }
+        },
+        "newPostResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "integer"
+                },
+                "post": {
+                    "$ref": "#/definitions/Post"
+                }
+            }
+        },
+        "Post": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "author": {
+                    "$ref": "#/definitions/author"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "like_count": {
+                    "type": "integer"
+                },
+                "dislike_count": {
+                    "type": "integer"
+                },
+                "comment": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "created_time": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "updated_time": {
+                    "type": "string",
+                    "format": "date"
+                }
+            }
+        },
+        "author": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "avatar": {
+                    "type": "string",
+                    "format": "byte"
+                },
+                "edit_nickname_time": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "created_time": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "updated_time": {
+                    "type": "string",
+                    "format": "date"
                 }
             }
         },
@@ -241,6 +372,17 @@
                 "email": {
                     "type": "string",
                     "format": "email"
+                }
+            }
+        },
+        "PostRequest": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
                 }
             }
         },

@@ -75,19 +75,4 @@ router.post('/',
   checkEmailStatus
 )
 
-// async function checkEmailStatus(ctx, next) {
-//   const nodemailerInfo = ctx.state.nodemailerInfo,
-//         user = getCleanUser(ctx.state.user)
-//
-//   if (nodemailerInfo.rejected.length === 0) {
-//     ctx.response.body = {
-//       results: 'Success',
-//       user,
-//       status: 'OK'
-//     }
-//   } else {
-//     throw Boom.badImplementation('Your data is bad and you should feel bad')
-//   }
-// }
-
 export default router

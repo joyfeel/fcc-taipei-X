@@ -29,7 +29,7 @@ router.get('/',
         throw Boom.unauthorized('Account is not valid or expired')
       }
       const user = getCleanUser(result)
-      ctx.response.body = {
+      ctx.body = {
         status: 'success',
         auth: {
           token: jwtToken,

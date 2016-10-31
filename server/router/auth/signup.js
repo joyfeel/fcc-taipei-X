@@ -101,8 +101,9 @@ router.get('/',
         throw Boom.create(401, 'Email token is not valid or expired', { code: 401003 })
       }
       const user = getCleanUser(result)
-      const accessToken = await getToken['JWT'](email)
-      ctx.response.body = {
+      const userId = result._id
+      const accessToken = await getToken['JWT']({ userId, email })
+      ctx.body = {
         status: 'success',
         auth: {
           token: accessToken,

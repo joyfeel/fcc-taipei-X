@@ -4,7 +4,8 @@ import mail from './env/mail'
 import db from './env/db'
 import auth from './env/auth'
 
-const env = process.env.NODE_ENV || 'development'
+//const env = process.env.NODE_ENV || 'development'
+const env = 'development'
 const config = require(`./env/${env}`).default
 
 export default {

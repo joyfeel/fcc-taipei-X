@@ -38,8 +38,9 @@ router.post('/',
       if (!isPassword) {
         throw Boom.create(401, 'Email or password is not valid', { code: 401001 })
       }
-      const token = getToken['JWT'](email)
-      ctx.response.body = {
+      const userId = user._id
+      const token = getToken['JWT']({ userId, email })
+      ctx.body = {
         status: 'success',
         auth: {
           token,

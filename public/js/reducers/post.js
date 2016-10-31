@@ -3,9 +3,7 @@ import codeTable from '../utils/apicode'
 
 const initialState = {
   isFetching: false,
-  newPost: {
-    post: null,
-  },
+  newPost: null,
 }
 
 const post = (state = initialState, action) => {
@@ -23,9 +21,7 @@ const post = (state = initialState, action) => {
     case ActionTypes.CREATE_POST_SUCCESS:
       return {
         ...state,
-        newPost: {
-          post: action.response.post,
-        },
+        newPost: action.response.post,
         isFetching: false,
       }
     default:

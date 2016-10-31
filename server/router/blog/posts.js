@@ -4,6 +4,7 @@ import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
 import Post from '../../models/posts'
 import { getCleanPost } from '../../utils/mixed'
+import { bearerToToken, verifyToken } from '../../utils/auth'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
@@ -12,18 +13,25 @@ const router = new Router({
 
 router.post('/',
   validate({
-    'author:body': ['require', 'isMongoId', 'authorId is required or not a mongo objectId'],
-    'subject:body': ['require', 'subject is required or not valid'],
-    'content:body': ['require', 'content is required or not valid']
+    'title:body': ['require', 'title is required or not valid'],
+    'content:body': ['require', 'content is required or not valid'],
   }),
   async(ctx, next) => {
     try {
-      const post = new Post(ctx.request.body)
+      const { authorization } = ctx.request.header
+      const token = bearerToToken(authorization)
+      const { userId } = await verifyToken(token)
+      const article = {
+        author: userId,
+        ...ctx.request.body,
+      }
+      const post = new Post(article)
       await post.save()
       await post.populate('author').execPopulate()
-      ctx.response.body = {
+      ctx.body = {
+        code: 200004,
         status: 'success',
-        post: getCleanPost(post)
+        post: getCleanPost(post),
       }
     } catch (err) {
       if (err.output.statusCode) {
@@ -39,9 +47,9 @@ router.get('/',
   async(ctx, next) => {
     try {
       const posts = await Post.find().deepPopulate('author comments.author').exec()
-      ctx.response.body = {
+      ctx.body = {
         status: 'success',
-        posts: posts.map(post => getCleanPost(post))
+        posts: posts.map(post => getCleanPost(post)),
       }
     } catch (err) {
       if (err.output.statusCode) {
