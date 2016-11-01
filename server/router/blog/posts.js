@@ -21,6 +21,9 @@ router.post('/',
       const { authorization } = ctx.request.header
       const token = bearerToToken(authorization)
       const { userId } = await verifyToken(token)
+      if (!userId) {
+        throw Boom.create(401, 'Token is not valid or expired', { code: 401002 })
+      }
       const article = {
         author: userId,
         ...ctx.request.body,
@@ -44,9 +47,12 @@ router.post('/',
 )
 
 router.get('/',
+  validate({
+    'page:query': ['isNumeric', 'Invalid page']
+  }),
   async(ctx, next) => {
     try {
-      const posts = await Post.find().deepPopulate('author comments.author').exec()
+      const posts = await Post.find().skip(1).limit(10).sort({ createdAt: -1 }).deepPopulate('author comments.author').exec()
       ctx.body = {
         status: 'success',
         posts: posts.map(post => getCleanPost(post)),

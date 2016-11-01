@@ -38,7 +38,7 @@ class App extends Component {
 
     return (
       <div>
-        <Header filter={filter}/>
+        <Header filter={filter} />
         <div className={wrapperClasses}>
           {this.props.children}
         </div>
@@ -50,7 +50,7 @@ class App extends Component {
             expandPostForm={this.expandPostForm}
             shrinkPostForm={this.shrinkPostForm}
           />
-        : null }
+        : null}
       </div>
     )
   }

@@ -4,6 +4,7 @@ import codeTable from '../utils/apicode'
 const initialState = {
   isFetching: false,
   newPost: null,
+  postList: [],
 }
 
 const post = (state = initialState, action) => {
@@ -22,6 +23,10 @@ const post = (state = initialState, action) => {
       return {
         ...state,
         newPost: action.response.post,
+        postList: [
+          action.response.post,
+          ...state.postList
+        ],
         isFetching: false,
       }
     default:
