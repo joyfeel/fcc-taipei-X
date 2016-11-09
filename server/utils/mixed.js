@@ -57,17 +57,12 @@ export const encodeRemoteImg = (picture) => {
 }
 
 export const canPostArticle = async (userId) => {
-  //const result = await User.findOne({ _id: userId, createdPostLimit: { $lt: new Date() } })
-  //const result = await User.findOne({ _id: userId }).where('createdPostLimit').lt(new Date())
   const findUser = await User.findOne({ _id: userId })
   const canPost = await User.findOne({ _id: userId }).where('createdPostLimit').lt(new Date())
   return {
     findUser,
-    canPost
+    canPost,
   }
-}
-
-export const canPostArticle2 = async (userId) => {
 }
 
 export const checkAuth = async (authorization) => {

@@ -63,7 +63,6 @@ app.use(async(ctx, next) => {
         code: 401004,
       }
     } else {
-      console.log('cccccccccccc')
       ctx.body = {
         status: 'error',
         message: err.message,
