@@ -6,12 +6,12 @@ const Schema = mongoose.Schema
 const CommentSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   content: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 CommentSchema.plugin(timestamps)

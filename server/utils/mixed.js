@@ -1,4 +1,7 @@
 import { encode } from 'node-base64-image'
+import User from '../models/users'
+import { bearerToToken, verifyToken } from './auth'
+import Config from '../config'
 
 export const getCleanUser = (user) => {
   const u = user.toObject()
@@ -8,8 +11,9 @@ export const getCleanUser = (user) => {
     email: u.email,
     avatar: u.avatar,
     edit_nickname_time: u.nicknameChangeLimit,
+    create_post_time: u.createdPostLimit,
     created_time: u.createdAt,
-    updated_time: u.updatedAt
+    updated_time: u.updatedAt,
   }
 }
 
@@ -25,7 +29,7 @@ export const getCleanPost = (post) => {
     dislike_count: p.dislikeCount,
     comments: comments.map(comment => getCleanComment(comment)),
     created_time: p.createdAt,
-    updated_time: p.updatedAt
+    updated_time: p.updatedAt,
   }
 }
 
@@ -37,7 +41,7 @@ export const getCleanComment = (comment) => {
     author: getCleanUser(author),
     content: c.content,
     created_time: c.createdAt,
-    updated_time: c.updatedAt
+    updated_time: c.updatedAt,
   }
 }
 
@@ -50,4 +54,23 @@ export const encodeRemoteImg = (picture) => {
       resolve(`data:image/jpeg;base64,${img}`)
     })
   })
+}
+
+export const canPostArticle = async (userId) => {
+  //const result = await User.findOne({ _id: userId, createdPostLimit: { $lt: new Date() } })
+  //const result = await User.findOne({ _id: userId }).where('createdPostLimit').lt(new Date())
+  const findUser = await User.findOne({ _id: userId })
+  const canPost = await User.findOne({ _id: userId }).where('createdPostLimit').lt(new Date())
+  return {
+    findUser,
+    canPost
+  }
+}
+
+export const canPostArticle2 = async (userId) => {
+}
+
+export const checkAuth = async (authorization) => {
+  const token = bearerToToken(authorization)
+  return await verifyToken(token)
 }

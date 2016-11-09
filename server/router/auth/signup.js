@@ -20,7 +20,7 @@ import User from '../../models/users'
 */
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
-  prefix: '/v1/signup'
+  prefix: '/v1/signup',
 })
 
 router.post('/',
@@ -83,7 +83,7 @@ router.post('/',
 //Active the account, and verify the email token
 router.get('/',
   validate({
-    'token:query': ['require', 'token is required']
+    'token:query': ['require', 'token is required'],
   }),
   async(ctx, next) => {
     try {

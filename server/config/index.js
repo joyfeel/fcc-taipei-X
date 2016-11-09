@@ -14,5 +14,5 @@ export default {
   ...jwt,
   ...mail,
   ...db,
-  ...auth
+  ...auth,
 }

@@ -10,12 +10,12 @@ import _ from 'lodash'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
-  prefix: '/v1/forgot_password'
+  prefix: '/v1/forgot_password',
 })
 
 router.post('/',
   validate({
-    'email:body': ['require', 'isEmail', 'Format of email address is wrong']
+    'email:body': ['require', 'isEmail', 'Format of email address is wrong'],
   }),
   async(ctx, next) => {
     try {

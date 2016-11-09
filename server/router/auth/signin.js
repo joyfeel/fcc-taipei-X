@@ -9,13 +9,13 @@ import { getCleanUser } from '../../utils/mixed'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
-  prefix: '/v1/signin'
+  prefix: '/v1/signin',
 })
 
 router.post('/',
   validate({
     'email:body': ['require', 'isEmail', 'Format of email address is wrong'],
-    'password:body': ['require', 'Password is required']
+    'password:body': ['require', 'Password is required'],
   }),
   async(ctx, next) => {
     try {
@@ -47,7 +47,7 @@ router.post('/',
           ...getCleanUser(user)
         },
         code: 200003,
-        message: 'Signin success'
+        message: 'Signin success',
       }
     } catch (err) {
       if (err.output.statusCode) {

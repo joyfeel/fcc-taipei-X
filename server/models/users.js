@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import timestamps from 'mongoose-timestamp'
 import bcrypt from 'bcryptjs-then'
 import Boom from 'boom'
+import Config from '../config'
 
 const SALT_WORK_FACTOR = 10
 const Schema = mongoose.Schema
@@ -11,17 +12,16 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     index: {
-      unique: true
-    }
+      unique: true,
+    },
   },
   hashedPassword: {
-    type: String
+    type: String,
   },
   nickname: {
     type: String,
-    required: true
+    required: true,
   },
-  // http://duri.me/
   avatar: {
     type: String,
     required: true,
@@ -29,44 +29,45 @@ const UserSchema = new Schema({
   },
   isEmailActived: {
     type: Boolean,
-    default: false
+    default: false,
   },
   verifyEmailToken: {
-    type: String
+    type: String,
   },
   isEmailDeleted: {
     type: Boolean,
-    default: false
+    default: false,
   },
   nicknameChangeLimit: {
     type: Date,
-    default: Date.now() + (1000 * 120)
-    //ms
-    //default: Date.now() + 3600000 * 24 * 3
+    default: Config.user.nicknameChangeLimit(),
+  },
+  createdPostLimit: {
+    type: Date,
+    default: Config.user.createdPostLimit(),
   },
   social: {
     type: Boolean,
-    default: false
+    default: false,
   },
   facebook: {
-    type: String
+    type: String,
   },
   github: {
-    type: String
+    type: String,
   },
   twitter: {
-    type: String
+    type: String,
   },
   googleAccessToken: {
-    type: String
+    type: String,
   },
   googleId: {
-    type: String
-  }
+    type: String,
+  },
 })
 
 UserSchema.plugin(timestamps)
-
 UserSchema.path('nickname').required(true, 'nickname is required')
 UserSchema.path('email').required(true, 'email is required')
 
@@ -79,11 +80,8 @@ UserSchema.virtual('password')
   })
 
 UserSchema.pre('validate', function (next) {
-  let err
-
   if (this.password) {
     if (this.password.length < 6) {
-      //err = Boom.badData('Length of password must >= 6')
       const err = Boom.create(422, 'Length of password must >= 6', { code: 422001 })
       next(err)
     }

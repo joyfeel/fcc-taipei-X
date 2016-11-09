@@ -26,6 +26,7 @@ import googleRouter from './router/oauth/google'
 
 import postRouter from './router/blog/posts'
 import commentRouter from './router/blog/comments'
+import checkPostLimitRouter from './router/blog/checkPostLimit'
 
 import './config/database'
 import Config from './config'
@@ -45,10 +46,14 @@ app.use(async(ctx, next) => {
     // console.log(err.name)     //status code name
     ctx.status = err.status || 500
     if (err.data && err.data.code) {
+      const code = err.data.code
+      delete err.data.code
+      //const data = err.data
       ctx.body = {
         status: 'error',
         message: err.message,
-        code: err.data.code,
+        code,
+        ...err.data,
       }
     } else if (err.status === 401) {
       // JWT Error Catcher
@@ -58,6 +63,7 @@ app.use(async(ctx, next) => {
         code: 401004,
       }
     } else {
+      console.log('cccccccccccc')
       ctx.body = {
         status: 'error',
         message: err.message,
@@ -133,6 +139,9 @@ app.use(postRouter.routes()).use(postRouter.allowedMethods({
   throw: true
 }))
 app.use(commentRouter.routes()).use(commentRouter.allowedMethods({
+  throw: true
+}))
+app.use(checkPostLimitRouter.routes()).use(checkPostLimitRouter.allowedMethods({
   throw: true
 }))
 

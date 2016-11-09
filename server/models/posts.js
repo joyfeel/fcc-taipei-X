@@ -7,28 +7,28 @@ const Schema = mongoose.Schema
 const PostSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   comments: [{
     type: Schema.Types.ObjectId,
-    ref: 'Comment'
+    ref: 'Comment',
   }],
   title: {
     type: String,
-    required: true
+    required: true,
   },
   content: {
     type: String,
-    required: true
+    required: true,
   },
   likeCount: {
     type: Number,
-    default: 0
+    default: 0,
   },
   dislikeCount: {
     type: Number,
-    default: 0
-  }
+    default: 0,
+  },
 })
 
 PostSchema.plugin(timestamps)

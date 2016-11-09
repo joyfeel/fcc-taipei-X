@@ -15,7 +15,7 @@ import _ from 'lodash'
 */
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
-  prefix: '/v1/account_settings'
+  prefix: '/v1/account_settings',
 })
 
 router.post('/',
@@ -23,7 +23,7 @@ router.post('/',
     'nickname:body': ['require', 'isAlphanumeric', 'nickname is required or not alphanumeric'],
     'email:body': ['require', 'isEmail', 'email is required or not valid'],
     'password:body': ['require', 'password is required'],
-    'photo:body': ['require', 'isDataURI', 'photo is required or not dataURI']
+    'photo:body': ['require', 'isDataURI', 'photo is required or not dataURI'],
   }),
   async(ctx, next) => {
     try {

@@ -12,12 +12,12 @@ import Config from '../../config'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
-  prefix: '/v1/auth/google'
+  prefix: '/v1/auth/google',
 })
 
 router.post('/',
   validate({
-    'code:body': ['require', 'code is required']
+    'code:body': ['require', 'code is required'],
   }),
   async(ctx, next) => {
     try {

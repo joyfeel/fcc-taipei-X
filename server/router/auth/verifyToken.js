@@ -9,12 +9,12 @@ import { getCleanUser } from '../../utils/mixed'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
-  prefix: '/v1/verifyToken'
+  prefix: '/v1/verifyToken',
 })
 
 router.get('/',
   validate({
-    'token:query': ['require', 'token is required']
+    'token:query': ['require', 'token is required'],
   }),
   async(ctx, next) => {
     try {

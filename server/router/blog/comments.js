@@ -8,7 +8,7 @@ import { getCleanComment } from '../../utils/mixed'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
-  prefix: '/v1/comments'
+  prefix: '/v1/comments',
 })
 
 router.post('/',
