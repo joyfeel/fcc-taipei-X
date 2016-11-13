@@ -38,13 +38,14 @@ router.post('/',
         author: userId,
         ...ctx.request.body,
       }
-      const post = new Post(article)
-      await post.save()
-      await post.populate('author').execPopulate()
+
       _.extend(canPost, {
         createdPostLimit: Config.user.createdPostLimit(),
       })
       await canPost.save()
+      const post = new Post(article)
+      await post.save()
+      await post.populate('author').execPopulate()
       ctx.body = {
         code: 200004,
         status: 'success',
