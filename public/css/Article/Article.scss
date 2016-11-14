@@ -8,7 +8,7 @@
 
 .main .article {
 	background-color: $bgContain;
-	box-shadow: $bsh;
+	box-shadow: 0 0 0 1px $border;
 	border-radius: 6px;
 	position: relative;
 	margin-bottom: 10px;
@@ -33,16 +33,14 @@
 			max-width: calc(100% - 60px - 40px);
 			height: 20px;
 			line-height: 30px;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
+			word-spacing: -4px;
 		&:hover {
 			color: $active2;
 		}
 	}
 	> .article-time {
 			position: absolute;
-			top: 35px;
+			top: 38px;
 			left: 59px;
 			color: $inActive;
 			font-size: $xsFz;
@@ -50,17 +48,21 @@
 	> .more-2 {
 			@extend %icon;
 			display: block;
-			width: 40px;
-			height: 40px;
-			line-height: 40px;
+			width: 26px;
+			height: 26px;
+			line-height: 26px;
 			color: $hightLight;
 			cursor: pointer;
-			text-align: right;
+			text-align: center;
 			font-size: 26px;
 			position: absolute;
 			right: 0;
-			top: 4px;
+			top: 11px;
 			transition: color .3s;
+		// &:before {
+		// 	font-size: 18px;
+		// }
+
 		&:hover {
 			color: $active1;
 		}
@@ -72,13 +74,17 @@
 			font-size: $mdFz;
 			font-weight: bold;
 			word-break: break-all;
+			word-spacing: -4px;
 	}
 	> .article-content {
 			width: calc(100% - 15px);
-			margin: 0 5px 0px 10px;
+			margin: 5px 5px 0px 10px;
 			padding-bottom: 5px;
-			font-size: $ssFz;
+			font-size: $smFz;
 			color: $font;
+			word-spacing: -1px;
+			line-height: 20px;
+			word-break: break-all;
 	}
 	> .article-analysis {
 			margin: 5px 10px 0;
@@ -103,7 +109,17 @@
 		border-top-color: $active1;
 		border-bottom-color: $active1;
 	}
-}
+
+	> .article-menu {
+			width: 100px;
+			box-shadow: $bsh;
+			border-radius: 6px;
+			position: absolute;
+			top: 35px;
+			right: 11px;
+			background-color: $bgContain;
+	}
+}//.article
 
 .article-analysis {
 	> i {
@@ -138,7 +154,72 @@
 		margin-right: 12px;
 	}
 
-	.active {
+	.clicked {
 		color: $active2;
+		&:hover {
+			color: $active2;
+		}
+	}
+}
+
+.article-menu {
+
+	> i {
+		cursor: pointer;
+		display: block;
+		height: 35px;
+		line-height: 37px;
+		color: $active1;
+		font-size: $smFz;
+		font-style: normal;
+		color: $inActive;
+		transition: color, background-color  .3s;
+
+		&:first-child {
+			border-radius: 6px 6px 0 0;
+		}
+
+		&:last-child {
+			border-radius: 0 0 6px 6px;
+		}
+
+		&:before {
+			@extend %icon;
+			font-size: $ssFz;
+			margin: 0 6px 0 5px;
+			color: $active1;
+		}
+	}
+
+	> i:hover {
+			background-color: $bgBody;
+
+		&:before {
+			color: $active2;
+		}
+	}
+
+	> .post-2:before {
+			font-size: $ssFz;
+	}
+	> .cancel-3:before {
+			font-size: $xsFz;
+	}
+	> .bookmark-1:before {
+			font-size: $xsFz;
+	}
+}
+
+
+@media (max-width: 768px) {
+	.article > .article-time {
+		top: 40px;
+	}
+	.article > .more-2 {
+		width: 40px;
+		height: 40px;
+		line-height: 40px;
+		right: 0;
+		top: 4px;
 	}
 }

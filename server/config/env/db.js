@@ -4,9 +4,9 @@ export default {
     nicknameChangeLimit: () => {
       return Date.now() + (1000 * 45)
     },
-    createdPostTime: `3 minutes`,
+    createdPostTime: `2 minutes`,
     createdPostLimit: () => {
-      return Date.now() + (1000 * 60 * 3)
+      return Date.now() + (1000 * 1.5 * 60)
     },
     loadPostCount() {
       return 10

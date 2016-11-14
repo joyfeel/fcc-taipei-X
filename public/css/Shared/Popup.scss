@@ -139,7 +139,8 @@
     font-size: 50px;
     top: 0px;
     left: -74%;
-
+    font-weight: lighter;
+    font-style: normal;
     &:after {
       content: 'Enter your e-mail:';
       position: absolute;
@@ -147,10 +148,11 @@
       left: 77%;
       width: 155px;
       font-family: 'Lekton', san-serif;
-      font-weight: normal;
       color: #111;
       font-size: $smFz;
       text-shadow: none;
+      font-weight: lighter;
+      font-style: normal;
     }
   }
 }
