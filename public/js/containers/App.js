@@ -7,35 +7,45 @@ import Loading from '../components/Shared/Loading'
 import Popup from '../components/Shared/Popup'
 import PostForm from '../components/PostForm/PostForm'
 import * as AuthActions from '../actions/auth'
+import * as PostActions from '../actions/post'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      filter: false
+      filter: false,
     }
-    this.expandPostForm = this.expandPostForm.bind(this)
-    this.shrinkPostForm = this.shrinkPostForm.bind(this)
+    this.setFilter = this.setFilter.bind(this)
   }
-  componentDidMount() {
-    this.props.auth.refreshTokenRequest()
+  setFilter(value) {
+    this.setState({ filter: value })
   }
-  expandPostForm() {
-    this.setState({ filter: true })
+  renderPopup() {
+    const { popupMsg, isPopup } = this.props
+    return (
+      <Popup
+        popupMsg={popupMsg}
+        isPopup={isPopup}
+      />
+    )
   }
-  shrinkPostForm() {
-    this.setState({ filter: false })
+  renderPostForm() {
+    const { filter } = this.state
+    return (
+      <PostForm
+        filter={filter}
+        setFilter={this.setFilter}
+      />
+    )
   }
   render() {
-    const { globalFetching, isPopup, clearPopupMsg, popupMsg, profile } = this.props
+    const { globalFetching, isPopup, clearPopupMsg, profile } = this.props
     const { filter } = this.state
-
     const wrapperClasses = cx({
       'wrapper': true,
       'mask': globalFetching || isPopup || filter,
       'login': profile.token,
     })
-
     return (
       <div>
         <Header filter={filter} />
@@ -43,21 +53,19 @@ class App extends Component {
           {this.props.children}
         </div>
         {globalFetching ? <Loading /> : null }
-        {isPopup ? <Popup popupMsg={popupMsg} isPopup={isPopup} /> : null }
-        {profile.token ?
-          <PostForm
-            filter={filter}
-            expandPostForm={this.expandPostForm}
-            shrinkPostForm={this.shrinkPostForm}
-          />
-        : null}
+        {isPopup ? this.renderPopup() : null }
+        {profile.token ? this.renderPostForm(): null}
       </div>
     )
+  }
+  componentDidMount() {
+    this.props.auth.refreshTokenRequest()
   }
 }
 
 const mapStateToProps = (state) => {
   const { isPopup, popupMsg, profile } = state.auth
+  const { newPost } = state.post
   return {
     globalFetching: state.auth.isFetching || state.post.isFetching,
     isPopup,
