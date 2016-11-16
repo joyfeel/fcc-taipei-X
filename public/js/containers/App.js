@@ -16,7 +16,6 @@ class App extends Component {
     this.state = {
       filter: false,
       postForm: {
-        local_post_time: 0,
         post_title: false,
         post_content: false,
         bolder: false,
@@ -27,15 +26,12 @@ class App extends Component {
     this.shrinkPostForm = this.shrinkPostForm.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
-  componentDidMount() {
-    this.props.auth.refreshTokenRequest()
-  }
 
   postForm(title, e, postForm) {
     const txt = e.target.value.trim()
     const len = txt.length
-    const { post_title, post_content } = this.state.postForm
-
+    const { post_title, post_content, placeHolder } = this.state.postForm
+    const { filter } = this.state
     this.setState({
       postForm: {
         ...postForm,
@@ -66,46 +62,18 @@ class App extends Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    const { create_post_time } = this.props.profile
-    const timeParse = Date.parse(create_post_time)
-    const { postForm } = this.state
-    const { local_post_time } = this.state.postForm
-    const  threeMins = 1000*60*3
-
-
-
-    if(  timeParse > local_post_time ) {
-      const limited = Date.now()
-      // console.log(limited)
-      this.setState({
-        filter: false,
-        postForm: {
-          ...postForm,
-          local_post_time: limited + threeMins,
-        }
-      })
-
+      this.setState({ filter: false })
       const title = e.target.post_title.value.trim()
       const content = e.target.post_content.value.trim()
       this.props.post.createPostRequest({ title, content })
       e.target.post_title.value = ''
       e.target.post_content.value = ''
-
-    } else {
-        return false
-    }
-
-
-
-
   }
 
 
   render() {
     const { globalFetching, isPopup, clearPopupMsg, popupMsg, profile } = this.props
     const { filter, postForm } = this.state
-
-    console.log(this.state.postForm.local_post_time)
     const wrapperClasses = cx({
       'wrapper': true,
       'mask': globalFetching || isPopup || filter,
@@ -132,10 +100,15 @@ class App extends Component {
       </div>
     )
   }
+
+  componentDidMount() {
+    this.props.auth.refreshTokenRequest()
+  }
 }
 
 const mapStateToProps = (state) => {
   const { isPopup, popupMsg, profile } = state.auth
+  const { newPost } = state.post
   return {
     globalFetching: state.auth.isFetching || state.post.isFetching,
     isPopup,

@@ -1,3 +1,3 @@
-// export const countdown = (date) {
-//
-// }
+export const countdown = (date) => {
+  console.log(date)
+}
