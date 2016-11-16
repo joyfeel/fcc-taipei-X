@@ -7,29 +7,73 @@ import Loading from '../components/Shared/Loading'
 import Popup from '../components/Shared/Popup'
 import PostForm from '../components/PostForm/PostForm'
 import * as AuthActions from '../actions/auth'
+import * as PostActions from '../actions/post'
+// import countdown from '../utils/time'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      filter: false
+      filter: false,
+      postForm: {
+        post_title: false,
+        post_content: false,
+        bolder: false,
+        submit: true,
+      }
     }
-    this.expandPostForm = this.expandPostForm.bind(this)
+    this.detectPostForm = this.detectPostForm.bind(this)
     this.shrinkPostForm = this.shrinkPostForm.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
-  componentDidMount() {
-    this.props.auth.refreshTokenRequest()
+
+  postForm(title, e, postForm) {
+    const txt = e.target.value.trim()
+    const len = txt.length
+    const { post_title, post_content, placeHolder } = this.state.postForm
+    const { filter } = this.state
+    this.setState({
+      postForm: {
+        ...postForm,
+        bolder: title > 0 ? true : false,
+        submit: (post_title && post_content) ? false : true,
+        [e.target.name]: len > 0 ? true : false,
+      }
+    })
   }
-  expandPostForm() {
+  detectPostForm(e) {
+    const { postForm } = this.state
+
+    switch (e.target.name) {
+      case 'post_title':
+        const title1 = e.target.value.length
+        this.postForm(title1, e, postForm)
+      break;
+      case 'post_content':
+        const title2 = e.target.previousSibling.value.length
+        this.postForm(title2, e, postForm)
+      break;
+    }// title1, title2 for detecting post-title-input bolder effect
     this.setState({ filter: true })
   }
   shrinkPostForm() {
     this.setState({ filter: false })
   }
+
+  handleSubmit(e) {
+    e.preventDefault()
+      this.setState({ filter: false })
+      const title = e.target.post_title.value.trim()
+      const content = e.target.post_content.value.trim()
+      this.props.post.createPostRequest({ title, content })
+      e.target.post_title.value = ''
+      e.target.post_content.value = ''
+  }
+
+
   render() {
     const { globalFetching, isPopup, clearPopupMsg, popupMsg, profile } = this.props
-    const { filter } = this.state
-
+    const { filter, postForm } = this.state
     const wrapperClasses = cx({
       'wrapper': true,
       'mask': globalFetching || isPopup || filter,
@@ -47,17 +91,24 @@ class App extends Component {
         {profile.token ?
           <PostForm
             filter={filter}
-            expandPostForm={this.expandPostForm}
+            detectPostForm={this.detectPostForm}
             shrinkPostForm={this.shrinkPostForm}
+            postForm={postForm}
+            handleSubmit={this.handleSubmit}
           />
         : null}
       </div>
     )
   }
+
+  componentDidMount() {
+    this.props.auth.refreshTokenRequest()
+  }
 }
 
 const mapStateToProps = (state) => {
   const { isPopup, popupMsg, profile } = state.auth
+  const { newPost } = state.post
   return {
     globalFetching: state.auth.isFetching || state.post.isFetching,
     isPopup,
@@ -68,6 +119,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     auth: bindActionCreators(AuthActions, dispatch),
+    post: bindActionCreators(PostActions, dispatch),
   }
 }
 
