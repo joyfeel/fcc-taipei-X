@@ -21,51 +21,68 @@ const {
 function forwardTo (location) {
   browserHistory.push(location)
 }
+/*
+function* fetchEntity(entity, apiFn, id, url) {
+  yield put( entity.request(id) )
+  const {response, error} = yield call(apiFn, url || id)
+  if(response)
+    yield put( entity.success(id, response) )
+  else
+    yield put( entity.failure(id, error) )
+}
+*/
+
+// function* fetchEntity(entity, apiFn, id, url) {
+//   yield put(sendingRequest())
+//   yield put(cancelRequest())
+// }
+//
+
 
 /**************************************************************************/
 /******************************* Auth *************************************/
 /**************************************************************************/
-function* signInFlow({ formData }) {
-  if (auth.loggedIn()) {
-    return
-  }
-  yield put(sendingRequest())
-  try {
-    const response = yield call(auth.login, formData)
-    if (response && response.auth && response.auth.token) {
-      yield call(auth.setToken, response.auth.token)
-      yield put(signInSuccess(response))
-      forwardTo('/')
-    }
-  } catch (error) {
-    yield put(signInFailure(error))
-  }
-  yield put(cancelRequest())
-}
-export function* watchSignInFlow() {
-  yield* takeEvery(AuthActions.SIGNIN_REQUEST, signInFlow)
-}
+// function* signInFlow({ formData }) {
+//   if (auth.loggedIn()) {
+//     return
+//   }
+//   yield put(sendingRequest())
+//   try {
+//     const response = yield call(auth.login, formData)
+//     if (response && response.auth && response.auth.token) {
+//       yield call(auth.setToken, response.auth.token)
+//       yield put(signInSuccess(response))
+//       forwardTo('/')
+//     }
+//   } catch (error) {
+//     yield put(signInFailure(error))
+//   }
+//   yield put(cancelRequest())
+// }
+// export function* watchSignInFlow() {
+//   yield* takeEvery(AuthActions.SIGNIN_REQUEST, signInFlow)
+// }
 
-function* refreshFlow() {
-  if (!auth.loggedIn()) {
-    return
-  }
-  yield put(sendingRequest())
-  try {
-    const response = yield call(auth.verifyAccessToken)
-    if (response && response.auth && response.auth.token) {
-      yield call(auth.setToken, response.auth.token)
-      yield put(refreshTokenSuccess(response))
-    }
-  } catch (error) {
-    yield put(refreshTokenFailure(error))
-    yield call(auth.logout)
-  }
-  yield put(cancelRequest())
-}
-export function* watchRefreshFlow() {
-  yield* takeEvery(AuthActions.REFRESH_TOKEN_REQUEST, refreshFlow)
-}
+// function* refreshFlow() {
+//   if (!auth.loggedIn()) {
+//     return
+//   }
+//   yield put(sendingRequest())
+//   try {
+//     const response = yield call(auth.verifyAccessToken)
+//     if (response && response.auth && response.auth.token) {
+//       yield call(auth.setToken, response.auth.token)
+//       yield put(refreshTokenSuccess(response))
+//     }
+//   } catch (error) {
+//     yield put(refreshTokenFailure(error))
+//     yield call(auth.logout)
+//   }
+//   yield put(cancelRequest())
+// }
+// export function* watchRefreshFlow() {
+//   yield* takeEvery(AuthActions.REFRESH_TOKEN_REQUEST, refreshFlow)
+// }
 
 function* logoutFlow() {
   yield put(sendingRequest())

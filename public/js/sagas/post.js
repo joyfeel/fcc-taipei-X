@@ -5,7 +5,6 @@ import * as CombineActions from '../actions/combine'
 import postAPI from '../utils/postAPI'
 
 const {
-  //sendingPostRequest, cancelPostRequest,
   createPostSuccess, createPostFailure,
 } = PostActions
 
@@ -14,7 +13,6 @@ const {
 } = CombineActions
 
 function* createPostFlow({ post }) {
-  //yield put(sendingPostRequest())
   yield put(sendingRequest())
   try {
     const response = yield call(postAPI.createPost, post)

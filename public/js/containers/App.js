@@ -8,6 +8,7 @@ import Popup from '../components/Shared/Popup'
 import PostForm from '../components/PostForm/PostForm'
 import * as AuthActions from '../actions/auth'
 import * as PostActions from '../actions/post'
+import auth from '../utils/auth'
 
 class App extends Component {
   constructor(props) {
@@ -59,6 +60,9 @@ class App extends Component {
     )
   }
   componentDidMount() {
+    if (!auth.loggedIn()) {
+      return
+    }
     this.props.auth.refreshTokenRequest()
   }
 }
@@ -69,7 +73,6 @@ const mapStateToProps = (state) => {
   const { newPost } = state.post
   return {
     isFetching,
-    //globalFetching: state.auth.isFetching || state.post.isFetching,
     isPopup,
     popupMsg,
     profile,

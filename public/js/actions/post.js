@@ -19,3 +19,18 @@ export const createPostFailure = (error) => {
     error
   }
 }
+
+export const GET_CURRENT_POST_SUCCESS = 'GET_CURRENT_POST_SUCCESS'
+export const GET_CURRENT_POST_FAILURE = 'GET_CURRENT_POST_FAILURE'
+export const getCurrentPostSuccess = (response) => {
+  return {
+    type: GET_CURRENT_POST_SUCCESS,
+    response
+  }
+}
+export const getCurrentPostFailure = (error) => {
+  return {
+    type: GET_CURRENT_POST_FAILURE,
+    error
+  }
+}
