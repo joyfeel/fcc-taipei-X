@@ -39,11 +39,11 @@ class App extends Component {
     )
   }
   render() {
-    const { globalFetching, isPopup, clearPopupMsg, profile } = this.props
+    const { isFetching, isPopup, clearPopupMsg, profile } = this.props
     const { filter } = this.state
     const wrapperClasses = cx({
       'wrapper': true,
-      'mask': globalFetching || isPopup || filter,
+      'mask': isFetching || isPopup || filter,
       'login': profile.token,
     })
     return (
@@ -52,7 +52,7 @@ class App extends Component {
         <div className={wrapperClasses}>
           {this.props.children}
         </div>
-        {globalFetching ? <Loading /> : null }
+        {isFetching ? <Loading /> : null }
         {isPopup ? this.renderPopup() : null }
         {profile.token ? this.renderPostForm(): null}
       </div>
@@ -65,9 +65,11 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   const { isPopup, popupMsg, profile } = state.auth
+  const { isFetching } = state.combine
   const { newPost } = state.post
   return {
-    globalFetching: state.auth.isFetching || state.post.isFetching,
+    isFetching,
+    //globalFetching: state.auth.isFetching || state.post.isFetching,
     isPopup,
     popupMsg,
     profile,

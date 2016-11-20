@@ -3,9 +3,9 @@ import { call, put } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
 import auth from '../utils/auth'
 import * as AuthActions from '../actions/auth'
+import * as CombineActions from '../actions/combine'
 
 const {
-  sendingAuthRequest, cancelAuthRequest,
   signInSuccess, signInFailure,
   logoutNormal,
   refreshTokenSuccess, refreshTokenFailure,
@@ -13,6 +13,10 @@ const {
   signUpSuccess, signUpFailure,
   forgetPSSuccess, forgetPSFailure
 } = AuthActions
+
+const {
+  sendingRequest, cancelRequest
+} = CombineActions
 
 function forwardTo (location) {
   browserHistory.push(location)
@@ -25,19 +29,18 @@ function* signInFlow({ formData }) {
   if (auth.loggedIn()) {
     return
   }
-  yield put(sendingAuthRequest())
+  yield put(sendingRequest())
   try {
     const response = yield call(auth.login, formData)
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(signInSuccess(response))
       forwardTo('/')
-    } else {
-      yield put(cancelAuthRequest())
     }
   } catch (error) {
     yield put(signInFailure(error))
   }
+  yield put(cancelRequest())
 }
 export function* watchSignInFlow() {
   yield* takeEvery(AuthActions.SIGNIN_REQUEST, signInFlow)
@@ -47,28 +50,28 @@ function* refreshFlow() {
   if (!auth.loggedIn()) {
     return
   }
-  yield put(sendingAuthRequest())
+  yield put(sendingRequest())
   try {
     const response = yield call(auth.verifyAccessToken)
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(refreshTokenSuccess(response))
-    } else {
-      yield put(cancelAuthRequest())
     }
   } catch (error) {
     yield put(refreshTokenFailure(error))
     yield call(auth.logout)
   }
+  yield put(cancelRequest())
 }
 export function* watchRefreshFlow() {
   yield* takeEvery(AuthActions.REFRESH_TOKEN_REQUEST, refreshFlow)
 }
 
 function* logoutFlow() {
-  yield put(sendingAuthRequest())
+  yield put(sendingRequest())
   yield call(auth.logout)
   yield put(logoutNormal())
+  yield put(cancelRequest())
   forwardTo('/')
 }
 export function* watchLogoutFlow() {
@@ -76,7 +79,7 @@ export function* watchLogoutFlow() {
 }
 
 function* verifyEmailTokenFlow() {
-  yield put(sendingAuthRequest())
+  yield put(sendingRequest())
   if (auth.loggedIn()) {
     yield call(auth.logout)
   }
@@ -85,12 +88,11 @@ function* verifyEmailTokenFlow() {
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(verifyEmailTokenSuccess(response))
-    } else {
-      yield put(cancelAuthRequest())
     }
   } catch (error) {
     yield put(verifyEmailTokenFailure(error))
   }
+  yield put(cancelRequest())
   forwardTo('/')
 }
 export function* watchVerifyEmailTokenFlow() {
@@ -98,35 +100,35 @@ export function* watchVerifyEmailTokenFlow() {
 }
 
 function* signUpFlow({ formData }) {
-  yield put(sendingAuthRequest())
+  yield put(sendingRequest())
   try {
     const response = yield call(auth.signup, formData)
     if (response) {
       yield put(signUpSuccess(response))
       forwardTo('/signin')
-    } else {
-      yield put(cancelAuthRequest())
+      yield put(cancelRequest())
     }
   } catch(error) {
     yield put(signUpFailure(error))
   }
+  yield put(cancelRequest())
 }
 export function* watchSignUpFlow() {
   yield* takeEvery(AuthActions.SIGNUP_REQUEST, signUpFlow)
 }
 
 function* forgetPsFlow({ email }) {
-  yield put(sendingAuthRequest())
+  yield put(sendingRequest())
   try {
     const response = yield call(auth.forgetPS, email)
     if (response) {
       yield put(forgetPSSuccess(response))
-    } else {
-      yield put(cancelAuthRequest())
+      yield put(cancelRequest())
     }
   } catch(error) {
     yield put(forgetPSFailure(error))
   }
+  yield put(cancelRequest())
 }
 export function* watchForgetPsFlow() {
   yield* takeEvery(AuthActions.FORGET_PS_REQUEST, forgetPsFlow)

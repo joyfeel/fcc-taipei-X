@@ -1,16 +1,3 @@
-export const SENDING_AUTH_REQUEST = 'SENDING_AUTH_REQUEST'
-export const sendingAuthRequest = () => {
-  return {
-    type: SENDING_AUTH_REQUEST
-  }
-}
-export const CANCEL_AUTH_REQUEST = 'CANCEL_AUTH_REQUEST'
-export const cancelAuthRequest = () => {
-  return {
-    type: CANCEL_AUTH_REQUEST
-  }
-}
-
 export const SIGNIN_REQUEST = 'SIGNIN_REQUEST'
 export const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS'
 export const SIGNIN_FAILURE = 'SIGNIN_FAILURE'

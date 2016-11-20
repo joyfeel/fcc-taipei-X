@@ -5,6 +5,7 @@ import url from 'url'
 import qs from 'querystring'
 import Boom from 'boom-browserify'
 import * as OauthActions from '../actions/oauth'
+import * as CombineActions from '../actions/combine'
 import auth from '../utils/auth'
 import openPopup from '../utils/popup'
 import { googleConfig, googleUrl } from '../utils/oauth_config'
@@ -17,6 +18,10 @@ import {
   watchSignUpFlow,
   watchForgetPsFlow
 } from './auth'
+
+const {
+  sendingRequest, cancelRequest
+} = CombineActions
 
 const pollingPopup = (popWin) => {
   return new Promise((resolve, reject) => {
@@ -68,18 +73,17 @@ const providerStrategy = {
 }
 
 function* oauthFlow({ provider }) {
-  yield put(sendingAuthRequest())
+  yield put(sendingRequest())
   try {
     const response = yield call(providerStrategy[provider])
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(signInSuccess(response))
-    } else {
-      yield put(cancelAuthRequest())
     }
   } catch (error) {
     yield put(signInFailure(error))
   }
+  yield put(cancelRequest())
 }
 
 function* watchOauthLogin() {
