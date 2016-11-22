@@ -22,6 +22,8 @@ class App extends Component {
 
   renderPopup() {
     const { popupMsg, isPopup } = this.props
+    console.log(1)
+    console.log(2)
     return (
       <Popup
         popupMsg={popupMsg}
