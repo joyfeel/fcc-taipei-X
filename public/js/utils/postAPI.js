@@ -9,10 +9,23 @@ const fetchAuthorizationBody = (api, form, token) => fetch(api, {
  body: JSON.stringify(form)
 }).then(res => res.ok ? res.json() : res.json().then(err => Promise.reject(err)))
 
+const fetchPresentArticles = (api, token) => fetch(api, {
+  method: 'get',
+  headers: {
+    'accept': 'application/json',
+    'Authorization': `Bearer ${token}`,
+  },
+}).then(res => res.ok ? res.json() : res.json().then(err => Promise.reject(err)))
+
+
+
 const postAPI = {
   createPost(post) {
     return fetchAuthorizationBody('http://localhost:3000/v1/posts', post, auth.getToken())
-  }
+  },
+  findPresentPost() {
+    return fetchPresentArticles('http://localhost:3000/v1/posts/findPresent', auth.getToken())
+  },
 }
 
 export default postAPI

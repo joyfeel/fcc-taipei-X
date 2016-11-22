@@ -13,8 +13,9 @@ const PostContent = ({ detectPostForm }) =>
     onChange={detectPostForm}>
   </textarea>
 
-PostContent.propTypes = {
-  detectPostForm: PropTypes.func.isRequired,
-}
+  PostContent.propTypes = {
+    detectPostForm: PropTypes.func.isRequired,
+  }
+
 
 export default PostContent

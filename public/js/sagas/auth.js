@@ -15,7 +15,7 @@ const {
 } = AuthActions
 
 const {
-  sendingRequest, cancelRequest
+  sendingRequest, cancelRequest, refreshRequest
 } = CombineActions
 
 function forwardTo (location) {
@@ -35,6 +35,7 @@ function* signInFlow({ formData }) {
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(signInSuccess(response))
+      yield put(refreshRequest())
       forwardTo('/')
     }
   } catch (error) {
@@ -46,7 +47,7 @@ export function* watchSignInFlow() {
   yield* takeEvery(AuthActions.SIGNIN_REQUEST, signInFlow)
 }
 
-function* refreshFlow() {
+function* refreshTokenFlow() {
   if (!auth.loggedIn()) {
     return
   }
@@ -56,6 +57,7 @@ function* refreshFlow() {
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(refreshTokenSuccess(response))
+      yield put(refreshRequest())
     }
   } catch (error) {
     yield put(refreshTokenFailure(error))
@@ -63,8 +65,8 @@ function* refreshFlow() {
   }
   yield put(cancelRequest())
 }
-export function* watchRefreshFlow() {
-  yield* takeEvery(AuthActions.REFRESH_TOKEN_REQUEST, refreshFlow)
+export function* watchRefreshTokenFlow() {
+  yield* takeEvery(AuthActions.REFRESH_TOKEN_REQUEST, refreshTokenFlow)
 }
 
 function* logoutFlow() {
@@ -88,6 +90,7 @@ function* verifyEmailTokenFlow() {
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(verifyEmailTokenSuccess(response))
+      yield put(refreshRequest())
     }
   } catch (error) {
     yield put(verifyEmailTokenFailure(error))

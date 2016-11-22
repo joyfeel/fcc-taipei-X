@@ -173,7 +173,7 @@
 		font-size: $smFz;
 		font-style: normal;
 		color: $inActive;
-		transition: color, background-color  .3s;
+		transition: color, background-color  .5s;
 
 		&:first-child {
 			border-radius: 6px 6px 0 0;
@@ -207,6 +207,15 @@
 	}
 	> .bookmark-1:before {
 			font-size: $xsFz;
+	}
+}
+
+@media (max-width: 580px) {
+	.wrapper .main {
+		width: 100%;
+		.article {
+			border-radius: 0;
+		}
 	}
 }
 

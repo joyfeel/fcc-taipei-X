@@ -19,3 +19,19 @@ export const createPostFailure = (error) => {
     error
   }
 }
+
+export const PRESENT_POST_SUCCESS = 'PRESENT_POST_SUCCESS'
+export const PRESENT_POST_FAILURE = 'PRESENT_POST_FAILURE'
+
+export const presentPostSuccess = (response) => {
+  return {
+    type: PRESENT_POST_SUCCESS,
+    response
+  }
+}
+export const presentPostFailure = (error) => {
+  return {
+    type: PRESENT_POST_FAILURE,
+    error
+  }
+}

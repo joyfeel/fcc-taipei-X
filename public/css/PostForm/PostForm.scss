@@ -150,6 +150,7 @@
 	}
 }
 
+.post-form.hidden {visibility: hidden;}
 
 @media (max-width: 360px) {
 	.post-form {
@@ -164,10 +165,17 @@
 	}
 }
 
+@media (max-width: 580px) {
+	.post-form {
+		width: 100%;
+		border-radius: 0;
+	}
+}
+
 
 @media (max-width: 768px) {
 	.post-form.expand {
-		border-radius: none;
+		border-radius: 0;
 		box-shadow: none;
 		width: 100%;
 		height: 100%;

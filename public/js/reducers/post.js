@@ -17,6 +17,14 @@ const post = (state = initialState, action) => {
           ...state.postList,
         ],
       }
+    case ActionTypes.PRESENT_POST_SUCCESS:
+      return {
+        ...state,
+        postList: [
+          ...action.response.posts,
+          ...state.postList,
+        ],
+      }
     default:
       return state
   }

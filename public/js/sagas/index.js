@@ -12,12 +12,13 @@ import { googleConfig, googleUrl } from '../utils/oauth_config'
 import { watchCreatePostFlow } from './post'
 import {
   watchSignInFlow,
-  watchRefreshFlow,
+  watchRefreshTokenFlow,
   watchLogoutFlow,
   watchVerifyEmailTokenFlow,
   watchSignUpFlow,
   watchForgetPsFlow
 } from './auth'
+import { watchRefreshFlow } from './combine'
 
 const {
   sendingRequest, cancelRequest
@@ -94,11 +95,12 @@ export default function* root() {
   yield [
     fork(watchOauthLogin),
     fork(watchSignInFlow),
-    fork(watchRefreshFlow),
     fork(watchLogoutFlow),
+    fork(watchRefreshTokenFlow),
     fork(watchVerifyEmailTokenFlow),
     fork(watchSignUpFlow),
     fork(watchForgetPsFlow),
     fork(watchCreatePostFlow),
+    fork(watchRefreshFlow),
   ]
 }

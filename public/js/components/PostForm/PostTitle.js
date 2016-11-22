@@ -1,19 +1,30 @@
 import React, { Component, PropTypes } from 'react'
 import cx from 'classnames'
 
-const PostTitle = ({ placeHolder, detectPostForm, bolder }) =>
-  <input
-    type='text'
-    placeholder={placeHolder}
-    className={cx('post-title-input', { bolder: bolder })}
-    id='post-title-input'
-    name='post_title'
-    onFocus={detectPostForm}
-    onKeyDown={detectPostForm}
-    onBlur={detectPostForm}
-    onKeyUp={detectPostForm}
-    onChange={detectPostForm}
-  />
+class PostTitle extends Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    const { placeHolder, detectPostForm, bolder } = this.props
+
+    return (
+      <input
+        type='text'
+        placeholder={placeHolder}
+        className={cx('post-title-input', { bolder: bolder })}
+        id='post-title-input'
+        name='post_title'
+        onFocus={detectPostForm}
+        onKeyDown={detectPostForm}
+        onBlur={detectPostForm}
+        onKeyUp={detectPostForm}
+        onChange={detectPostForm}
+      />
+    )
+  }
+}
 
 PostTitle.propTypes = {
   placeHolder: PropTypes.string.isRequired,

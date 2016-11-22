@@ -53,7 +53,7 @@ export const VERIFY_EMAIL_TOKEN_SUCCESS = 'VERIFY_EMAIL_TOKEN_SUCCESS'
 export const VERIFY_EMAIL_TOKEN_FAILURE = 'VERIFY_EMAIL_TOKEN_FAILURE'
 export const verifyEmailTokenRequest = () => {
   return {
-    type: VERIFY_EMAIL_TOKEN_REQUEST
+    type: VERIFY_EMAIL_TOKEN_REQUEST,
   }
 }
 export const verifyEmailTokenSuccess = (response) => {
