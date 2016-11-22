@@ -17,8 +17,6 @@ const fetchPresentArticles = (api, token) => fetch(api, {
   },
 }).then(res => res.ok ? res.json() : res.json().then(err => Promise.reject(err)))
 
-
-
 const postAPI = {
   createPost(post) {
     return fetchAuthorizationBody('http://localhost:3000/v1/posts', post, auth.getToken())

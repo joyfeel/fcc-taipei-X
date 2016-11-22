@@ -18,7 +18,7 @@ const initialState = {
 const auth = (state = initialState, action) => {
   switch(action.type) {
     case ActionTypes.SIGNIN_SUCCESS:
-    case ActionTypes.REFRESH_TOKEN_SUCCESS:
+    case ActionTypes.IDENTIFY_TOKEN_SUCCESS:
     case ActionTypes.VERIFY_EMAIL_TOKEN_SUCCESS:
       return {
         ...state,
@@ -26,7 +26,7 @@ const auth = (state = initialState, action) => {
       }
     case ActionTypes.SIGNIN_FAILURE:
     case ActionTypes.SIGNUP_FAILURE:
-    case ActionTypes.REFRESH_TOKEN_FAILURE:
+    case ActionTypes.IDENTIFY_TOKEN_FAILURE:
     case ActionTypes.VERIFY_EMAIL_TOKEN_FAILURE:
     case ActionTypes.FORGET_PS_FAILURE:
       return {

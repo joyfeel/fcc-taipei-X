@@ -11,14 +11,16 @@ import openPopup from '../utils/popup'
 import { googleConfig, googleUrl } from '../utils/oauth_config'
 import { watchCreatePostFlow } from './post'
 import {
-  watchSignInFlow,
-  watchRefreshTokenFlow,
   watchLogoutFlow,
   watchVerifyEmailTokenFlow,
   watchSignUpFlow,
-  watchForgetPsFlow
+  watchForgetPsFlow,
 } from './auth'
-import { watchRefreshFlow } from './combine'
+
+import {
+  watchSignInFlow,
+  watchRefreshFlow,
+} from './combine'
 
 const {
   sendingRequest, cancelRequest
@@ -93,14 +95,17 @@ function* watchOauthLogin() {
 
 export default function* root() {
   yield [
+    /* oauth */
     fork(watchOauthLogin),
-    fork(watchSignInFlow),
+    /* auth */
     fork(watchLogoutFlow),
-    fork(watchRefreshTokenFlow),
     fork(watchVerifyEmailTokenFlow),
     fork(watchSignUpFlow),
     fork(watchForgetPsFlow),
+    /* post */
     fork(watchCreatePostFlow),
+    /* combine */
+    fork(watchSignInFlow),
     fork(watchRefreshFlow),
   ]
 }

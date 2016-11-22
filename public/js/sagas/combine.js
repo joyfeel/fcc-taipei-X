@@ -1,47 +1,38 @@
 import { call, put } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
-import auth from '../utils/auth'
 import postAPI from '../utils/postAPI'
 import * as AuthActions from '../actions/auth'
 import * as PostActions from '../actions/post'
 import * as CombineActions from '../actions/combine'
+import { signInFlow, identifyTokenFlow } from './auth'
+import { findPresentPostFlow } from './post'
 
 const {
-  sendingAuthRequest, cancelAuthRequest,
-  signInSuccess, signInFailure,
-  logoutNormal,
-  refreshTokenSuccess, refreshTokenFailure,
-  verifyEmailTokenSuccess, verifyEmailTokenFailure,
-  signUpSuccess, signUpFailure,
-  forgetPSSuccess, forgetPSFailure
-} = AuthActions
+  sendingRequest, cancelRequest,
+} = CombineActions
 
-const {
-  presentPostSuccess,
-  presentPostFailure,
-   } = PostActions
-
-const {
-  sendingRequest,
-  refreshRequest,
-  refreshSuccess,
-  refreshFailure,
-  cancelRequest, } = CombineActions
-
-
-function* refreshFlow() {
+function* combineSignInFlows({ formData }) {
   yield put(sendingRequest())
-  try {
-    if (localStorage.token) {
-      const post = yield call(postAPI.findPresentPost)
-      yield put(presentPostSuccess(post))
-    } else {
-      yield put(cancelRequest())
-    }
-  } catch (error) {
-    yield put(presentPostFailure(error))
-  }
+  // Send signin request. Then get token and user information from backend
+  yield call(signInFlow, formData)
+  // Get present 10 posts
+  yield call(findPresentPostFlow)
+  yield put(cancelRequest())
 }
+
+export function* watchSignInFlow() {
+  yield* takeEvery(AuthActions.SIGNIN_REQUEST, combineSignInFlows)
+}
+
+function* combineRefreshFlows() {
+  yield put(sendingRequest())
+  // Exchange token (need to identify) for user information
+  yield call(identifyTokenFlow)
+  // Get present 10 posts
+  yield call(findPresentPostFlow)
+  yield put(cancelRequest())
+}
+
 export function* watchRefreshFlow() {
-  yield* takeEvery(CombineActions.REFRESH_REQUEST, refreshFlow)
+  yield* takeEvery(CombineActions.REFRESH_APP_REQUEST, combineRefreshFlows)
 }

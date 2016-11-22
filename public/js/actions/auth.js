@@ -4,47 +4,47 @@ export const SIGNIN_FAILURE = 'SIGNIN_FAILURE'
 export const signInRequest = (formData) => {
   return {
     type: SIGNIN_REQUEST,
-    formData
+    formData,
   }
 }
 export const signInSuccess = (response) => {
   return {
     type: SIGNIN_SUCCESS,
-    response
+    response,
   }
 }
 export const signInFailure = (error) => {
   return {
     type: SIGNIN_FAILURE,
-    error
+    error,
   }
 }
 
 export const CLEAR_POPUPMSG = 'CLEAR_POPUPMSG'
 export const clearPopupMsg = () => {
   return {
-    type: CLEAR_POPUPMSG
+    type: CLEAR_POPUPMSG,
   }
 }
 
-export const REFRESH_TOKEN_REQUEST = 'REFRESH_TOKEN_REQUEST'
-export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS'
-export const REFRESH_TOKEN_FAILURE = 'REFRESH_TOKEN_FAILURE'
-export const refreshTokenRequest = () => {
+export const IDENTIFY_TOKEN_REQUEST = 'IDENTIFY_TOKEN_REQUEST'
+export const IDENTIFY_TOKEN_SUCCESS = 'IDENTIFY_TOKEN_SUCCESS'
+export const IDENTIFY_TOKEN_FAILURE = 'IDENTIFY_TOKEN_FAILURE'
+export const identityTokenRequest = () => {
   return {
-    type: REFRESH_TOKEN_REQUEST
+    type: IDENTIFY_TOKEN_REQUEST,
   }
 }
-export const refreshTokenSuccess = (response) => {
+export const identityTokenSuccess = (response) => {
   return {
-    type: REFRESH_TOKEN_SUCCESS,
-    response
+    type: IDENTIFY_TOKEN_SUCCESS,
+    response,
   }
 }
-export const refreshTokenFailure = (error) => {
+export const identityTokenFailure = (error) => {
   return {
-    type: REFRESH_TOKEN_FAILURE,
-    error
+    type: IDENTIFY_TOKEN_FAILURE,
+    error,
   }
 }
 
@@ -59,13 +59,13 @@ export const verifyEmailTokenRequest = () => {
 export const verifyEmailTokenSuccess = (response) => {
   return {
     type: VERIFY_EMAIL_TOKEN_SUCCESS,
-    response
+    response,
   }
 }
 export const verifyEmailTokenFailure = (error) => {
   return {
     type: VERIFY_EMAIL_TOKEN_FAILURE,
-    error
+    error,
   }
 }
 
@@ -73,12 +73,12 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
 export const LOGOUT_NORMAL = 'LOGOUT_NORMAL'
 export const logoutRequest = () => {
   return {
-    type: LOGOUT_REQUEST
+    type: LOGOUT_REQUEST,
   }
 }
 export const logoutNormal = () => {
   return {
-    type: LOGOUT_NORMAL
+    type: LOGOUT_NORMAL,
   }
 }
 
@@ -88,26 +88,26 @@ export const SIGNUP_FAILURE = 'SIGNUP_FAILURE'
 export const signUpRequest = (formData) => {
   return {
     type: SIGNUP_REQUEST,
-    formData
+    formData,
   }
 }
 export const signUpSuccess = (response) => {
   return {
     type: SIGNUP_SUCCESS,
-    response
+    response,
   }
 }
 export const signUpFailure = (error) => {
   return {
     type: SIGNUP_FAILURE,
-    error
+    error,
   }
 }
 export const FORGET_PS_POPUP = 'FORGET_PS_POPUP'
 export const forgetPSPopup = () => {
   return {
     type: FORGET_PS_POPUP,
-    code: 100001
+    code: 100001,
   }
 }
 
@@ -117,18 +117,18 @@ export const FORGET_PS_FAILURE = 'FORGET_PS_FAILURE'
 export const forgetPSRequest = (email) => {
   return {
     type: FORGET_PS_REQUEST,
-    email
+    email,
   }
 }
 export const forgetPSSuccess = (response) => {
   return {
     type: FORGET_PS_SUCCESS,
-    response
+    response,
   }
 }
 export const forgetPSFailure = (error) => {
   return {
     type: FORGET_PS_FAILURE,
-    error
+    error,
   }
 }

@@ -1,27 +1,3 @@
-export const REFRESH_REQUEST = 'REFRESH_REQUEST'
-export const REFRESH_SUCCESS = 'REFRESH_SUCCESS'
-export const REFRESH_FAILURE = 'REFRESH_FAILURE'
-export const refreshRequest = () => {
-  return {
-    type: REFRESH_REQUEST,
-  }
-}
-export const refreshSuccess = (response) => {
-  return {
-    type: REFRESH_SUCCESS,
-    response,
-  }
-}
-export const refreshFailure = (error) => {
-  return {
-    type: REFRESH_FAILURE,
-    error,
-  }
-}
-
-
-
-
 export const SENDING_REQUEST = 'SENDING_REQUEST'
  export const sendingRequest = () => {
    return {
@@ -32,5 +8,26 @@ export const SENDING_REQUEST = 'SENDING_REQUEST'
  export const cancelRequest = () => {
   return {
     type: CANCEL_REQUEST,
+  }
+}
+
+export const REFRESH_APP_REQUEST = 'REFRESH_APP_REQUEST'
+export const REFRESH_APP_SUCCESS = 'REFRESH_APP_SUCCESS'
+export const REFRESH_APP_FAILURE = 'REFRESH_APP_FAILURE'
+export const refreshAppRequest = () => {
+  return {
+    type: REFRESH_APP_REQUEST,
+  }
+}
+export const refreshAppSuccess = (response) => {
+  return {
+    type: REFRESH_APP_SUCCESS,
+    response,
+  }
+}
+export const refreshAppFailure = (error) => {
+  return {
+    type: REFRESH_APP_FAILURE,
+    error,
   }
 }

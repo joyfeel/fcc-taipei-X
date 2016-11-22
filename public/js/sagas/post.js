@@ -6,26 +6,41 @@ import postAPI from '../utils/postAPI'
 
 const {
   createPostSuccess, createPostFailure,
+  presentPostSuccess, presentPostFailure,
 } = PostActions
 
 const {
   sendingRequest, cancelRequest
 } = CombineActions
 
-function* createPostFlow({ post }) {
-  yield put(sendingRequest())
+function* createPostFlow(post) {
   try {
     const response = yield call(postAPI.createPost, post)
     if (response) {
       yield put(createPostSuccess(response))
     }
-    yield put(cancelRequest())
   } catch(error) {
     yield put(createPostFailure(error))
-    yield put(cancelRequest())
   }
 }
 
+function* createPostFlows({ post }) {
+  yield put(sendingRequest())
+  yield call(createPostFlow, post)
+  yield put(cancelRequest())
+}
+
 export function* watchCreatePostFlow() {
-  yield* takeEvery(PostActions.CREATE_POST_REQUEST, createPostFlow)
+  yield* takeEvery(PostActions.CREATE_POST_REQUEST, createPostFlows)
+}
+
+export function* findPresentPostFlow() {
+  try {
+    const response = yield call(postAPI.findPresentPost)
+    if (response && response.posts) {
+      yield put(presentPostSuccess(response))
+    }
+  } catch (error) {
+    yield put(presentPostFailure(error))
+  }
 }

@@ -7,8 +7,9 @@ import Loading from '../components/Shared/Loading'
 import Popup from '../components/Shared/Popup'
 import PostForm from '../components/PostForm/PostForm'
 import * as AuthActions from '../actions/auth'
+import * as PostActions from '../actions/post'
 import * as CombineActions from '../actions/combine'
-// import countdown from '../utils/time'
+import auth from '../utils/auth'
 
 class App extends Component {
   constructor(props) {
@@ -41,7 +42,6 @@ class App extends Component {
     )
   }
 
-
   render() {
     const { isFetching, isPopup, popupMsg, profile } = this.props
     const { filter } = this.state
@@ -64,7 +64,10 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.auth.refreshTokenRequest()
+    if (!auth.loggedIn()) {
+      return
+    }
+    this.props.combine.refreshAppRequest()
   }
 }
 
@@ -82,6 +85,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     auth: bindActionCreators(AuthActions, dispatch),
+    combine: bindActionCreators(CombineActions, dispatch),
   }
 }
 

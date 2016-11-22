@@ -20,7 +20,7 @@ class AfterLogin extends Component {
 const mapStateToProps = (state) => {
   const { postList } = state.post
   return {
-    postList
+    postList,
   }
 }
 
