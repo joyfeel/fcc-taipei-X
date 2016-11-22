@@ -1,5 +1,5 @@
 import { browserHistory } from 'react-router'
-import { call, put, fork } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
 import auth from '../utils/auth'
 import postAPI from '../utils/postAPI'
@@ -11,11 +11,9 @@ const {
   refreshTokenSuccess, refreshTokenFailure,
   signInSuccess, signInFailure,
 } = AuthActions
-
 const {
   getCurrentPostSuccess, getCurrentPostFailure,
 } = PostActions
-
 const {
   sendingRequest, cancelRequest
 } = CombineActions
@@ -23,24 +21,6 @@ const {
 function forwardTo (location) {
   browserHistory.push(location)
 }
-
-// function* signInFlow({ formData }) {
-//   if (auth.loggedIn()) {
-//     return
-//   }
-//   yield put(sendingRequest())
-//   try {
-//     const response = yield call(auth.login, formData)
-//     if (response && response.auth && response.auth.token) {
-//       yield call(auth.setToken, response.auth.token)
-//       yield put(signInSuccess(response))
-//       forwardTo('/')
-//     }
-//   } catch (error) {
-//     yield put(signInFailure(error))
-//   }
-//   yield put(cancelRequest())
-// }
 
 function* loadSignin(formData) {
   try {
@@ -58,7 +38,7 @@ function* loadSignin(formData) {
 function* loadCurrentPosts() {
   try {
     const response = yield call(postAPI.getCurrentPosts)
-    if (response) {
+    if (response && response.posts) {
       yield put(getCurrentPostSuccess(response))
     }
   } catch (error) {
@@ -68,7 +48,9 @@ function* loadCurrentPosts() {
 
 function* signInFlow({ formData }) {
   yield put(sendingRequest())
+  // Send signin request. Then get token and user information from backend
   yield call(loadSignin, formData)
+  // Get current 10 posts
   yield call(loadCurrentPosts)
   yield put(cancelRequest())
 }
@@ -92,11 +74,13 @@ function* loadExchangeToken() {
 
 function* refreshFlow() {
   yield put(sendingRequest())
+  // Use token to exchange user information
   yield call(loadExchangeToken)
+  // Get current 10 posts
   yield call(loadCurrentPosts)
   yield put(cancelRequest())
 }
 
 export function* watchRefreshFlow() {
-  yield* takeEvery(AuthActions.REFRESH_TOKEN_REQUEST, refreshFlow)
+  yield* takeEvery(CombineActions.REFRESH_APP_REQUEST, refreshFlow)
 }

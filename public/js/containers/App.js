@@ -8,6 +8,7 @@ import Popup from '../components/Shared/Popup'
 import PostForm from '../components/PostForm/PostForm'
 import * as AuthActions from '../actions/auth'
 import * as PostActions from '../actions/post'
+import * as CombineActions from '../actions/combine'
 import auth from '../utils/auth'
 
 class App extends Component {
@@ -63,7 +64,7 @@ class App extends Component {
     if (!auth.loggedIn()) {
       return
     }
-    this.props.auth.refreshTokenRequest()
+    this.props.combine.refreshAppRequest()
   }
 }
 
@@ -81,6 +82,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     auth: bindActionCreators(AuthActions, dispatch),
+    combine: bindActionCreators(CombineActions, dispatch),
   }
 }
 

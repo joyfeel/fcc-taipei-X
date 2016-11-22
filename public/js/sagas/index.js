@@ -11,8 +11,6 @@ import openPopup from '../utils/popup'
 import { googleConfig, googleUrl } from '../utils/oauth_config'
 import { watchCreatePostFlow } from './post'
 import {
-  // watchSignInFlow,
-  //watchRefreshFlow,
   watchLogoutFlow,
   watchVerifyEmailTokenFlow,
   watchSignUpFlow,
