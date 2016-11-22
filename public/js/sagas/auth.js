@@ -64,7 +64,7 @@ export function* watchLogoutFlow() {
 }
 
 /************************* VerifyEmailToken *************************/
-function* verifyEmailTokenFlow() {
+export function* verifyEmailTokenFlow() {
   if (auth.loggedIn()) {
     yield call(auth.logout)
   }
@@ -78,14 +78,6 @@ function* verifyEmailTokenFlow() {
     yield put(verifyEmailTokenFailure(error))
   }
   forwardTo('/')
-}
-function* verifyEmailTokenFlows() {
-  yield put(sendingRequest())
-  yield call(verifyEmailTokenFlow)
-  yield put(cancelRequest())
-}
-export function* watchVerifyEmailTokenFlow() {
-  yield* takeEvery(AuthActions.VERIFY_EMAIL_TOKEN_REQUEST, verifyEmailTokenFlows)
 }
 
 /************************* SignUp *************************/

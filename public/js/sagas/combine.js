@@ -4,7 +4,7 @@ import postAPI from '../utils/postAPI'
 import * as AuthActions from '../actions/auth'
 import * as PostActions from '../actions/post'
 import * as CombineActions from '../actions/combine'
-import { signInFlow, identifyTokenFlow } from './auth'
+import { signInFlow, identifyTokenFlow, verifyEmailTokenFlow } from './auth'
 import { findPresentPostFlow } from './post'
 
 const {
@@ -19,7 +19,6 @@ function* combineSignInFlows({ formData }) {
   yield call(findPresentPostFlow)
   yield put(cancelRequest())
 }
-
 export function* watchSignInFlow() {
   yield* takeEvery(AuthActions.SIGNIN_REQUEST, combineSignInFlows)
 }
@@ -32,7 +31,16 @@ function* combineRefreshFlows() {
   yield call(findPresentPostFlow)
   yield put(cancelRequest())
 }
-
 export function* watchRefreshFlow() {
   yield* takeEvery(CombineActions.REFRESH_APP_REQUEST, combineRefreshFlows)
+}
+
+function* verifyEmailTokenFlows() {
+  yield put(sendingRequest())
+  yield call(verifyEmailTokenFlow)
+  yield call(findPresentPostFlow)
+  yield put(cancelRequest())
+}
+export function* watchVerifyEmailTokenFlow() {
+  yield* takeEvery(AuthActions.VERIFY_EMAIL_TOKEN_REQUEST, verifyEmailTokenFlows)
 }
