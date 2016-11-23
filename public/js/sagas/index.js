@@ -12,7 +12,6 @@ import { googleConfig, googleUrl } from '../utils/oauth_config'
 import { watchCreatePostFlow } from './post'
 import {
   watchLogoutFlow,
-  watchVerifyEmailTokenFlow,
   watchSignUpFlow,
   watchForgetPsFlow,
 } from './auth'
@@ -20,6 +19,7 @@ import {
 import {
   watchSignInFlow,
   watchRefreshFlow,
+  watchVerifyEmailTokenFlow,
 } from './combine'
 
 const {
@@ -99,7 +99,6 @@ export default function* root() {
     fork(watchOauthLogin),
     /* auth */
     fork(watchLogoutFlow),
-    fork(watchVerifyEmailTokenFlow),
     fork(watchSignUpFlow),
     fork(watchForgetPsFlow),
     /* post */
@@ -107,5 +106,6 @@ export default function* root() {
     /* combine */
     fork(watchSignInFlow),
     fork(watchRefreshFlow),
+    fork(watchVerifyEmailTokenFlow),
   ]
 }
