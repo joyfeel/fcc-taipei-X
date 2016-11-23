@@ -1,15 +1,18 @@
-import { take, call, put, fork, select } from 'redux-saga/effects'
+import { take, call, put, fork } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
-import { v4 } from 'node-uuid'
-import url from 'url'
 import qs from 'querystring'
 import Boom from 'boom-browserify'
 import * as OauthActions from '../actions/oauth'
+import * as AuthActions from '../actions/auth'
 import * as CombineActions from '../actions/combine'
 import auth from '../utils/auth'
 import openPopup from '../utils/popup'
 import { googleConfig, googleUrl } from '../utils/oauth_config'
-import { watchCreatePostFlow } from './post'
+import {
+  watchCreatePostFlow,
+  watchFindOlderPostFlow,
+} from './post'
+
 import {
   watchLogoutFlow,
   watchSignUpFlow,
@@ -23,7 +26,11 @@ import {
 } from './combine'
 
 const {
-  sendingRequest, cancelRequest
+  signInSuccess, signInFailure,
+} = AuthActions
+
+const {
+  sendingRequest, cancelRequest,
 } = CombineActions
 
 const pollingPopup = (popWin) => {
@@ -103,6 +110,7 @@ export default function* root() {
     fork(watchForgetPsFlow),
     /* post */
     fork(watchCreatePostFlow),
+    fork(watchFindOlderPostFlow),
     /* combine */
     fork(watchSignInFlow),
     fork(watchRefreshFlow),

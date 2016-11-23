@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Article from '../components/Article/Article'
+import * as PostActions from '../actions/post'
+import { scrollBottomListener } from '../utils/mixed'
 
 class AfterLogin extends Component {
   constructor(props) {
@@ -15,6 +17,12 @@ class AfterLogin extends Component {
       </div>
     )
   }
+  componentDidMount() {
+    window.addEventListener('scroll', scrollBottomListener.bind(null, this.props.post.findOlderPostRequest), false)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', scrollBottomListener, false)
+  }
 }
 
 const mapStateToProps = (state) => {
@@ -23,5 +31,10 @@ const mapStateToProps = (state) => {
     postList,
   }
 }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    post: bindActionCreators(PostActions, dispatch),
+  }
+}
 
-export default connect(mapStateToProps, null)(AfterLogin)
+export default connect(mapStateToProps, mapDispatchToProps)(AfterLogin)

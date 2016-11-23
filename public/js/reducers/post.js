@@ -25,7 +25,16 @@ const post = (state = initialState, action) => {
           ...state.postList,
         ],
       }
-    case ActionTypes.GET_CURRENT_POST_FAILURE:
+    case ActionTypes.FIND_OLDER_POST_SUCCESS:
+      return {
+        ...state,
+        postList: [
+          ...state.postList,
+          ...action.response.posts,
+        ],
+      }
+    case ActionTypes.FIND_OLDER_POST_FAILURE:
+    case ActionTypes.PRESENT_POST_FAILURE:
       return state
     default:
       return state

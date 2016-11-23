@@ -19,10 +19,6 @@ const {
   sendingRequest, cancelRequest,
 } = CombineActions
 
-/**************************************************************************/
-/******************************* Auth *************************************/
-/**************************************************************************/
-
 /************************* SignIn *************************/
 export function* signInFlow(formData) {
   try {
@@ -34,6 +30,7 @@ export function* signInFlow(formData) {
     }
   } catch (error) {
     yield put(signInFailure(error))
+    yield call(auth.logout)
   }
 }
 

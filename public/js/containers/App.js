@@ -7,7 +7,6 @@ import Loading from '../components/Shared/Loading'
 import Popup from '../components/Shared/Popup'
 import PostForm from '../components/PostForm/PostForm'
 import * as AuthActions from '../actions/auth'
-import * as PostActions from '../actions/post'
 import * as CombineActions from '../actions/combine'
 import auth from '../utils/auth'
 
@@ -17,9 +16,9 @@ class App extends Component {
     this.state = { filter: false }
     this.setFilter = this.setFilter.bind(this)
   }
-
-  setFilter(val) { this.setState({ filter: val }) }
-
+  setFilter(val) {
+    this.setState({ filter: val })
+  }
   renderPopup() {
     const { popupMsg, isPopup } = this.props
     return (
@@ -29,7 +28,6 @@ class App extends Component {
       />
     )
   }
-
   renderPostForm(){
     const { filter } = this.state
     const { isFetching } = this.props
@@ -41,7 +39,6 @@ class App extends Component {
       />
     )
   }
-
   render() {
     const { isFetching, isPopup, popupMsg, profile } = this.props
     const { filter } = this.state
@@ -62,7 +59,6 @@ class App extends Component {
       </div>
     )
   }
-
   componentDidMount() {
     if (!auth.loggedIn()) {
       return
@@ -74,7 +70,6 @@ class App extends Component {
 const mapStateToProps = (state) => {
   const { isPopup, popupMsg, profile } = state.auth
   const { isFetching } = state.combine
-  const { newPost } = state.post
   return {
     isFetching,
     isPopup,

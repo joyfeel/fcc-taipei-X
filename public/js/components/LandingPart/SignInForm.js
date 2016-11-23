@@ -16,7 +16,7 @@ class SignInForm extends Component {
       mailToggle: true,
       email: '',
       password: '',
-      valid: true
+      valid: true,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleMailClick = this.handleMailClick.bind(this)
@@ -43,7 +43,7 @@ class SignInForm extends Component {
     this.initWindowSize()
   }
   componentWillUnmount() {
-    window.removeEventListener('resize', this.onResize)
+    window.removeEventListener('resize', this.onResize, false)
   }
   handleSubmit(e) {
     e.preventDefault()
@@ -108,13 +108,13 @@ class SignInForm extends Component {
 }
 
 SignInForm.propTypes = {
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     auth: bindActionCreators(AuthActions, dispatch),
-    oauth: bindActionCreators(OauthActions, dispatch)
+    oauth: bindActionCreators(OauthActions, dispatch),
   }
 }
 

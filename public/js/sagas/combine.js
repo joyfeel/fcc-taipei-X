@@ -6,6 +6,7 @@ import * as PostActions from '../actions/post'
 import * as CombineActions from '../actions/combine'
 import { signInFlow, identifyTokenFlow, verifyEmailTokenFlow } from './auth'
 import { findPresentPostFlow } from './post'
+import auth from '../utils/auth'
 
 const {
   sendingRequest, cancelRequest,
@@ -16,7 +17,9 @@ function* combineSignInFlows({ formData }) {
   // Send signin request. Then get token and user information from backend
   yield call(signInFlow, formData)
   // Get present 10 posts
-  yield call(findPresentPostFlow)
+  if (auth.loggedIn()) {
+    yield call(findPresentPostFlow)
+  }
   yield put(cancelRequest())
 }
 export function* watchSignInFlow() {
@@ -28,7 +31,9 @@ function* combineRefreshFlows() {
   // Exchange token (need to identify) for user information
   yield call(identifyTokenFlow)
   // Get present 10 posts
-  yield call(findPresentPostFlow)
+  if (auth.loggedIn()) {
+    yield call(findPresentPostFlow)
+  }
   yield put(cancelRequest())
 }
 export function* watchRefreshFlow() {
@@ -38,7 +43,9 @@ export function* watchRefreshFlow() {
 function* verifyEmailTokenFlows() {
   yield put(sendingRequest())
   yield call(verifyEmailTokenFlow)
-  yield call(findPresentPostFlow)
+  if (auth.loggedIn()) {
+    yield call(findPresentPostFlow)
+  }
   yield put(cancelRequest())
 }
 export function* watchVerifyEmailTokenFlow() {

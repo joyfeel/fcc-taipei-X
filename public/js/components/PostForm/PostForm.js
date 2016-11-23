@@ -6,7 +6,6 @@ import PostTitle from './PostTitle'
 import PostContent from './PostContent'
 import * as PostActions from '../../actions/post'
 
-
 class PostForm extends Component {
   constructor(props) {
     super(props)

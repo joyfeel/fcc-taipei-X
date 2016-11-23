@@ -34,3 +34,25 @@ export const presentPostFailure = (error) => {
     error,
   }
 }
+
+export const FIND_OLDER_POST_REQUEST = 'FIND_OLDER_POST_REQUEST'
+export const FIND_OLDER_POST_SUCCESS = 'FIND_OLDER_POST_SUCCESS'
+export const FIND_OLDER_POST_FAILURE = 'FIND_OLDER_POST_FAILURE'
+export const findOlderPostRequest = (post) => {
+  return {
+    type: FIND_OLDER_POST_REQUEST,
+    post,
+  }
+}
+export const findOlderPostSuccess = (response) => {
+  return {
+    type: FIND_OLDER_POST_SUCCESS,
+    response,
+  }
+}
+export const findOlderPostFailure = (error) => {
+  return {
+    type: FIND_OLDER_POST_FAILURE,
+    error,
+  }
+}
