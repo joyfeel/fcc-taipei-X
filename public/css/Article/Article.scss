@@ -2,13 +2,13 @@
 	max-width: 580px;
 	width: 95%;
 	margin: 0 auto;
-	padding-top: 75px;
+	padding-top: 77px;
 	padding-bottom: 10px;
 }
 
 .main .article {
 	background-color: $bgContain;
-	box-shadow: 0 0 0 1px $border;
+	border: 1px solid $border;
 	border-radius: 6px;
 	position: relative;
 	margin-bottom: 10px;
@@ -215,6 +215,7 @@
 		width: 100%;
 		.article {
 			border-radius: 0;
+			border-width: 1px 0 1px 0;
 		}
 	}
 }

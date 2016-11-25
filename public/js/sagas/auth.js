@@ -54,7 +54,7 @@ function* logoutFlows() {
   yield call(auth.logout)
   yield put(logoutNormal())
   yield put(cancelRequest())
-  forwardTo('/')
+  forwardTo('/signin')
 }
 export function* watchLogoutFlow() {
   yield* takeEvery(AuthActions.LOGOUT_REQUEST, logoutFlows)
@@ -78,7 +78,7 @@ export function* verifyEmailTokenFlow() {
 }
 
 /************************* SignUp *************************/
-function* signUpFlow({ formData }) {
+function* signUpFlow(formData) {
   try {
     const response = yield call(auth.signup, formData)
     if (response) {

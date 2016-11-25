@@ -40,11 +40,6 @@ const auth = (state = initialState, action) => {
         isPopup: false,
         popupMsg: null,
       }
-    case ActionTypes.LOGOUT_NORMAL:
-      return {
-        ...state,
-        profile: initialState.profile,
-      }
     case ActionTypes.SIGNUP_SUCCESS:
     case ActionTypes.FORGET_PS_SUCCESS:
       return {

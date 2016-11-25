@@ -1,47 +1,59 @@
 import React, { Component, PropTypes } from 'react'
-
-const StatelessArticle = ({ post }) => {
-  return (
-    <article className='article'>
-      <a href='' className='article-avatar'>
-        <img src={post.author.avatar} className='member-avatar' alt='member-avatar' />
-      </a>
-      <a href='' className='article-author'>{post.author.nickname}</a>
-      <span className='article-time'>{post.created_time}</span>
-      <i className='more-2'></i>
-      <h3 className='article-title'>{post.title}</h3>
-      <p className='article-content'>{post.content}</p>
-      <div className='article-analysis'>
-        <i className='comment-o-2'>{post.comments.length}</i>
-        <i className='thumb-down-1'>{post.dislike_count}</i>
-        <i className='thumb-up-1 active'>{post.like_count}</i>
-      </div>
-      <div className='article-menu'>
-        <i className='post-2'>Edit</i>
-        <i className='cancel-3'>Delete</i>
-        <i className='bookmark-1'>Bookmark</i>
-      </div>
-    </article>
-  )
-}
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as PostActions from '../../actions/post'
+import FindNewer from './FindNewer'
+import SingleArticle from './SingleArticle'
+import Config from '../../utils/config'
 
 class Article extends Component {
   constructor(props) {
     super(props)
+    this.childGetNewPost = this.childGetNewPost.bind(this)
+    this.detectNewPost = this.detectNewPost.bind(this)
   }
   renderArticles(posts) {
     return posts.map(post => {
-      return <StatelessArticle key={post.id} post={post} />
+      return <SingleArticle key={post.id} post={post} />
     })
+  }
+  detectNewPost() {
+    this.props.post.findNewerPostRequest()
+  }
+  childGetNewPost(e) {
+    e.preventDefault()
+    this.props.post.displayNewerPost()
   }
   render() {
     const { posts } = this.props
+    const newPosts = posts.filter(t => !t.visibility)
+    const visiblePosts = posts.filter(t => t.visibility)
     return (
       <main className='main' role='main'>
-        {this.renderArticles(posts)}
+        <FindNewer
+          getNewPost={this.childGetNewPost}
+          newPostCount={newPosts.length}
+        />
+        {this.renderArticles(visiblePosts)}
       </main>
     )
   }
+  componentDidMount() {
+    this.interval = setInterval(this.detectNewPost, Config.post.findNewPostTime)
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
 }
 
-export default Article
+Article.propTypes = {
+  posts: PropTypes.array.isRequired,
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    post: bindActionCreators(PostActions, dispatch),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Article)

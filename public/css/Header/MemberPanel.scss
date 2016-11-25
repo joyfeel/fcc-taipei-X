@@ -33,12 +33,75 @@
       box-shadow: $bsh;
     }
   }
+
+  > .member-menu {
+    display: none;
+    width: 100px;
+    box-shadow: $bsh;
+    border-radius: 6px;
+    position: absolute;
+    top: 35px;
+    right: 11px;
+    background-color: $bgContain;
+  }
 }
 
-.login  .member-panel {
+.member-menu {
+  > i {
+    cursor: pointer;
+		display: block;
+		height: 35px;
+		line-height: 37px;
+		color: $active1;
+		font-size: $smFz;
+		font-style: normal;
+		color: $inActive;
+		transition: color, background-color  .5s;
+
+    &:first-child {
+			border-radius: 6px 6px 0 0;
+		}
+
+		&:last-child {
+			border-radius: 0 0 6px 6px;
+		}
+
+		&:before {
+			@extend %icon;
+			font-size: $ssFz;
+			margin: 0 6px 0 5px;
+			color: $active1;
+		}
+	}
+
+	> i:hover {
+			background-color: $bgBody;
+
+		&:before {
+			color: $active2;
+		}
+	}
+
+  > .search-1 {
+    font-size: $xsFz;
+  }
+  > .noti-1 {
+    font-size: $xsFz;
+  }
+  > .bookmark-1 {
+    font-size: $xsFz;
+  }
+  > .setting-1-1 {
+    font-size: $xsFz;
+  }
+  > .logout-1-1 {
+    font-size: $xsFz;
+  }
+}
+
+.login .member-panel {
   display: block;
 }
-
 
 @media (max-width: 768px) {
   .member-panel  {

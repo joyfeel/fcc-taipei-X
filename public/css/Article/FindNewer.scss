@@ -1,0 +1,32 @@
+.main > .find-newer {
+  display: block;
+  text-align: center;
+  height: 0;
+  color: $active1;
+  font-size: 0;
+  background: $bgContain;
+  &:hover {
+    color: $active2;
+  }
+}
+
+.find-newer.get {
+  height: 39px;
+  line-height: 41px;
+  font-size: $smFz;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid $border;
+  border-bottom: 0;
+  transition: color .3s, height .3s, font-size .3s .3s;
+}
+
+.get + .article {
+  border-radius: 0 0 6px 6px;
+}
+
+@media (max-width: 580px) {
+  .main > .find-newer {
+    border-radius: 0;
+    border-width: 1px 0 0 0;
+  }
+}

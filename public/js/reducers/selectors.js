@@ -1,1 +1,2 @@
-export const getOldestPostID = state => state.post.postList[state.post.postList.length - 1].id
+export const getOldestPostID = state => state.posts[state.posts.length - 1].id
+export const getNewestPostID = state => state.posts[0].id

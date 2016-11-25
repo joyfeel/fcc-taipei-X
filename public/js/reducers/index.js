@@ -1,12 +1,19 @@
 import { combineReducers } from 'redux'
 import auth from './auth'
-import post from './post'
+import posts from './posts'
 import combine from './combine'
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   auth,
-  post,
+  posts,
   combine,
 })
+
+const rootReducer = (state, action) => {
+  if (action.type === 'LOGOUT_NORMAL') {
+    state = undefined
+  }
+  return appReducer(state, action)
+}
 
 export default rootReducer

@@ -16,8 +16,8 @@ const Header = (props) => {
     <header className={cx('header',{ mask: filter })}>
       <div className={headerPanelClasses}>
         <Logo />
-        <MemberPanel profile={profile} />
-        <Notification />
+        {profile.token ? <MemberPanel profile={profile} /> : null}
+        {profile.token ? <Notification /> : null}
       </div>
     </header>
   )

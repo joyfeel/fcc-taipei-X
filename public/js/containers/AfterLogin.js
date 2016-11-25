@@ -10,10 +10,10 @@ class AfterLogin extends Component {
     super(props)
   }
   render() {
-    const { postList } = this.props
+    const { posts } = this.props
     return (
       <div>
-        <Article posts={postList} />
+        <Article posts={posts} />
       </div>
     )
   }
@@ -26,9 +26,8 @@ class AfterLogin extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { postList } = state.post
   return {
-    postList,
+    posts: state.posts,
   }
 }
 const mapDispatchToProps = (dispatch) => {

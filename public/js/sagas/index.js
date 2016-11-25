@@ -10,6 +10,7 @@ import openPopup from '../utils/popup'
 import { googleConfig, googleUrl } from '../utils/oauth_config'
 import {
   watchCreatePostFlow,
+  watchFindNewerPostFlow,
   watchFindOlderPostFlow,
 } from './post'
 
@@ -110,6 +111,7 @@ export default function* root() {
     fork(watchForgetPsFlow),
     /* post */
     fork(watchCreatePostFlow),
+    fork(watchFindNewerPostFlow),
     fork(watchFindOlderPostFlow),
     /* combine */
     fork(watchSignInFlow),

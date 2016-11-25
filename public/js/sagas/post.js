@@ -3,12 +3,14 @@ import { takeEvery } from 'redux-saga'
 import * as PostActions from '../actions/post'
 import * as CombineActions from '../actions/combine'
 import postAPI from '../utils/postAPI'
-import { getOldestPostID } from '../reducers/selectors'
+import { getOldestPostID, getNewestPostID } from '../reducers/selectors'
 
 const {
   createPostSuccess, createPostFailure,
   presentPostSuccess, presentPostFailure,
+  findNewerPostSuccess, findNewerPostPostFailure,
   findOlderPostSuccess, findOlderPostFailure,
+  displayNewerPost,
 } = PostActions
 
 const {
@@ -29,6 +31,7 @@ function* createPostFlow(post) {
 function* createPostFlows({ post }) {
   yield put(sendingRequest())
   yield call(createPostFlow, post)
+  yield put(displayNewerPost())
   yield put(cancelRequest())
 }
 export function* watchCreatePostFlow() {
@@ -45,6 +48,22 @@ export function* findPresentPostFlow() {
   } catch (error) {
     yield put(presentPostFailure(error))
   }
+}
+
+/************************* FindNewerPost *************************/
+function* findNewerPostFlow() {
+  try {
+    const postID = yield select(getNewestPostID)
+    const response = yield call(postAPI.findNewerPost, postID)
+    if (response && response.posts) {
+      yield put(findNewerPostSuccess(response))
+    }
+  } catch (error) {
+    yield put(findNewerPostFailure(error))
+  }
+}
+export function* watchFindNewerPostFlow() {
+  yield* takeEvery(PostActions.FIND_NEWER_POST_REQUEST, findNewerPostFlow)
 }
 
 /************************* FindOlderPost *************************/

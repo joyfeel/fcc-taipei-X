@@ -35,13 +35,40 @@ export const presentPostFailure = (error) => {
   }
 }
 
+export const FIND_NEWER_POST_REQUEST = 'FIND_NEWER_POST_REQUEST'
+export const FIND_NEWER_POST_SUCCESS = 'FIND_NEWER_POST_SUCCESS'
+export const FIND_NEWER_POST_FAILURE = 'FIND_NEWER_POST_FAILURE'
+export const findNewerPostRequest = () => {
+  return {
+    type: FIND_NEWER_POST_REQUEST,
+  }
+}
+export const findNewerPostSuccess = (response) => {
+  return {
+    type: FIND_NEWER_POST_SUCCESS,
+    response,
+  }
+}
+export const findNewerPostFailure = (error) => {
+  return {
+    type: FIND_NEWER_POST_FAILURE,
+    error,
+  }
+}
+
+export const DISPLAY_NEWER_POST = 'DISPLAY_NEWER_POST'
+export const displayNewerPost = () => {
+  return {
+    type: DISPLAY_NEWER_POST,
+  }
+}
+
 export const FIND_OLDER_POST_REQUEST = 'FIND_OLDER_POST_REQUEST'
 export const FIND_OLDER_POST_SUCCESS = 'FIND_OLDER_POST_SUCCESS'
 export const FIND_OLDER_POST_FAILURE = 'FIND_OLDER_POST_FAILURE'
-export const findOlderPostRequest = (post) => {
+export const findOlderPostRequest = () => {
   return {
     type: FIND_OLDER_POST_REQUEST,
-    post,
   }
 }
 export const findOlderPostSuccess = (response) => {

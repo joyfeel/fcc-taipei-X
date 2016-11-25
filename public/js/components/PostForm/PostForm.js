@@ -51,7 +51,6 @@ class PostForm extends Component {
       this.setState({ count: this.state.count - 1 })
     }
   }
-
   detectPostForm(e) {
     const bolder = (e.target.parentNode[1].value.trim().length > 0) ? true : false
     const hasText = e.target.value.trim().length > 0 ? true : false
@@ -68,7 +67,6 @@ class PostForm extends Component {
   shrinkPostForm() {
     this.props.setFilter(false)
   }
-
   handleSubmit(e) {
     e.preventDefault()
     this.setState({ bolder: false })
@@ -78,16 +76,16 @@ class PostForm extends Component {
     e.target.reset()
     this.props.setFilter(false)
   }
-
   componentWillReceiveProps(nextProps) {
-    if(nextProps.newPost) {
+    // 若最新一筆文章的作者ID等於登入的使用者ID
+    // 代表是自己所發的文，必須要設發文時間限制
+    // 反之表示最新一筆是別人發的話，無須理會
+    if (nextProps.newestPost.author.id === nextProps.id) {
       const { counting } = this.state
-      const { create_post_time } = nextProps.newPost.author
-
+      const { create_post_time } = nextProps.newestPost.author
       if(!counting) this.timeCalc(create_post_time)
     }
   }
-
   render() {
     const { filter, isFetching } = this.props
     const { count, counting, bolder, disabled } = this.state
@@ -110,31 +108,28 @@ class PostForm extends Component {
       </form>
     )
   }
-
   componentDidMount() {
     const { create_post_time } = this.props
     this.timeCalc(create_post_time)
   }
-
   componentWillUnmount() {
-     clearInterval(this.interval)
+    clearInterval(this.interval)
   }
 }
 
 PostForm.propTypes = {
   filter: PropTypes.bool.isRequired,
   setFilter: PropTypes.func.isRequired,
-  newPost: PropTypes.object,
   isFetching: PropTypes.bool.isRequired,
-  create_post_time: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = (state) => {
-  const { newPost } = state.post
-  const { create_post_time } = state.auth.profile
+  const newestPost = state.posts[0]
+  const { create_post_time, id } = state.auth.profile
   return {
-    newPost,
-    create_post_time,
+    newestPost,         // 最新的一筆文章，可能是登入的使用者本人發的，也可能是取最新10筆得到的
+    id,                 // 已登入的使用者本人ID
+    create_post_time,   // 已登入的使用者本人發文時間
   }
 }
 const mapDispatchToProps = (dispatch) => {
