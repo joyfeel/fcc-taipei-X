@@ -21,6 +21,7 @@ class PostTitle extends Component {
         onBlur={detectPostForm}
         onKeyUp={detectPostForm}
         onChange={detectPostForm}
+        ref='inp'
       />
     )
   }
