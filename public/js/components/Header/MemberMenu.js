@@ -17,13 +17,13 @@ class MemberMenu extends Component {
         <h2 className='sr'>
           Menu
         </h2>
-        <i className='search-1'>Search</i>
-        <i className='noti-1'>Notification</i>
-        <i>Profile</i>
-        <i className='bookmark-1'>Bookmark</i>
-        <i className='setting-1'>Setting</i>
-        <i>Online</i>
-        <i className='logout-1' onClick={this.handleClickLogout}>Logout</i>
+        <i className='search-3'>Search</i>
+        <i className='noti-4'>Notification</i>
+        <i className='member-4'>Profile</i>
+        <i className='bookmark-2'>Bookmark</i>
+        <i className='setting-6'>Settings</i>
+        <i className='chat-3'>Messenger(2)</i>
+        <i className='logout-5' onClick={this.handleClickLogout}>Logout</i>
       </nav>
     )
   }
