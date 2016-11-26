@@ -5,10 +5,24 @@
   transition: filter .35s;
 }
 
-.wrapper.login { margin-top: 55px; }
+.wrapper.login {
+  max-width: 1080px;
+  border: 1px solid $border;
+  border-top: 0;
+  border-bottom: 0;
+  margin: 55px auto 0;
+  height: 100%;
+}
 
 .mask {
 		filter: blur(7px);
 		opacity: .25;
 		z-index: 3;
+}
+
+
+@media (max-width: 580px) {
+.wrapper.login {
+  border: 0;
+  }
 }
