@@ -36,7 +36,14 @@
 			}
 	}
 
-	> div.post-btn { font-size: $smFz;}
+	> div.post-btn {
+		color: $inActive;
+		font-size: $smFz;
+
+		&:hover {
+			color: $inActive;
+		}
+	}
 
 	> .close {
 			display: none;

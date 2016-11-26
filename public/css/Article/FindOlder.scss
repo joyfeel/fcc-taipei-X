@@ -1,0 +1,24 @@
+.main > .find-older {
+  height: 45px;
+  position: relative;
+  margin-top: -10px;
+}
+
+.find-older > .loader {
+  position: static;
+  width: 0;
+  height: 0;
+  top: initial;
+
+  .loading {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+
+  }
+
+  .loading-dot {
+    position: absolute;
+    top: 0;
+  }
+}
