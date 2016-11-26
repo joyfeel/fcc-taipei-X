@@ -3,7 +3,6 @@
   position: absolute;
   top: 8px;
   right: 2%;
-  cursor: pointer;
   @extend %animated;
   @extend  %fadeInDown;
 
@@ -21,83 +20,32 @@
 
   .hi {
     display: inline-block;
+    color: $font;
   }
 
-  &:hover {
-    .hi {
-      color: $active1;
-    }
-
-    > .member-avatar {
-      float: left;
-      box-shadow: $bsh;
-    }
-  }
-
-  > .member-menu {
-    display: none;
-    width: 100px;
-    box-shadow: $bsh;
-    border-radius: 6px;
-    position: absolute;
-    top: 35px;
-    right: 11px;
-    background-color: $bgContain;
-  }
+  // &:hover {
+  //   .hi {
+  //     color: $active1;
+  //   }
+  // }
+  //   > .member-avatar {
+  //     // float: left;
+  //     box-shadow: $bsh;
+  //   }
+  // }
 }
 
-.member-menu {
-  > i {
-    cursor: pointer;
-		display: block;
-		height: 35px;
-		line-height: 37px;
-		color: $active1;
-		font-size: $smFz;
-		font-style: normal;
-		color: $inActive;
-		transition: color, background-color  .5s;
+// .member-nickname:hover > .hi {
+//   color: $active1;
+// }
 
-    &:first-child {
-			border-radius: 6px 6px 0 0;
-		}
-
-		&:last-child {
-			border-radius: 0 0 6px 6px;
-		}
-
-		&:before {
-			@extend %icon;
-			font-size: $ssFz;
-			margin: 0 6px 0 5px;
-			color: $active1;
-		}
-	}
-
-	> i:hover {
-			background-color: $bgBody;
-
-		&:before {
-			color: $active2;
-		}
-	}
-
-  > .search-1 {
-    font-size: $xsFz;
-  }
-  > .noti-1 {
-    font-size: $xsFz;
-  }
-  > .bookmark-1 {
-    font-size: $xsFz;
-  }
-  > .setting-1-1 {
-    font-size: $xsFz;
-  }
-  > .logout-1-1 {
-    font-size: $xsFz;
-  }
+.member-panel > .member-avatar:hover {
+  color: $active1;
+  box-shadow: $bsh;
+  cursor: pointer;
 }
+
+
 
 .login .member-panel {
   display: block;

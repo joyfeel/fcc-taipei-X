@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as PostActions from '../../actions/post'
 import FindNewer from './FindNewer'
+import FindOlder from './FindOlder'
 import SingleArticle from './SingleArticle'
 import Config from '../../utils/config'
 
@@ -35,6 +36,7 @@ class Article extends Component {
           newPostCount={newPosts.length}
         />
         {this.renderArticles(visiblePosts)}
+        <FindOlder />
       </main>
     )
   }

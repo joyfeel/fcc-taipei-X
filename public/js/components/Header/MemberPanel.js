@@ -15,14 +15,19 @@ class MemberPanel extends Component {
     this.childClickSetMenuState = this.childClickSetMenuState.bind(this)
   }
   childClickAvatar(e){
-    this.setState({
-      showMenu: !this.state.showMenu,
-    })
+    if(window.innerWidth < 960) {
+      this.setState({
+        showMenu: !this.state.showMenu,
+      })
+    }
   }
   childClickSetMenuState() {
-    this.setState({
-      showMenu: false,
-    })
+    if(window.innerWidth < 960) {
+      this.setState({
+        showMenu: false,
+      })
+    }
+
   }
   render() {
     return (
@@ -33,7 +38,7 @@ class MemberPanel extends Component {
           childClickAvatar={this.childClickAvatar}
           childClickSetMenuState={this.childClickSetMenuState}
         />
-        <MemberMenu className={cx('member-menu', { on: this.state.showMenu })} />
+      <MemberMenu className={cx('member-menu', { show: this.state.showMenu })} />
       </div>
     )
   }
