@@ -52,7 +52,7 @@ class PostForm extends Component {
     }
   }
   detectPostForm(e) {
-    const bolder = (e.target.parentNode[1].value.trim().length > 0) ? true : false
+    const bolder = (this.refs['titleValue'].refs['inp'].value.trim().length > 0) ? true : false
     const hasText = e.target.value.trim().length > 0 ? true : false
     const disabled = (this.state.post_title && this.state.post_content) ? false : true
 
@@ -69,11 +69,16 @@ class PostForm extends Component {
   }
   handleSubmit(e) {
     e.preventDefault()
-    this.setState({ bolder: false })
     const title = e.target.post_title.value.trim()
     const content = e.target.post_content.value.trim()
     this.props.post.createPostRequest({ title, content })
     e.target.reset()
+    this.setState({
+      post_title: false,
+      post_content: false,
+      bolder: false,
+    })
+
     this.props.setFilter(false)
   }
   componentWillReceiveProps(nextProps) {
@@ -103,6 +108,7 @@ class PostForm extends Component {
           placeHolder={placeHolder}
           detectPostForm={this.detectPostForm}
           bolder={bolder}
+          ref='titleValue'
         />
         <PostContent detectPostForm={this.detectPostForm} />
       </form>
