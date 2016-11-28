@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "Meet API",
-        "description": "Move your app forward with the Meet API\n\n## API Success Code\n\nCode  | HTTP Code | Message\n----- | --------- | --------\n200001 | 200 | You can go to check your email\n200002 | 200 | Account validation success\n200003 | 200 | Signin success\n200004 | 200 | Create a new post successfully\n200005 | 200 | You have allowed to post articles\n200006 | 200 | Get some articles\n\n\n## API Error Code - 400\n\nError Code  | HTTP Code | Message\n------| --- | -----------------------------------\n401001 | 401 | Email or password is not valid\n401002 | 401 | Token is not valid or expired\n401003 | 401 | Email token is not valid or expired\n401004 | 401 | No Authorization header found\n401004 | 401 | Invalid Token\n403001 | 403 | The email has already been registered in social account\n403002 | 403 | The email has already been registered\n403003 | 403 | You can't repeatly post article in 3 minutes\n404001 | 404 | Your email account is not activated\n404002 | 404 | We could not find your account\n422001 | 422 | Length of password must >= 6\n\n## API Error Code - 500\n\nError Code  | HTTP Code | Message\n------| --- | -----------------------------------    \n500001 | 500 | Bcrypt error\n500002 | 500 | Your data is bad and you should feel bad\n503001 | 503 | SMTP server unavailable to verify\n503002 | 503 | SMTP server unavailable to send\n\n ## API Error Code - Bonus\n \nError Code  | HTTP Code | Message\n------| --- | -----------------------------------    \n-1 | Unknow | Unknow\n",
+        "description": "Move your app forward with the Meet API\n\n## API Success Code\n\nCode  | HTTP Code | Message\n----- | --------- | --------\n200001 | 200 | You can go to check your email\n200002 | 200 | Account validation success\n200003 | 200 | Signin success\n200004 | 200 | Create a new post successfully\n200005 | 200 | You have allowed to post articles\n200006 | 200 | Get some articles\n200007 | 200 | Edit article success\n200008 | 200 | Delete article success\n\n\n## API Error Code - 400\n\nError Code  | HTTP Code | Message\n------| --- | -----------------------------------\n401001 | 401 | Email or password is not valid\n401002 | 401 | Token is not valid or expired\n401003 | 401 | Email token is not valid or expired\n401004 | 401 | No Authorization header found\n401004 | 401 | Invalid Token\n403001 | 403 | The email has already been registered in social account\n403002 | 403 | The email has already been registered\n403003 | 403 | You can't repeatly post article in 3 minutes\n403004 | 403 | Edit other people's post is not allowed\n403005 | 403 | Delete other people's post is not allowed\n404001 | 404 | Your email account is not activated\n404002 | 404 | We could not find your account\n404003 | 404 | This post is not exist\n422001 | 422 | Length of password must >= 6\n\n## API Error Code - 500\n\nError Code  | HTTP Code | Message\n------| --- | -----------------------------------    \n500001 | 500 | Bcrypt error\n500002 | 500 | Your data is bad and you should feel bad\n503001 | 503 | SMTP server unavailable to verify\n503002 | 503 | SMTP server unavailable to send\n\n ## API Error Code - Bonus\n \nError Code  | HTTP Code | Message\n------| --- | -----------------------------------    \n-1 | Unknow | Unknow\n",
         "version": "1.0.0"
     },
     "host": "localhost:3000",
@@ -67,6 +67,126 @@
                 }
             }
         },
+        "/posts/{postID}": {
+            "patch": {
+                "summary": "Update post",
+                "description": "Update post",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "postID",
+                        "description": "postID that need to be edited",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Post information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PostRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/newPostResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid token",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden to edit the post",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Post not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete post",
+                "description": "Delete post",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "postID",
+                        "description": "postID that need to be deleted",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Post information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PostRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/newPostResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid token",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden to delete the post",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Post not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/posts/findPresent": {
             "get": {
                 "summary": "Get present articles",
@@ -79,7 +199,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Successful operation",
                         "schema": {
                             "$ref": "#/definitions/someArticles"
                         }
@@ -107,7 +227,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Successful operation",
                         "schema": {
                             "$ref": "#/definitions/someArticles"
                         }
@@ -135,7 +255,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Successful operation",
                         "schema": {
                             "$ref": "#/definitions/someArticles"
                         }
@@ -155,7 +275,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Successful operation",
                         "schema": {
                             "$ref": "#/definitions/forbidPostResponse"
                         }
@@ -186,7 +306,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Successful operation",
                         "schema": {
                             "$ref": "#/definitions/SuccessResponse"
                         }
@@ -213,7 +333,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Successful operation",
                         "schema": {
                             "$ref": "#/definitions/GetUserProfileResponse"
                         }
@@ -244,7 +364,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Successful operation",
                         "schema": {
                             "$ref": "#/definitions/GetUserProfileResponse"
                         }
@@ -275,7 +395,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Successful operation",
                         "schema": {
                             "$ref": "#/definitions/SuccessResponse"
                         }

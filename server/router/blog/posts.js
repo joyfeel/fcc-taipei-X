@@ -47,8 +47,8 @@ router.post('/',
       await post.save()
       await post.populate('author').execPopulate()
       ctx.body = {
-        code: 200004,
         status: 'success',
+        code: 200004,
         post: getCleanPost(post),
       }
     } catch (err) {
@@ -124,6 +124,88 @@ router.get('/findNewer',
       }
     } catch (err) {
       if (err.output.statusCode) {
+        ctx.throw(err.output.statusCode, err)
+      } else {
+        ctx.throw(500, err)
+      }
+    }
+  }
+)
+
+router.patch('/:postID',
+  validate({
+    'postID:params': ['isMongoId', 'Invalid postID'],
+  }),
+  async(ctx, next) => {
+    try {
+      // 從 token 找回 user id
+      const { authorization } = ctx.request.header
+      const { userId } = await checkAuth(authorization)
+      if (!userId) {
+        throw Boom.create(401, 'Token is not valid or expired', { code: 401002 })
+      }
+      // 檢查 postID 是否存在
+      const { postID } = ctx.params
+      const article = await Post.findById(postID)
+      if (!article) {
+        throw Boom.create(404, 'This post is not exist', { code: 404003 })
+      }
+      // 只有作者本人才可編輯文章
+      let { author } = article
+      author = author.toString()
+      if (author !== userId) {
+        throw Boom.create(403, `Edit other people's post is not allowed`, { code: 403004 })
+      }
+      const updatedPost = await Post.findByIdAndUpdate(postID, ctx.request.body, { new: true })
+      await updatedPost.populate('author').execPopulate()
+      ctx.body = {
+        status: 'success',
+        code: 200007,
+        post: getCleanPost(updatedPost),
+      }
+    } catch (err) {
+      if (err.output && err.output.statusCode) {
+        ctx.throw(err.output.statusCode, err)
+      } else {
+        ctx.throw(500, err)
+      }
+    }
+  }
+)
+
+router.delete('/:postID',
+  validate({
+    'postID:params': ['isMongoId', 'Invalid postID'],
+  }),
+  async(ctx, next) => {
+    try {
+      // 從 token 找回 user id
+      const { authorization } = ctx.request.header
+      const { userId } = await checkAuth(authorization)
+      if (!userId) {
+        throw Boom.create(401, 'Token is not valid or expired', { code: 401002 })
+      }
+      // 檢查 postID 是否存在
+      const { postID } = ctx.params
+      const article = await Post.findById(postID)
+      if (!article) {
+        throw Boom.create(404, 'This post is not exist', { code: 404003 })
+      }
+      // 只有作者本人才可刪除文章
+      let { author } = article
+      author = author.toString()
+      if (author !== userId) {
+        throw Boom.create(403, `Delete other people's post is not allowed`, { code: 403005 })
+      }
+      const updatedPost = await Post.findByIdAndRemove(postID)
+      await updatedPost.populate('author').execPopulate()
+      ctx.body = {
+        status: 'success',
+        code: 200008,
+        post: getCleanPost(updatedPost),
+      }
+    } catch (err) {
+      if (err.output && err.output.statusCode) {
         ctx.throw(err.output.statusCode, err)
       } else {
         ctx.throw(500, err)
