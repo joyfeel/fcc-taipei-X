@@ -14,6 +14,7 @@ class MemberPanel extends Component {
     this.childClickAvatar = this.childClickAvatar.bind(this)
     this.childClickSetMenuState = this.childClickSetMenuState.bind(this)
   }
+
   childClickAvatar(){
     if(window.innerWidth < 960) {
       this.setState({
@@ -27,6 +28,7 @@ class MemberPanel extends Component {
         showMenu: false,
       })
     }
+
   }
   render() {
     return (

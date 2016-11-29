@@ -1,0 +1,74 @@
+
+.article	> .article-menu {
+	width: 100px;
+	box-shadow: $bsh;
+	border-radius: 6px;
+	position: absolute;
+	top: 35px;
+	right: 11px;
+	background-color: $bgContain;
+}
+
+.article-menu {
+	@extend %animated;
+	animation-duration: .35s;
+	@extend %zoomOut;
+	display: none;
+	> i {
+		cursor: pointer;
+		display: block;
+		height: 35px;
+		line-height: 37px;
+		color: $infoFont;
+		font-size: $smFz;
+		font-style: normal;
+		transition: color .5s, background-color  .5s;
+
+		&:first-child {
+			border-radius: 6px 6px 0 0;
+		}
+
+		&:last-child {
+			border-radius: 0 0 6px 6px;
+		}
+
+		&:before {
+			@extend %icon;
+			font-size: $ssFz;
+			margin: 0 6px 0 5px;
+			transition: color .5s;
+			color: $active1;
+		}
+	}
+
+	> i:hover {
+			color: $active2;
+			background-color: $bgBody;
+
+		&:before {
+			color: $active2;
+		}
+	}
+
+	> .post-2:before {
+			font-size: $ssFz;
+	}
+	> .cancel-3:before {
+			font-size: $xsFz;
+	}
+	> .bookmark-1:before, > .bookmark-2:before {
+			font-size: $xsFz;
+	}
+	> .report-1:before {
+			font-size: $xsFz;
+	}
+}
+
+
+.article-menu.show {
+	display: block;
+	@extend %zoomIn;
+	> .cancel-3 {
+		border-radius: 0 0 6px 6px;
+	}
+}
