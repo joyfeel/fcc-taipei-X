@@ -5,8 +5,10 @@
   color: $active1;
   font-size: 0;
   background: $bgContain;
+  transition: border-color .3s;
   &:hover {
     color: $active2;
+    border-color: $hightLight;
   }
 }
 
@@ -18,10 +20,16 @@
   border: 1px solid $border;
   border-bottom: 0;
   transition: color .3s, height .3s, font-size .3s .3s;
+
 }
 
 .get + .article {
+  border-top-color: $border;
   border-radius: 0 0 6px 6px;
+}
+
+.get:hover + .article {
+  border-top-color: $hightLight;
 }
 
 @media (max-width: 580px) {
