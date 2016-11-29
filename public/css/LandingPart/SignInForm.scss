@@ -1,6 +1,6 @@
 .sign-in-indicated {
   font-size: $smFz;
-  color: $font;
+  color: $infoFont;
   text-align: center;
   margin: 5% 0;
 }
@@ -23,7 +23,7 @@
   font-size: $smFz;
   text-transform: uppercase;
   text-decoration: underline;
-  margin-top: 2%;
+  margin-top: -2%;
   &:hover {
     text-decoration: underline;
   }
