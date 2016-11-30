@@ -2,14 +2,17 @@
   > .member-menu {
     width: 35px;
     border: 1px solid $border;
-    border-right: 0;
+    // border-right: 0;
     border-radius: 6px 0 0 6px;
     position: absolute;
     top: 57px;
-    right: -21.5px;
+    right: -23px;
     // overflow: hidden;
     background-color: $bgContain;
-    transition: right .3s ease-in-out;
+    transition: right .3s ease-in-out, border-color .5s, background-color .5s;
+    &:hover {
+      border-color: $hightLight;
+    }
   }
 }
 
@@ -20,10 +23,9 @@
     // width: 35px;
 		height: 35px;
 		line-height: 37px;
-		color: $active1;
+		color: $infoFont;
 		font-size: $smFz;
 		font-style: normal;
-		color: $inActive;
 		transition: color .5s, background-color .5s, opacity, transform .5s;
     overflow: hidden;
 
@@ -52,6 +54,9 @@
       visibility: hidden;
     }
 
+    &:hover {
+      color: $active2;
+    }
 	}
   > .search-3 {
     border-radius: 6px 0 0 0;
@@ -82,7 +87,7 @@
 
 .member-menu:hover {
   > i:after {
-    color: $active1;
+    color: $infoFont;
     visibility: visible;
     @extend %animated;
     animation-duration: .7s;
@@ -112,7 +117,7 @@
 
 .member-menu:hover > .bookmark-2 {
   &:after {
-    content: 'Bookmark';
+    content: 'Bookmarks';
     top: 105px;
   }
 }

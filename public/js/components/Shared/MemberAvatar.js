@@ -28,6 +28,7 @@ class MemberAvatar extends Component {
 MemberAvatar.propTypes = {
   avatar: PropTypes.string.isRequired,
   childClickAvatar: PropTypes.func.isRequired,
+  childClickSetMenuState: PropTypes.func.isRequired,
 }
 
 export default MemberAvatar
