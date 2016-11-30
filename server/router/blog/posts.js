@@ -134,7 +134,7 @@ router.get('/findNewer',
 
 router.patch('/:postID',
   validate({
-    'postID:params': ['isMongoId', 'Invalid postID'],
+    'postID:params': ['require', 'isMongoId', 'Invalid postID'],
   }),
   async(ctx, next) => {
     try {
@@ -175,7 +175,7 @@ router.patch('/:postID',
 
 router.delete('/:postID',
   validate({
-    'postID:params': ['isMongoId', 'Invalid postID'],
+    'postID:params': ['require', 'isMongoId', 'Invalid postID'],
   }),
   async(ctx, next) => {
     try {
