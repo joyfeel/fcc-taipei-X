@@ -20,13 +20,18 @@ export const minsAgo =(secs) => {
   }
 }
 
-export const hrsAgo = (secs) => {
+export const hrsAgo = (secs, postMilliseconds) => {
   const h = Math.floor((secs % (24*3600))/3600)
 
   if(h === 1) {
     return `${h} hr ago`
   } else {
-    return `${h} hrs ago`
+    const postDate = new Date(postMilliseconds)
+    const hr = postDate.getHours()
+    const min = postDate.getMinutes()
+
+    return `Today ${displayTime(hr)}:${displayTime(min)}`
+
   }
 }
 
@@ -35,12 +40,14 @@ export const daysAgo = (postMilliseconds) => {
   const hr = postDate.getHours()
   const min = postDate.getMinutes()
 
-  function displayTime(time) {
-    if(time < 10) {
-      return ('0' + time)
-    } else {
-      return time
-    }
+  return `Yesterday ${displayTime(hr)}:${displayTime(min)}`
+}
+
+
+function displayTime(time) {
+  if(time < 10) {
+    return ('0' + time)
+  } else {
+    return time
   }
-  return `yesterday  ${displayTime(hr)}:${displayTime(min)}`
 }
