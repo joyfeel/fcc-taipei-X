@@ -26,9 +26,10 @@ class Article extends Component {
     this.props.post.displayNewerPost()
   }
   render() {
-    const { posts } = this.props
+    const { posts, findOlderFetching } = this.props
     const newPosts = posts.filter(t => !t.visibility)
     const visiblePosts = posts.filter(t => t.visibility)
+
     return (
       <main className='main' role='main'>
         <FindNewer
@@ -36,7 +37,7 @@ class Article extends Component {
           newPostCount={newPosts.length}
         />
         {this.renderArticles(visiblePosts)}
-        <FindOlder />
+        <FindOlder findOlderFetching={findOlderFetching}/>
       </main>
     )
   }
@@ -50,7 +51,9 @@ class Article extends Component {
 
 Article.propTypes = {
   posts: PropTypes.array.isRequired,
+  findOlderFetching: PropTypes.bool.isRequired,
 }
+
 
 const mapDispatchToProps = (dispatch) => {
   return {

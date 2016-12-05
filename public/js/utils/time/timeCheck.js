@@ -14,7 +14,7 @@ const timeCheck = (secs, milliseconds, postMilliseconds, twelveOclock) => {
   }//判斷昨天
 
   if(milliseconds < aMin) {
-    return 'few secs ago'
+    return 'A few secs ago'
   }//判斷是否滿一分鐘
 
   if(milliseconds < anHour) {
@@ -22,7 +22,7 @@ const timeCheck = (secs, milliseconds, postMilliseconds, twelveOclock) => {
   }//判斷未滿一小時
 
   if(milliseconds < aDay) {
-    return hrsAgo(secs)
+    return hrsAgo(secs, postMilliseconds)
   }//判斷未滿一天
 }
 

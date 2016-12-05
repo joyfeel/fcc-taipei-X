@@ -79,9 +79,9 @@ function* findOlderPostFlow() {
   }
 }
 function* findOlderPostFlows() {
-  yield put(sendingRequest())
+  yield put(sendingRequest({ findOlderFetching: true }))
   yield call(findOlderPostFlow)
-  yield put(cancelRequest())
+  yield put(cancelRequest({ findOlderFetching: false }))
 }
 export function* watchFindOlderPostFlow() {
   yield* takeEvery(PostActions.FIND_OLDER_POST_REQUEST, findOlderPostFlows)

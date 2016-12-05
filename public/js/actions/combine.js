@@ -1,13 +1,15 @@
 export const SENDING_REQUEST = 'SENDING_REQUEST'
- export const sendingRequest = () => {
+ export const sendingRequest = (fetch) => {
    return {
     type: SENDING_REQUEST,
+    fetch,
    }
  }
  export const CANCEL_REQUEST = 'CANCEL_REQUEST'
- export const cancelRequest = () => {
+ export const cancelRequest = (fetch) => {
   return {
     type: CANCEL_REQUEST,
+    fetch,
   }
 }
 
