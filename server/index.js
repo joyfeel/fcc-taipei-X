@@ -30,9 +30,9 @@ import checkPostLimitRouter from './router/blog/checkPostLimit'
 
 import './config/database'
 import Config from './config'
+import initialSocket from './socket'
 
 const app = new Koa()
-
 app.use(async(ctx, next) => {
   try {
     await next()
@@ -84,7 +84,7 @@ app.on('internalError', (err, ctx) => {
 app.use(convert(cors()))
 app.use(convert(bodyParser()))
 app.use(convert(historyApiFallback({
-  verbose: false
+  verbose: false,
 })))
 
 const compiler = webpack(webpackConfig)
@@ -92,13 +92,13 @@ app.use(convert(WebpackDevMiddleware(compiler, {
   hot: true,
   noInfo: true,
   publicPath: webpackConfig.output.publicPath,
-  historyApiFallback: true
+  historyApiFallback: true,
 })))
 
 app.use(convert(WebpackHotMiddleware(compiler, {
   log: console.log,
   path: '/__webpack_hmr',
-  heartbeat: 10 * 1000
+  heartbeat: 10 * 1000,
 })))
 
 app.use(serve(__dirname + '/../public'))
@@ -114,6 +114,12 @@ app.use(convert(jwt({
     '/favicon.ico',
   ]
 })))
+
+const server = app.listen(Config.port, () => {
+  console.log(`listening on port ${Config.port}`)
+})
+const io = require('socket.io')(server)
+initialSocket(io)
 
 app.use(signupRouter.routes()).use(signupRouter.allowedMethods({
   throw: true
@@ -143,9 +149,5 @@ app.use(commentRouter.routes()).use(commentRouter.allowedMethods({
 app.use(checkPostLimitRouter.routes()).use(checkPostLimitRouter.allowedMethods({
   throw: true
 }))
-
-app.listen(Config.port, () => {
-  console.log(`listening on port ${Config.port}`)
-})
 
 export default app

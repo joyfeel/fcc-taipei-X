@@ -12,6 +12,7 @@ const initialState = {
     edit_nickname_time: null,
     created_time: null,
     updated_time: null,
+    create_post_time: null,
   },
   popupMsg: null,
 }
@@ -52,6 +53,14 @@ const auth = (state = initialState, action) => {
         ...state,
         isPopup: true,
         popupMsg: codeTable(action),
+      }
+    case ActionTypes.SOCKET_UPDATE_AUTH_CREATE_POST_TIME:
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          create_post_time: action.create_post_time,
+        },
       }
     default:
       return state

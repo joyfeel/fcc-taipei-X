@@ -10,10 +10,13 @@ class AfterLogin extends Component {
     super(props)
   }
   render() {
-    const { posts } = this.props
+    const { posts, findOlderFetching } = this.props
     return (
       <div>
-        <Article posts={posts} />
+        <Article
+          posts={posts}
+          findOlderFetching={findOlderFetching}
+        />
       </div>
     )
   }
@@ -26,8 +29,11 @@ class AfterLogin extends Component {
 }
 
 const mapStateToProps = (state) => {
+  const { findOlderFetching } = state.combine
+
   return {
     posts: state.posts,
+    findOlderFetching,
   }
 }
 const mapDispatchToProps = (dispatch) => {

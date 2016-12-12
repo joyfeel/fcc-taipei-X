@@ -1,4 +1,5 @@
-import { take, call, put, fork } from 'redux-saga/effects'
+import { take, call, put, fork, select } from 'redux-saga/effects'
+import { eventChannel } from 'redux-saga'
 import { takeEvery } from 'redux-saga'
 import qs from 'querystring'
 import Boom from 'boom-browserify'
@@ -8,6 +9,7 @@ import * as CombineActions from '../actions/combine'
 import auth from '../utils/auth'
 import openPopup from '../utils/popup'
 import { googleConfig, googleUrl } from '../utils/oauth_config'
+import { getPostTimeSocket } from '../reducers/selectors'
 import {
   watchCreatePostFlow,
   watchFindNewerPostFlow,
@@ -101,6 +103,50 @@ function* watchOauthLogin() {
   yield* takeEvery(OauthActions.OAUTH_REQUEST, oauthFlow)
 }
 
+
+function subscribe(socket) {
+  return eventChannel(emit => {
+    // socket.on('t', ({ time }) => {
+    //   console.log('tttttttttttt')
+    //   emit(addUser({ time }))
+    // })
+    // socket.on('users.logout', ({ username }) => {
+    //   emit(removeUser({ username }));
+    // });
+    // socket.on('messages.new', ({ message }) => {
+    //   emit(newMessage({ message }));
+    // });
+    // socket.on('disconnect', e => {
+    //   // TODO: handle
+    // })
+    return () => {};
+  })
+}
+
+function* read(socket) {
+  const channel = yield call(subscribe, socket)
+  while (true) {
+    let action = yield take(channel)
+    yield put(action)
+  }
+}
+
+// function* write(socket) {
+//   while (true) {
+//     const { payload } = yield take(`${sendMessage}`);
+//     socket.emit('message', payload);
+//   }
+// }
+
+function* handleIO(socket) {
+  yield fork(read, socket)
+  //yield fork(write, socket);
+}
+function* lol() {
+  const socket = yield select(getPostTimeSocket)
+  const task = yield fork(handleIO, socket)
+}
+
 export default function* root() {
   yield [
     /* oauth */
@@ -117,5 +163,7 @@ export default function* root() {
     fork(watchSignInFlow),
     fork(watchRefreshFlow),
     fork(watchVerifyEmailTokenFlow),
+    /* test */
+    //fork(lol)
   ]
 }

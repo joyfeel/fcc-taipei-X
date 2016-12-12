@@ -82,13 +82,13 @@ class PostForm extends Component {
     this.props.setFilter(false)
   }
   componentWillReceiveProps(nextProps) {
-    // 若最新一筆文章的作者ID等於登入的使用者ID
-    // 代表是自己所發的文，必須要設發文時間限制
-    // 反之表示最新一筆是別人發的話，無須理會
-    if (nextProps.newestPost.author.id === nextProps.id) {
-      const { counting } = this.state
-      const { create_post_time } = nextProps.newestPost.author
-      if(!counting) this.timeCalc(create_post_time)
+    /*
+      The property `create_post_time` is pushing from server side of socket.io
+      Therefore, we need to compare the property between old and new
+    */
+    const { counting } = this.state
+    if (this.props.create_post_time !== nextProps.create_post_time && !counting) {
+      this.timeCalc(nextProps.create_post_time)
     }
   }
   render() {
@@ -130,10 +130,8 @@ PostForm.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const newestPost = state.posts[0]
   const { create_post_time, id } = state.auth.profile
   return {
-    newestPost,         // 最新的一筆文章，可能是登入的使用者本人發的，也可能是取最新10筆得到的
     id,                 // 已登入的使用者本人ID
     create_post_time,   // 已登入的使用者本人發文時間
   }

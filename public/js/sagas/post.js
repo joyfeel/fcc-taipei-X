@@ -1,20 +1,23 @@
 import { call, put, select } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
+import { eventChannel } from 'redux-saga'
 import * as PostActions from '../actions/post'
 import * as CombineActions from '../actions/combine'
 import postAPI from '../utils/postAPI'
-import { getOldestPostID, getNewestPostID } from '../reducers/selectors'
+import { getOldestPostID, getNewestPostID, getPostTimeSocket } from '../reducers/selectors'
+import auth from '../utils/auth'
 
 const {
   createPostSuccess, createPostFailure,
   presentPostSuccess, presentPostFailure,
-  findNewerPostSuccess, findNewerPostPostFailure,
+  findNewerPostSuccess, findNewerPostFailure,
   findOlderPostSuccess, findOlderPostFailure,
   displayNewerPost,
 } = PostActions
 
 const {
   sendingRequest, cancelRequest,
+  sendingRequestFindOlderPost, cancelRequestFindOlderPost,
 } = CombineActions
 
 /************************* CreatePost *************************/
@@ -24,6 +27,10 @@ function* createPostFlow(post) {
     if (response) {
       yield put(createPostSuccess(response))
     }
+    const socket = yield select(getPostTimeSocket)
+    socket.emit('post', {
+      token: auth.getToken(),
+    })
   } catch(error) {
     yield put(createPostFailure(error))
   }
@@ -79,9 +86,9 @@ function* findOlderPostFlow() {
   }
 }
 function* findOlderPostFlows() {
-  yield put(sendingRequest())
+  yield put(sendingRequestFindOlderPost())
   yield call(findOlderPostFlow)
-  yield put(cancelRequest())
+  yield put(cancelRequestFindOlderPost())
 }
 export function* watchFindOlderPostFlow() {
   yield* takeEvery(PostActions.FIND_OLDER_POST_REQUEST, findOlderPostFlows)

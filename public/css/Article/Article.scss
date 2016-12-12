@@ -74,8 +74,8 @@
 		}
 	}
 	> .article-title {
-			width: calc(100% - 15px);
-			margin: 0 5px 0 10px;
+			width: calc(100% - 30px);
+			margin: 0 15px 0 15px;
 			color: $heading;
 			font-size: $lgFz;
 			font-weight: bold;
@@ -83,8 +83,8 @@
 			word-spacing: -4px;
 	}
 	> .article-content {
-			width: calc(100% - 20px);
-			margin: 5px 10px 0px 10px;
+			width: calc(100% - 30px);
+			margin: 5px 15px 0px 15px;
 			padding-bottom: 5px;
 			font-size: $smFz;
 			color: $font;

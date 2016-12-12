@@ -132,3 +132,12 @@ export const forgetPSFailure = (error) => {
     error,
   }
 }
+
+/* Socket */
+export const SOCKET_UPDATE_AUTH_CREATE_POST_TIME = 'SOCKET_UPDATE_AUTH_CREATE_POST_TIME'
+export const socketUpdateAuthCreatePostTime = (create_post_time) => {
+  return {
+    type: SOCKET_UPDATE_AUTH_CREATE_POST_TIME,
+    create_post_time,
+  }
+}
