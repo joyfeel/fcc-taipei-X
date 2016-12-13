@@ -5,6 +5,7 @@ import cx from 'classnames'
 import SubmitBtn from './SubmitBtn'
 import SignFormEmail from './SignFormEmail'
 import * as AuthActions from '../../actions/auth'
+import * as PopupActions from '../../actions/popup'
 
 class Popup extends Component {
   constructor(props) {
@@ -19,8 +20,8 @@ class Popup extends Component {
   }
 
   componentWillMount() {
-    const { btnTxt } = this.props.popupMsg
-    if (btnTxt !== 'SEND') this.setState({ valid: false })
+    const { icon } = this.props.popupMsg
+    if (icon !== 'email-input-popup') this.setState({ valid: false })
   }
 
 
@@ -35,15 +36,15 @@ class Popup extends Component {
   handlePopupClick(e) {
     e.preventDefault()
     const btnClass = e.target.className
-    const { btnTxt } = this.props.popupMsg
+    const { icon } = this.props.popupMsg
     const { email } = this.state
 
-    if(btnTxt === 'SEND' && btnClass === 'submit-btn') {
-      this.props.auth.forgetPSRequest({ email })
+    if(icon === 'email-input-popup' && btnClass === 'submit-btn') {
+      this.props.auth.forgetPSRequest(email)
     }
 
     this.setState({ offPopup: true, email: null })
-    this.props.auth.clearPopupMsg()
+    this.props.popup.popupClose()
   }
   render() {
     const { icon, message, btnTxt } = this.props.popupMsg
@@ -72,7 +73,8 @@ class Popup extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    auth: bindActionCreators(AuthActions, dispatch)
+    auth: bindActionCreators(AuthActions, dispatch),
+    popup: bindActionCreators(PopupActions, dispatch),
   }
 }
 
