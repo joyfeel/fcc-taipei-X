@@ -2,7 +2,6 @@ import * as ActionTypes from '../actions/auth'
 import codeTable from '../utils/apicode'
 
 const initialState = {
-  isPopup: false,
   profile: {
     token: null,
     id: null,
@@ -13,7 +12,6 @@ const initialState = {
     created_time: null,
     updated_time: null,
   },
-  popupMsg: null,
 }
 const auth = (state = initialState, action) => {
   switch(action.type) {
@@ -31,27 +29,11 @@ const auth = (state = initialState, action) => {
     case ActionTypes.FORGET_PS_FAILURE:
       return {
         ...state,
-        isPopup: true,
-        popupMsg: codeTable(action.error),
-      }
-    case ActionTypes.CLEAR_POPUPMSG:
-      return {
-        ...state,
-        isPopup: false,
-        popupMsg: null,
       }
     case ActionTypes.SIGNUP_SUCCESS:
     case ActionTypes.FORGET_PS_SUCCESS:
       return {
         ...state,
-        isPopup: true,
-        popupMsg: codeTable(action.response),
-      }
-    case ActionTypes.FORGET_PS_POPUP:
-      return {
-        ...state,
-        isPopup: true,
-        popupMsg: codeTable(action),
       }
     default:
       return state

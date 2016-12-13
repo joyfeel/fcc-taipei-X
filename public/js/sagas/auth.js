@@ -4,6 +4,7 @@ import { takeEvery } from 'redux-saga'
 import auth from '../utils/auth'
 import { forwardTo } from '../utils/mixed'
 import * as AuthActions from '../actions/auth'
+import * as PopupActions from '../actions/popup'
 import * as CombineActions from '../actions/combine'
 
 const {
@@ -14,6 +15,10 @@ const {
   signUpSuccess, signUpFailure,
   forgetPSSuccess, forgetPSFailure,
 } = AuthActions
+
+const {
+  popupRequest, popupClose,
+} = PopupActions
 
 const {
   sendingRequest, cancelRequest,
@@ -29,8 +34,9 @@ export function* signInFlow(formData) {
       forwardTo('/')
     }
   } catch (error) {
-    yield put(signInFailure(error))
+    yield put(signInFailure())
     yield call(auth.logout)
+    yield put(popupRequest(error))
   }
 }
 
@@ -43,8 +49,9 @@ export function* identifyTokenFlow() {
       yield put(identityTokenSuccess(response))
     }
   } catch (error) {
-    yield put(identityTokenFailure(error))
+    yield put(identityTokenFailure())
     yield call(auth.logout)
+    yield put(popupRequest(error))
   }
 }
 
@@ -72,7 +79,8 @@ export function* verifyEmailTokenFlow() {
       yield put(verifyEmailTokenSuccess(response))
     }
   } catch (error) {
-    yield put(verifyEmailTokenFailure(error))
+    yield put(verifyEmailTokenFailure())
+    yield put(popupRequest(error))
   }
   forwardTo('/')
 }
@@ -83,10 +91,12 @@ function* signUpFlow(formData) {
     const response = yield call(auth.signup, formData)
     if (response) {
       yield put(signUpSuccess(response))
+      yield put(popupRequest(response))
       forwardTo('/signin')
     }
   } catch(error) {
-    yield put(signUpFailure(error))
+    yield put(signUpFailure())
+    yield put(popupRequest(error))
   }
 }
 function* signUpFlows({ formData }) {
@@ -99,17 +109,19 @@ export function* watchSignUpFlow() {
 }
 
 /************************* ForgetPassword *************************/
-function* forgetPsFlow({ email }) {
+function* forgetPsFlow(email) {
   try {
     const response = yield call(auth.forgetPS, email)
     if (response) {
       yield put(forgetPSSuccess(response))
+      yield put(popupRequest(response))
     }
   } catch(error) {
-    yield put(forgetPSFailure(error))
+    yield put(forgetPSFailure())
+    yield put(popupRequest(error))
   }
 }
-function* forgetPsFlows({ email }) {
+function* forgetPsFlows(email) {
   yield put(sendingRequest())
   yield call(forgetPsFlow, email)
   yield put(cancelRequest())

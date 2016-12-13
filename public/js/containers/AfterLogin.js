@@ -13,7 +13,7 @@ class AfterLogin extends Component {
     const { posts, findOlderFetching } = this.props
     return (
       <div>
-        <Article posts={posts} findOlderFetching={findOlderFetching}/>
+        <Article posts={posts} findOlderFetching={findOlderFetching} />
       </div>
     )
   }

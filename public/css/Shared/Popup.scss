@@ -139,7 +139,7 @@
     font-size: 50px;
     top: 0px;
     left: -74%;
-    font-weight: lighter;
+    font-weight: 100;
     font-style: normal;
     &:after {
       content: 'Enter your e-mail:';
@@ -151,7 +151,7 @@
       color: #111;
       font-size: $smFz;
       text-shadow: none;
-      font-weight: lighter;
+      font-weight: 100;
       font-style: normal;
     }
   }

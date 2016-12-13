@@ -7,6 +7,7 @@ import Loading from '../components/Shared/Loading'
 import Popup from '../components/Shared/Popup'
 import PostForm from '../components/PostForm/PostForm'
 import * as AuthActions from '../actions/auth'
+import * as PopupActions from '../actions/popup'
 import * as CombineActions from '../actions/combine'
 import auth from '../utils/auth'
 
@@ -68,7 +69,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { isPopup, popupMsg, profile } = state.auth
+  const { profile } = state.auth
+  const { isPopup, popupMsg } = state.popup
   const { isFetching } = state.combine
   return {
     isFetching,
@@ -80,6 +82,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     auth: bindActionCreators(AuthActions, dispatch),
+    popup: bindActionCreators(PopupActions, dispatch),
     combine: bindActionCreators(CombineActions, dispatch),
   }
 }
