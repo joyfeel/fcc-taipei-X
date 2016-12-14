@@ -25,6 +25,126 @@
         "application/json"
     ],
     "paths": {
+        "/signup": {
+            "post": {
+                "summary": "Signup a new account",
+                "description": "Signup a new account locally",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User account information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Signup"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/SuccessResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Verify the email token",
+                "description": "After the user signup a new account, ........",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "token",
+                        "description": "email token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/GetUserProfileResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/signin": {
+            "post": {
+                "summary": "Signin the system",
+                "description": "Signin the system",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User email and password",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Signin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/GetUserProfileResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/forgot_password": {
+            "post": {
+                "summary": "Recover password",
+                "description": "The machanism for user to recover his password",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "email",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forgot_password"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/SuccessResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/posts": {
             "post": {
                 "summary": "Post a new article",
@@ -289,115 +409,50 @@
                 }
             }
         },
-        "/signup": {
+        "/comments/{postID}": {
             "post": {
-                "summary": "Signup a new account",
-                "description": "Signup a new account locally",
-                "parameters": [
+                "summary": "Leave a comment to the article",
+                "description": "Leave a comment to the article",
+                "security": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "User account information",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Signup"
-                        }
+                        "Bearer": []
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/SuccessResponse"
-                        }
-                    },
-                    "default": {
-                        "description": "Error response",
-                        "schema": {
-                            "$ref": "#/definitions/ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "get": {
-                "summary": "Verify the email token",
-                "description": "After the user signup a new account, ........",
                 "parameters": [
                     {
-                        "in": "query",
-                        "name": "token",
-                        "description": "email token",
+                        "in": "path",
+                        "name": "postID",
+                        "description": "postID that need to be comment",
                         "required": true,
                         "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "content",
+                        "description": "Comment information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CommentRequest"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
+                        "description": "successful operation",
                         "schema": {
-                            "$ref": "#/definitions/GetUserProfileResponse"
+                            "$ref": "#/definitions/newCommentResponse"
                         }
                     },
-                    "default": {
-                        "description": "Error response",
+                    "401": {
+                        "description": "Token is not valid or expired",
                         "schema": {
                             "$ref": "#/definitions/ErrorResponse"
                         }
-                    }
-                }
-            }
-        },
-        "/signin": {
-            "post": {
-                "summary": "Signin the system",
-                "description": "Signin the system",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "User email and password",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Signin"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/GetUserProfileResponse"
-                        }
                     },
-                    "default": {
-                        "description": "Error response",
+                    "404": {
+                        "description": "This post is not exist",
                         "schema": {
                             "$ref": "#/definitions/ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/forgot_password": {
-            "post": {
-                "summary": "Recover password",
-                "description": "The machanism for user to recover his password",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "email",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/forgot_password"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/SuccessResponse"
                         }
                     },
                     "default": {
@@ -628,6 +683,51 @@
                 },
                 "content": {
                     "type": "string"
+                }
+            }
+        },
+        "CommentRequest": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                }
+            }
+        },
+        "newCommentResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "integer"
+                },
+                "post": {
+                    "$ref": "#/definitions/Comment"
+                }
+            }
+        },
+        "Comment": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "author": {
+                    "$ref": "#/definitions/author"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "created_time": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "updated_time": {
+                    "type": "string",
+                    "format": "date"
                 }
             }
         },
