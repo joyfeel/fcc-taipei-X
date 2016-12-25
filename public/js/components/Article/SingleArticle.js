@@ -38,15 +38,17 @@ class SingleArticle extends Component {
   displayDate(isoDate) {
     return formatDate(isoDate)
   }
-  renderArticleMenu(show, postAuthorId, authId) {
+  renderArticleMenu(show, postAuthorId, authId, id, title, content) {
     if (postAuthorId === authId) {
-      return <SelfArticleMenu show={show} ref='articleMenu' />
+      return <SelfArticleMenu show={show} id={id} title={title} content={content} ref='articleMenu' />
     }
 
     return <OtherArticleMenu show={show} ref='articleMenu' />
   }
+
   render() {
     const { post, authId } = this.props
+    const { id, title, content } = this.props.post
     const { show } = this.state
     return (
       <article className='article'>
@@ -59,7 +61,7 @@ class SingleArticle extends Component {
         <h3 className='article-title'>{post.title}</h3>
         <p className='article-content'>{post.content}</p>
         <ArticleAnalysis post={post} />
-        {this.renderArticleMenu(show, post.author.id, authId)}
+        {this.renderArticleMenu(show, post.author.id, authId, id, title, content)}
       </article>
     )
   }

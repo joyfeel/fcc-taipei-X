@@ -92,12 +92,12 @@ class PostForm extends Component {
     }
   }
   render() {
-    const { filter, isFetching } = this.props
+    const { filter, isFetching, isPopup } = this.props
     const { count, counting, bolder, disabled } = this.state
     const placeHolder = filter ? 'TITLE (required)' : 'Do you want to share something?'
 
     return (
-      <form className={cx('post-form', { expand: filter, hidden: isFetching })} onSubmit={this.handleSubmit}>
+      <form className={cx('post-form', { expand: filter, hidden: isFetching || isPopup })} onSubmit={this.handleSubmit}>
  	    	<i className='close' onClick={this.shrinkPostForm}>close</i>
         { counting ?
           <div className='post-btn'>{this.timeFormat(count)}</div> :
@@ -131,9 +131,11 @@ PostForm.propTypes = {
 
 const mapStateToProps = (state) => {
   const { create_post_time, id } = state.auth.profile
+  const { isPopup } = state.popup
   return {
     id,                 // 已登入的使用者本人ID
     create_post_time,   // 已登入的使用者本人發文時間
+    isPopup,
   }
 }
 const mapDispatchToProps = (dispatch) => {

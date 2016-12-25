@@ -52,12 +52,15 @@ const posts = (state = initialState, action) => {
         ...action.response.posts.map(p => post(p, action)),
         ...state,
       ]
+    case ActionTypes.DELETE_POST_SUCCESS:
+      return state.filter(p => p.id !== action.response.post.id)
     case ActionTypes.DISPLAY_NEWER_POST:
       return state.map(p => post(p, action))
     case ActionTypes.CREATE_POST_FAILURE:
     case ActionTypes.FIND_NEWER_POST_FAILURE:
     case ActionTypes.FIND_OLDER_POST_FAILURE:
     case ActionTypes.PRESENT_POST_FAILURE:
+    case ActionTypes.DELETE_POST_FAILURE:
       return state
     default:
       return state

@@ -41,10 +41,9 @@ export const identityTokenSuccess = (response) => {
     response,
   }
 }
-export const identityTokenFailure = (error) => {
+export const identityTokenFailure = () => {
   return {
     type: IDENTIFY_TOKEN_FAILURE,
-    error,
   }
 }
 
@@ -62,10 +61,9 @@ export const verifyEmailTokenSuccess = (response) => {
     response,
   }
 }
-export const verifyEmailTokenFailure = (error) => {
+export const verifyEmailTokenFailure = () => {
   return {
     type: VERIFY_EMAIL_TOKEN_FAILURE,
-    error,
   }
 }
 
@@ -97,10 +95,9 @@ export const signUpSuccess = (response) => {
     response,
   }
 }
-export const signUpFailure = (error) => {
+export const signUpFailure = () => {
   return {
     type: SIGNUP_FAILURE,
-    error,
   }
 }
 export const FORGET_PS_POPUP = 'FORGET_PS_POPUP'
@@ -126,10 +123,9 @@ export const forgetPSSuccess = (response) => {
     response,
   }
 }
-export const forgetPSFailure = (error) => {
+export const forgetPSFailure = () => {
   return {
     type: FORGET_PS_FAILURE,
-    error,
   }
 }
 
