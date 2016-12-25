@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?pnm5sr');
-  src:  url('../fonts/icomoon.eot?pnm5sr#iefix') format('embedded-opentype'),
-  url('../fonts/icomoon.ttf?pnm5sr') format('truetype'),
-  url('../fonts/icomoon.woff?pnm5sr') format('woff'),
-  url('../fonts/icomoon.svg?pnm5sr#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?shbquy');
+  src:  url('../fonts/icomoon.eot?shbquy#iefix') format('embedded-opentype'),
+  url('../fonts/icomoon.ttf?shbquy') format('truetype'),
+  url('../fonts/icomoon.woff?shbquy') format('woff'),
+  url('../fonts/icomoon.svg?shbquy#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -59,6 +59,9 @@
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.collection-1:before {
+  content: "\e95a";
 }
 .report-1:before {
   content: "\e959";
@@ -138,7 +141,12 @@
 .email-input-popup:before {
   content: "\e947";
 }
-
+.not-save-post-popup:before {
+  content: "\e957";
+}
+.delete-post-popup:before {
+  content: "\e956";
+}
 //popup icon end
 
 %eye-opened-1:before {

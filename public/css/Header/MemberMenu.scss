@@ -5,7 +5,7 @@
     // border-right: 0;
     border-radius: 6px 0 0 6px;
     position: absolute;
-    top: 58px;
+    top: 57px;
     right: -23px;
     // overflow: hidden;
     background-color: $bgContain;
@@ -108,24 +108,31 @@
   }
 }
 
-.member-menu:hover > .member-4 {
+.member-menu:hover > .collection-1 {
   &:after {
-    content: 'Profile';
+    content: 'Collection';
     top: 70px;
   }
 }
 
-.member-menu:hover > .bookmark-2 {
-  &:after {
-    content: 'Bookmarks';
-    top: 105px;
-  }
-}
+// .member-menu:hover > .member-4 {
+//   &:after {
+//     content: 'Profile';
+//     top: 70px;
+//   }
+// }
+
+// .member-menu:hover > .bookmark-2 {
+//   &:after {
+//     content: 'Bookmarks';
+//     top: 105px;
+//   }
+// }
 
 .member-menu:hover > .setting-6 {
   &:after {
     content: 'Settings';
-    top: 140px;
+    top: 105px;
   }
 }
 
@@ -137,7 +144,7 @@
 .member-menu:hover > .logout-5{
   &:after {
     content: 'logout';
-    top: 175px;
+    top: 140px;
   }
 }
 
