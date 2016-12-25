@@ -55,7 +55,7 @@
     height: 120px;
     text-align: center;
     color: $active1;
-    text-shadow: 3px 3px 6px $inActive;
+    // text-shadow: 3px 3px 6px $inActive;
     @extend %animated;
     @extend %flipInX;
     animation-duration: .75s;
@@ -155,6 +155,18 @@
       font-style: normal;
     }
   }
+
+  .delete-post-popup {
+    font-size: 150px;
+    top: -120px;
+    left: -50px;
+  }
+
+  .not-save-post-popup {
+    font-size: 150px;
+    top: -100px;
+    left: -30px;
+  }
 }
 
 .email-input-popup + .sign-form-email {
@@ -170,3 +182,39 @@
 }
 
 .email-input-popup ~ .description {display: none;}
+
+.delete-post-popup ~ .submit-btn,
+.not-save-post-popup ~ .submit-btn {
+  top: initial;
+  right: initial;
+  left: 7%;
+  margin: 0;
+  bottom: 7%;
+  width: 40%;
+}
+
+.popup-panel .cancel-btn {
+  display: none;
+  word-spacing: -3px;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: $bgContain;
+  position: absolute;
+  right: 7%;
+  bottom: 7%;
+  height: 38px;
+  line-height: 40px;
+  width: 40%;
+  border: 1px solid $border;
+  color: $inActive;
+}
+
+.popup-panel .cancel-btn:hover {
+  border-color: $inActive;
+  color: $inActive;
+}
+
+.delete-post-popup ~ .cancel-btn,
+.not-save-post-popup ~ .cancel-btn {
+  display: block;
+}

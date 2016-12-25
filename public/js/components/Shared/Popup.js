@@ -6,6 +6,7 @@ import SubmitBtn from './SubmitBtn'
 import SignFormEmail from './SignFormEmail'
 import * as AuthActions from '../../actions/auth'
 import * as PopupActions from '../../actions/popup'
+import * as PostActions from '../../actions/post'
 
 class Popup extends Component {
   constructor(props) {
@@ -43,6 +44,11 @@ class Popup extends Component {
       this.props.auth.forgetPSRequest(email)
     }
 
+    if(icon === 'delete-post-popup') {
+      const { id, title, content } = this.props.popupMsg
+      this.props.post.deletePostRequest({ id, title, content })
+    }
+
     this.setState({ offPopup: true, email: null })
     this.props.popup.popupClose()
   }
@@ -65,6 +71,7 @@ class Popup extends Component {
             {message}
           </p>
           <SubmitBtn txt={btnTxt} onClick={this.handlePopupClick} valid={valid} />
+          <button className='cancel-btn' onClick={this.handlePopupClick }>NO</button>
         </div>
       </div>
     )
@@ -75,6 +82,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     auth: bindActionCreators(AuthActions, dispatch),
     popup: bindActionCreators(PopupActions, dispatch),
+    post: bindActionCreators(PostActions, dispatch),
   }
 }
 
