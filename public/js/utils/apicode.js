@@ -15,7 +15,7 @@ const codeTable = (res) => {
         content: res.content,
         btnTxt: 'YES',
       }
-    case 100002:
+    case 100003:
         return {
           icon: 'not-save-post-popup',
           message: 'This post won\'t save if you leave.',
@@ -26,6 +26,11 @@ const codeTable = (res) => {
         icon: 'activate-email-send-popup',
         message: 'Please check your email from @meet.',
         btnTxt: 'THANK YOU',
+      }
+    case 200008:
+      return {
+        status: 'success',
+        message: 'Delete article success',
       }
     case 401001:
       return {

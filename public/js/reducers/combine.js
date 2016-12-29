@@ -8,16 +8,9 @@ const initialState = {
 const combine = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.SENDING_REQUEST:
-      if(action.fetch === undefined) {
-        return {
-          ...state,
-          isFetching: true,
-        }
-      } else {
-        return {
-          ...state,
-          ...action.fetch,
-        }
+      return {
+        ...state,
+        isFetching: true,
       }
     case ActionTypes.SENDING_REQUEST_FIND_OLDER_POST:
       return {

@@ -4,6 +4,7 @@ import popup from './popup'
 import posts from './posts'
 import combine from './combine'
 import socket from './socket'
+import slider from './slider'
 
 const appReducer = combineReducers({
   auth,
@@ -11,6 +12,7 @@ const appReducer = combineReducers({
   posts,
   combine,
   socket,
+  slider,
 })
 
 const rootReducer = (state, action) => {

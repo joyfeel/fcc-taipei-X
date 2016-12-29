@@ -44,7 +44,7 @@ class Popup extends Component {
       this.props.auth.forgetPSRequest(email)
     }
 
-    if(icon === 'delete-post-popup') {
+    if(icon === 'delete-post-popup' && btnClass === 'submit-btn') {
       const { id, title, content } = this.props.popupMsg
       this.props.post.deletePostRequest({ id, title, content })
     }
@@ -71,7 +71,7 @@ class Popup extends Component {
             {message}
           </p>
           <SubmitBtn txt={btnTxt} onClick={this.handlePopupClick} valid={valid} />
-          <button className='cancel-btn' onClick={this.handlePopupClick }>NO</button>
+          <button className='cancel-btn' onClick={this.handlePopupClick}>NO</button>
         </div>
       </div>
     )
