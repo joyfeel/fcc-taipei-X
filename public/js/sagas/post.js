@@ -6,12 +6,14 @@ import * as CombineActions from '../actions/combine'
 import postAPI from '../utils/postAPI'
 import { getOldestPostID, getNewestPostID, getPostTimeSocket } from '../reducers/selectors'
 import auth from '../utils/auth'
+import sliderFlow from './slider'
 
 const {
   createPostSuccess, createPostFailure,
   presentPostSuccess, presentPostFailure,
   findNewerPostSuccess, findNewerPostFailure,
   findOlderPostSuccess, findOlderPostFailure,
+  deletePostRequest, deletePostSuccess, deletePostFailure,
   displayNewerPost,
 } = PostActions
 
@@ -92,4 +94,27 @@ function* findOlderPostFlows() {
 }
 export function* watchFindOlderPostFlow() {
   yield* takeEvery(PostActions.FIND_OLDER_POST_REQUEST, findOlderPostFlows)
+}
+
+/************************* deletePost *************************/
+function* deletePostFlow(post) {
+  try {
+    const response = yield call(postAPI.deletePost, post)
+    if (response) {
+      yield put(deletePostSuccess(response))
+      yield put(cancelRequest())
+      yield sliderFlow(response)
+    }
+  } catch(error) {
+    yield put(deletePostFailure(error))
+    yield put(cancelRequest())
+    yield sliderFlow(error)
+  }
+}
+function* deletePostFlows({ post }) {
+  yield put(sendingRequest())
+  yield call(deletePostFlow, post)
+}
+export function* watchDeletePostFlow() {
+  yield* takeEvery(PostActions.DELETE_POST_REQUEST, deletePostFlows)
 }

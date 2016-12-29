@@ -83,3 +83,25 @@ export const findOlderPostFailure = (error) => {
     error,
   }
 }
+
+export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST'
+export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS'
+export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE'
+export const deletePostRequest = (post) => {
+  return {
+    type: DELETE_POST_REQUEST,
+    post,
+  }
+}
+export const deletePostSuccess = (response) => {
+  return {
+    type: DELETE_POST_SUCCESS,
+    response,
+  }
+}
+export const deletePostFailure = (error) => {
+  return {
+    type: DELETE_POST_FAILURE,
+    error,
+  }
+}

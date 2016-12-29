@@ -7,6 +7,7 @@ import SignFormEmail from '../Shared/SignFormEmail'
 import SignFormPassword from '../Shared/SignFormPassword'
 import SubmitBtn from '../Shared/SubmitBtn'
 import * as AuthActions from '../../actions/auth'
+import * as PopupActions from '../../actions/popup'
 import * as OauthActions from '../../actions/oauth'
 
 class SignInForm extends Component {
@@ -79,7 +80,8 @@ class SignInForm extends Component {
   forgetPsClick(e) {
     e.preventDefault()
     // for invoking foget=password popup without sending request to server
-    this.props.auth.forgetPSPopup()
+    const forgetPSPopup = { code: 100001 }
+    this.props.popup.popupRequest(forgetPSPopup)
   }
 
   render() {
@@ -114,6 +116,7 @@ SignInForm.propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     auth: bindActionCreators(AuthActions, dispatch),
+    popup: bindActionCreators(PopupActions, dispatch),
     oauth: bindActionCreators(OauthActions, dispatch),
   }
 }

@@ -14,6 +14,7 @@ import {
   watchCreatePostFlow,
   watchFindNewerPostFlow,
   watchFindOlderPostFlow,
+  watchDeletePostFlow,
 } from './post'
 
 import {
@@ -159,6 +160,7 @@ export default function* root() {
     fork(watchCreatePostFlow),
     fork(watchFindNewerPostFlow),
     fork(watchFindOlderPostFlow),
+    fork(watchDeletePostFlow),
     /* combine */
     fork(watchSignInFlow),
     fork(watchRefreshFlow),
