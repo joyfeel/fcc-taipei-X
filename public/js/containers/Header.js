@@ -12,7 +12,6 @@ const Header = (props) => {
     'header-panel': true,
     'login': profile.token,
   })
-
   return (
     <header className={cx('header',{ mask: filter })}>
       <div className={headerPanelClasses}>

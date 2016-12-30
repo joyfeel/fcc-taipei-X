@@ -16,16 +16,14 @@ class Popup extends Component {
       email: null,
       valid: true
     }
-    this.handlePopupClick = this.handlePopupClick.bind(this)
+    this.handlePopupClickConfirm = this.handlePopupClickConfirm.bind(this)
+    this.handlePopupClickCancel = this.handlePopupClickCancel.bind(this)
     this.detectEmailState = this.detectEmailState.bind(this)
   }
-
   componentWillMount() {
     const { icon } = this.props.popupMsg
     if (icon !== 'email-input-popup') this.setState({ valid: false })
   }
-
-
   setUpEmailState(flag, val) {
     flag ? this.setState({email: val, valid: false}) : this.setState({valid: true})
   }
@@ -33,22 +31,26 @@ class Popup extends Component {
     const val  = e.target.value.trim()
     val.length > 0 ? this.setUpEmailState(true, val) : this.setUpEmailState(false, undefined)
   }
-
-  handlePopupClick(e) {
+  strategyPopupAction() {
+    return {
+      'email-input-popup': () => {
+        const { email } = this.state
+        return this.props.auth.forgetPSRequest(email)
+      },
+      'delete-post-popup': () => {
+        const { id, title, content } = this.props.popupMsg
+        return this.props.post.deletePostRequest({ id, title, content })
+      },
+    }
+  }
+  handlePopupClickConfirm(e) {
     e.preventDefault()
-    const btnClass = e.target.className
     const { icon } = this.props.popupMsg
-    const { email } = this.state
-
-    if(icon === 'email-input-popup' && btnClass === 'submit-btn') {
-      this.props.auth.forgetPSRequest(email)
-    }
-
-    if(icon === 'delete-post-popup' && btnClass === 'submit-btn') {
-      const { id, title, content } = this.props.popupMsg
-      this.props.post.deletePostRequest({ id, title, content })
-    }
-
+    this.strategyPopupAction()[icon]()
+    this.handlePopupClickCancel(e)
+  }
+  handlePopupClickCancel(e) {
+    e.preventDefault()
     this.setState({ offPopup: true, email: null })
     this.props.popup.popupClose()
   }
@@ -59,7 +61,7 @@ class Popup extends Component {
     return (
       <div className={cx('popup', { off: this.state.offPopup })}>
         <div className='popup-panel'>
-          <span className='cancel' onClick={this.handlePopupClick}></span>
+          <span className='cancel' onClick={this.handlePopupClickCancel}></span>
           <i className={icon}></i>
           <SignFormEmail
             focus={this.detectEmailState}
@@ -67,11 +69,9 @@ class Popup extends Component {
             change={this.detectEmailState}
             keydown={this.detectEmailState}
           />
-          <p className='description'>
-            {message}
-          </p>
-          <SubmitBtn txt={btnTxt} onClick={this.handlePopupClick} valid={valid} />
-          <button className='cancel-btn' onClick={this.handlePopupClick}>NO</button>
+          <p className='description'>{message}</p>
+          <SubmitBtn txt={btnTxt} onClick={this.handlePopupClickConfirm} valid={valid} />
+          <button className='cancel-btn' onClick={this.handlePopupClickCancel}>NO</button>
         </div>
       </div>
     )
@@ -86,8 +86,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Popup)
-
 Popup.propTypes = {
   popupMsg: PropTypes.object.isRequired,
   isPopup: PropTypes.bool.isRequired,
@@ -97,3 +95,5 @@ Popup.propTypes = {
 Popup.defaultProps = {
   popupMsg: null
 }
+
+export default connect(null, mapDispatchToProps)(Popup)

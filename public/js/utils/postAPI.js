@@ -6,7 +6,7 @@ const fetchAuthorizationBody = (api, form, token) => fetch(api, {
    'Content-Type': 'application/json',
    'Authorization': `Bearer ${token}`,
  },
- body: JSON.stringify(form)
+ body: JSON.stringify(form),
 }).then(res => res.ok ? res.json() : res.json().then(err => Promise.reject(err)))
 
 const fetchPresentArticles = (api, token) => fetch(api, {
@@ -40,8 +40,7 @@ const deletePresentArticle = (api, form, token) => fetch(api,{
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
   },
-  body: JSON.stringify(form)
-
+  body: JSON.stringify(form),
 }).then(res => res.ok ? res.json() : res.json().then(err => Promise.reject(err)))
 
 

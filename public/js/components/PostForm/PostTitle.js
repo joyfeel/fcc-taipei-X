@@ -5,15 +5,13 @@ class PostTitle extends Component {
   constructor(props) {
     super(props)
   }
-
   render() {
     const { placeHolder, detectPostForm, bolder } = this.props
-
     return (
       <input
         type='text'
         placeholder={placeHolder}
-        className={cx('post-title-input', { bolder: bolder })}
+        className={cx('post-title-input', { bolder })}
         id='post-title-input'
         name='post_title'
         onFocus={detectPostForm}

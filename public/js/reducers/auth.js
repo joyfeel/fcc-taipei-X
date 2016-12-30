@@ -1,5 +1,4 @@
 import * as ActionTypes from '../actions/auth'
-import codeTable from '../utils/apicode'
 
 const initialState = {
   profile: {

@@ -45,7 +45,6 @@ class SingleArticle extends Component {
 
     return <OtherArticleMenu show={show} ref='articleMenu' />
   }
-
   render() {
     const { post, authId } = this.props
     const { id, title, content } = this.props.post

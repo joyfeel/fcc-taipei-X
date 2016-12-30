@@ -1,3 +1,7 @@
+export const popupMethodToCode = {
+  'cancel-3': 100002,
+}
+
 const codeTable = (res) => {
   switch (res.code) {
     case 100001:
@@ -16,10 +20,10 @@ const codeTable = (res) => {
         btnTxt: 'YES',
       }
     case 100003:
-        return {
-          icon: 'not-save-post-popup',
-          message: 'This post won\'t save if you leave.',
-          btnTxt: 'YES',
+      return {
+        icon: 'not-save-post-popup',
+        message: 'This post won\'t save if you leave.',
+        btnTxt: 'YES',
       }
     case 200001:
       return {

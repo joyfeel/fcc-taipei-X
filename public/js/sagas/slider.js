@@ -6,7 +6,6 @@ const {
   sliderRequest, sliderClose,
 } = SliderActions
 
-
 export default function* sliderFlow(res) {
   yield put(sliderRequest(res))
   yield call(delay, 2000)

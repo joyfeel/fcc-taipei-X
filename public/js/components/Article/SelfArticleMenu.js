@@ -1,23 +1,21 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as PopupActions from '../../actions/popup'
 import cx from 'classnames'
-
-
+import * as PopupActions from '../../actions/popup'
+import { popupMethodToCode } from '../../utils/apicode'
 
 class SelfArticleMenu extends Component {
   constructor(props) {
     super(props)
     this.deletePostPopup = this.deletePostPopup.bind(this)
   }
-
-  deletePostPopup() {
+  deletePostPopup(e) {
     const { id, title, content } = this.props
-    const deletePostPopup = { code: 100002, id: id, title: title, content: content }
+    const code = popupMethodToCode[e.target.className]
+    const deletePostPopup = { code, id, title, content }
     this.props.popup.popupRequest(deletePostPopup)
   }
-
   render() {
     const { show } = this.props
     return (

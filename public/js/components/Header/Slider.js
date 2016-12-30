@@ -2,12 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import cx from 'classnames'
 
-
 class Slider extends Component {
   constructor(props) {
     super(props)
   }
-
   render() {
     const { isSlider, status, sliderMsg } = this.props
     const sliderClass = cx({
@@ -17,10 +15,11 @@ class Slider extends Component {
     })
 
     return (
-    <div className={sliderClass}>
-      { isSlider ? sliderMsg.message : null }
-    </div>
-  )}
+      <div className={sliderClass}>
+        { isSlider ? sliderMsg.message : null }
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = (state) => {
