@@ -7,14 +7,14 @@ import MemberPanel from '../components/Header/MemberPanel'
 import Notification from '../components/Header/Notification'
 
 const Header = (props) => {
-  const { profile, filter } = props
+  const { profile, isPostformOpen } = props
   const headerPanelClasses = cx({
     'header-panel': true,
     'login': profile.token,
   })
 
   return (
-    <header className={cx('header',{ mask: filter })}>
+    <header className={cx('header',{ mask: isPostformOpen })}>
       <div className={headerPanelClasses}>
         <Logo />
         {profile.token ? <MemberPanel profile={profile} /> : null}

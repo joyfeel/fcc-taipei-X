@@ -1,11 +1,13 @@
 import { call, put, select } from 'redux-saga/effects'
-import { takeEvery } from 'redux-saga'
+import { takeEvery, delay } from 'redux-saga'
 import { eventChannel } from 'redux-saga'
 import * as PostActions from '../actions/post'
 import * as CombineActions from '../actions/combine'
+import * as SliderActions from '../actions/slider'
 import postAPI from '../utils/postAPI'
 import { getOldestPostID, getNewestPostID, getPostTimeSocket } from '../reducers/selectors'
 import auth from '../utils/auth'
+import sliderFlow from './slider'
 
 const {
   createPostSuccess, createPostFailure,
@@ -20,6 +22,10 @@ const {
   sendingRequest, cancelRequest,
   sendingRequestFindOlderPost, cancelRequestFindOlderPost,
 } = CombineActions
+
+const {
+  sliderRequest, sliderClose,
+} = SliderActions
 
 /************************* CreatePost *************************/
 function* createPostFlow(post) {
@@ -101,15 +107,18 @@ function* deletePostFlow(post) {
     const response = yield call(postAPI.deletePost, post)
     if (response) {
       yield put(deletePostSuccess(response))
+      yield put(cancelRequest())
+      yield sliderFlow(response)
     }
   } catch(error) {
     yield put(deletePostFailure(error))
+    yield put(cancelRequest())
+    yield sliderFlow(error)
   }
 }
 function* deletePostFlows({ post }) {
   yield put(sendingRequest())
   yield call(deletePostFlow, post)
-  yield put(cancelRequest())
 }
 export function* watchDeletePostFlow() {
   yield* takeEvery(PostActions.DELETE_POST_REQUEST, deletePostFlows)

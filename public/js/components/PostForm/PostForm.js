@@ -5,6 +5,7 @@ import cx from 'classnames'
 import PostTitle from './PostTitle'
 import PostContent from './PostContent'
 import * as PostActions from '../../actions/post'
+import * as CombineActions from '../../actions/combine'
 
 class PostForm extends Component {
   constructor(props) {
@@ -12,10 +13,10 @@ class PostForm extends Component {
     this.state = {
       count: null,
       counting: false,
-      post_title: false,
-      post_content: false,
       bolder: false,
       disabled: true,
+      post_title: '',
+      post_content: '',
     }
     /* Post form related function */
     this.shrinkPostForm = this.shrinkPostForm.bind(this)
@@ -23,6 +24,9 @@ class PostForm extends Component {
     this.detectPostForm = this.detectPostForm.bind(this)
     /* Time related function */
     this.tick = this.tick.bind(this)
+
+    this.setEditValue = this.setEditValue.bind(this)
+    this.resetStates = this.resetStates.bind(this)
   }
   timeCalc(date) {
     const limited = Date.parse(date)
@@ -51,36 +55,60 @@ class PostForm extends Component {
       this.setState({ count: this.state.count - 1 })
     }
   }
+  setEditValue(title, content) {
+    this.setState({
+      bolder: true,
+      disabled: false,
+      post_title: title,
+      post_content: content,
+    })
+  }
+  resetStates() {
+    this.setState({
+      bolder: false,
+      disabled: true,
+      post_title: '',
+      post_content: '',
+    })
+  }
   detectPostForm(e) {
+    const { isPostformOpen, editPost } = this.props
     const bolder = (this.refs['titleValue'].refs['inp'].value.trim().length > 0) ? true : false
-    const hasText = e.target.value.trim().length > 0 ? true : false
-    const disabled = (this.state.post_title && this.state.post_content) ? false : true
+    const disabled = (this.state.post_title.length > 0 && this.state.post_content.length > 0) ? false : true
 
     this.setState({
       bolder,
       disabled,
-      [e.target.name]: hasText,
+      [e.target.name]: e.target.value,
     })
 
-    this.props.setFilter(true)
+    !isPostformOpen && this.props.combine.postformOpen()
   }
   shrinkPostForm() {
-    this.props.setFilter(false)
+    if(this.props.editPost) {
+      this.resetStates()
+      this.props.combine.editformClose()
+    }
+
+    this.props.combine.postformClose()
   }
   handleSubmit(e) {
     e.preventDefault()
     const title = e.target.post_title.value.trim()
     const content = e.target.post_content.value.trim()
-    this.props.post.createPostRequest({ title, content })
-    e.target.reset()
-    this.setState({
-      post_title: false,
-      post_content: false,
-      bolder: false,
-    })
+    const { editPost } = this.props
 
-    this.props.setFilter(false)
+    if(editPost) {
+      this.props.combine.editformClose()
+    } else {
+      this.props.post.createPostRequest({ title, content })
+    }
+
+    e.target.reset()
+    this.resetStates()
+    this.props.combine.postformClose()
   }
+
   componentWillReceiveProps(nextProps) {
     /*
       The property `create_post_time` is pushing from server side of socket.io
@@ -90,16 +118,23 @@ class PostForm extends Component {
     if (this.props.create_post_time !== nextProps.create_post_time && !counting) {
       this.timeCalc(nextProps.create_post_time)
     }
+
+    //for  editPost
+    const { post_title } = this.state
+    if(nextProps.editPost !== null && post_title.length === 0) {
+      const {title, content } = nextProps.editPost
+      this.setEditValue(title, content)
+    }
   }
   render() {
-    const { filter, isFetching, isPopup } = this.props
-    const { count, counting, bolder, disabled } = this.state
-    const placeHolder = filter ? 'TITLE (required)' : 'Do you want to share something?'
+    const { isPostformOpen, isFetching, isPopup, editPost } = this.props
+    const { count, counting, bolder, disabled, post_title, post_content } = this.state
+    const placeHolder = isPostformOpen ? 'TITLE (required)' : 'Do you want to share something?'
 
     return (
-      <form className={cx('post-form', { expand: filter, hidden: isFetching || isPopup })} onSubmit={this.handleSubmit}>
+      <form className={cx('post-form', { expand: isPostformOpen, hidden: isFetching || isPopup })} onSubmit={this.handleSubmit}>
  	    	<i className='close' onClick={this.shrinkPostForm}>close</i>
-        { counting ?
+        { counting && editPost === null ?
           <div className='post-btn'>{this.timeFormat(count)}</div> :
           <button className='post-btn' role='submit' disabled={disabled}>POST</button>
         }
@@ -108,9 +143,13 @@ class PostForm extends Component {
           placeHolder={placeHolder}
           detectPostForm={this.detectPostForm}
           bolder={bolder}
+          value={post_title}
           ref='titleValue'
         />
-        <PostContent detectPostForm={this.detectPostForm} />
+        <PostContent
+          detectPostForm={this.detectPostForm}
+          value={post_content}
+        />
       </form>
     )
   }
@@ -124,23 +163,25 @@ class PostForm extends Component {
 }
 
 PostForm.propTypes = {
-  filter: PropTypes.bool.isRequired,
-  setFilter: PropTypes.func.isRequired,
+  isPostformOpen: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => {
   const { create_post_time, id } = state.auth.profile
+  const { editPost } = state.combine
   const { isPopup } = state.popup
   return {
     id,                 // 已登入的使用者本人ID
     create_post_time,   // 已登入的使用者本人發文時間
     isPopup,
+    editPost,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
     post: bindActionCreators(PostActions, dispatch),
+    combine: bindActionCreators(CombineActions, dispatch),
   }
 }
 

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as PopupActions from '../../actions/popup'
+import * as CombineActions from '../../actions/combine'
 import cx from 'classnames'
 
 
@@ -9,21 +10,30 @@ import cx from 'classnames'
 class SelfArticleMenu extends Component {
   constructor(props) {
     super(props)
-    this.deletePostPopup = this.deletePostPopup.bind(this)
+    this.detectPostPopup = this.detectPostPopup.bind(this)
   }
 
-  deletePostPopup() {
+  detectPostPopup(e) {
     const { id, title, content } = this.props
-    const deletePostPopup = { code: 100002, id: id, title: title, content: content }
-    this.props.popup.popupRequest(deletePostPopup)
+
+    switch (e.target.className) {
+      case 'cancel-3':
+      // for delete post icon popup via utils/apicode.js
+      const deletePostPopup = { code: 100002, id: id, title: title, content: content }
+      this.props.popup.popupRequest(deletePostPopup)
+        break
+      case 'post-2':
+        this.props.combine.editformOpen({ id, title, content })
+        break
+    }
   }
 
   render() {
     const { show } = this.props
     return (
       <div className={cx('article-menu', { show })}>
-        <i className='post-2'>Edit</i>
-        <i className='cancel-3' onClick={this.deletePostPopup}>Delete</i>
+        <i className='post-2' onClick={this.detectPostPopup}>Edit</i>
+        <i className='cancel-3' onClick={this.detectPostPopup}>Delete</i>
       </div>
     )
   }
@@ -39,6 +49,7 @@ SelfArticleMenu.propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     popup: bindActionCreators(PopupActions, dispatch),
+    combine: bindActionCreators(CombineActions, dispatch),
   }
 }
 
