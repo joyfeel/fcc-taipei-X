@@ -1,8 +1,9 @@
 import { call, put, select } from 'redux-saga/effects'
-import { takeEvery } from 'redux-saga'
+import { takeEvery, delay } from 'redux-saga'
 import { eventChannel } from 'redux-saga'
 import * as PostActions from '../actions/post'
 import * as CombineActions from '../actions/combine'
+import * as SliderActions from '../actions/slider'
 import postAPI from '../utils/postAPI'
 import { getOldestPostID, getNewestPostID, getPostTimeSocket } from '../reducers/selectors'
 import auth from '../utils/auth'
@@ -21,6 +22,10 @@ const {
   sendingRequest, cancelRequest,
   sendingRequestFindOlderPost, cancelRequestFindOlderPost,
 } = CombineActions
+
+const {
+  sliderRequest, sliderClose,
+} = SliderActions
 
 /************************* CreatePost *************************/
 function* createPostFlow(post) {
