@@ -15,6 +15,7 @@ const {
   findNewerPostSuccess, findNewerPostFailure,
   findOlderPostSuccess, findOlderPostFailure,
   deletePostRequest, deletePostSuccess, deletePostFailure,
+  editPostRequest, editPostSuccess, editPostFailure,
   displayNewerPost,
 } = PostActions
 
@@ -122,4 +123,27 @@ function* deletePostFlows({ post }) {
 }
 export function* watchDeletePostFlow() {
   yield* takeEvery(PostActions.DELETE_POST_REQUEST, deletePostFlows)
+}
+
+/************************* editPost *************************/
+function* editPostFlow(post) {
+  try {
+    const response = yield call(postAPI.editPost, post)
+    if (response) {
+      yield put(editPostSuccess(response))
+      yield put(cancelRequest())
+      yield sliderFlow(response)
+    }
+  } catch(error) {
+    yield put(editPostFailure(error))
+    yield put(cancelRequest())
+    yield sliderFlow(error)
+  }
+}
+function* editPostFlows({ post }) {
+  yield put(sendingRequest())
+  yield call(editPostFlow, post)
+}
+export function* watchEditPostFlow() {
+  yield* takeEvery(PostActions.EDIT_POST_REQUEST, editPostFlows)
 }

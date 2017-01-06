@@ -24,8 +24,11 @@ class PostForm extends Component {
     this.detectPostForm = this.detectPostForm.bind(this)
     /* Time related function */
     this.tick = this.tick.bind(this)
-
+    /*set edit states from store to react states*/
     this.setEditValue = this.setEditValue.bind(this)
+    this.detectEditPostRequest = this.detectEditPostRequest.bind(this)
+
+    /*reset all states to init*/
     this.resetStates = this.resetStates.bind(this)
   }
   timeCalc(date) {
@@ -92,6 +95,15 @@ class PostForm extends Component {
 
     this.props.combine.postformClose()
   }
+  detectEditPostRequest(title, content, editPost) {
+    const { id } = editPost
+
+    if( editPost.title !== title || editPost.content !== content) {
+      this.props.post.editPostRequest({ title, content, id })
+    }
+
+    this.props.combine.editformClose()
+  }
   handleSubmit(e) {
     e.preventDefault()
     const title = e.target.post_title.value.trim()
@@ -99,14 +111,13 @@ class PostForm extends Component {
     const { editPost } = this.props
 
     if(editPost) {
-      this.props.combine.editformClose()
+      this.detectEditPostRequest(title, content, editPost)
     } else {
       this.props.post.createPostRequest({ title, content })
+      this.props.combine.postformClose()
     }
-
     e.target.reset()
     this.resetStates()
-    this.props.combine.postformClose()
   }
 
   componentWillReceiveProps(nextProps) {

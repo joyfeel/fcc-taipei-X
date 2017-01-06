@@ -31,6 +31,11 @@ const codeTable = (res) => {
         message: 'Please check your email from @meet.',
         btnTxt: 'THANK YOU',
       }
+    case 200007:
+      return {
+        status: 'success',
+        message: 'Edit article success',
+      }
     case 200008:
       return {
         status: 'success',
