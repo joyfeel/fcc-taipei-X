@@ -105,3 +105,25 @@ export const deletePostFailure = (error) => {
     error,
   }
 }
+
+export const EDIT_POST_REQUEST = 'EDIT_POST_REQUEST'
+export const EDIT_POST_SUCCESS = 'EDIT_POST_SUCCESS'
+export const EDIT_POST_FAILURE = 'EDIT_POST_FAILURE'
+export const editPostRequest = (post) => {
+  return {
+    type: EDIT_POST_REQUEST,
+    post,
+  }
+}
+export const editPostSuccess = (response) => {
+  return {
+    type: EDIT_POST_SUCCESS,
+    response,
+  }
+}
+export const editPostFailure = (error) => {
+  return {
+    type: EDIT_POST_FAILURE,
+    error,
+  }
+}

@@ -3,24 +3,31 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import * as PopupActions from '../../actions/popup'
+import * as CombineActions from '../../actions/combine'
 import { popupMethodToCode } from '../../utils/apicode'
 
 class SelfArticleMenu extends Component {
   constructor(props) {
     super(props)
     this.deletePostPopup = this.deletePostPopup.bind(this)
+    this.editformOpen = this.editformOpen.bind(this)
   }
+
   deletePostPopup(e) {
     const { id, title, content } = this.props
     const code = popupMethodToCode[e.target.className]
     const deletePostPopup = { code, id, title, content }
     this.props.popup.popupRequest(deletePostPopup)
   }
+  editformOpen(e) {
+    const { id, title, content } = this.props
+    this.props.combine.editformOpen({ id, title, content })
+  }
   render() {
     const { show } = this.props
     return (
       <div className={cx('article-menu', { show })}>
-        <i className='post-2'>Edit</i>
+        <i className='post-2' onClick={this.editformOpen}>Edit</i>
         <i className='cancel-3' onClick={this.deletePostPopup}>Delete</i>
       </div>
     )
@@ -37,6 +44,7 @@ SelfArticleMenu.propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     popup: bindActionCreators(PopupActions, dispatch),
+    combine: bindActionCreators(CombineActions, dispatch),
   }
 }
 

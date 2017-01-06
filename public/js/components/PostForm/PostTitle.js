@@ -6,7 +6,8 @@ class PostTitle extends Component {
     super(props)
   }
   render() {
-    const { placeHolder, detectPostForm, bolder } = this.props
+    const { placeHolder, detectPostForm, bolder, value } = this.props
+
     return (
       <input
         type='text'
@@ -19,6 +20,7 @@ class PostTitle extends Component {
         onBlur={detectPostForm}
         onKeyUp={detectPostForm}
         onChange={detectPostForm}
+        value={value}
         ref='inp'
       />
     )
@@ -29,11 +31,13 @@ PostTitle.propTypes = {
   placeHolder: PropTypes.string.isRequired,
   detectPostForm: PropTypes.func.isRequired,
   bolder: PropTypes.bool.isRequired,
+  value: PropTypes.string.isRequired,
 }
 
 PostTitle.defaultProps = {
   bolder: false,
   placeHolder: 'Do you want to share something?',
+  value: '',
 }
 
 export default PostTitle

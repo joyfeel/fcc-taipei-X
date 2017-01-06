@@ -29,6 +29,14 @@ const post = (state = {}, action) => {
         ...state,
         visibility: true,
       }
+    case ActionTypes.EDIT_POST_SUCCESS:
+      if (state.id === action.response.post.id) {
+        return {
+          ...state,
+          ...action.response.post,
+        }
+      }
+
     default:
       return state
   }
@@ -54,6 +62,7 @@ const posts = (state = initialState, action) => {
       ]
     case ActionTypes.DELETE_POST_SUCCESS:
       return state.filter(p => p.id !== action.response.post.id)
+    case ActionTypes.EDIT_POST_SUCCESS:
     case ActionTypes.DISPLAY_NEWER_POST:
       return state.map(p => post(p, action))
     case ActionTypes.CREATE_POST_FAILURE:
@@ -61,6 +70,7 @@ const posts = (state = initialState, action) => {
     case ActionTypes.FIND_OLDER_POST_FAILURE:
     case ActionTypes.PRESENT_POST_FAILURE:
     case ActionTypes.DELETE_POST_FAILURE:
+    case ActionTypes.EDIT_POST_FAILURE:
       return state
     default:
       return state
