@@ -47,7 +47,6 @@
     "passport-github2": "0.1.10",
     "passport-google-oauth": "1.0.0",
     "react": "15.3.1",
-    "react-cookie": "0.4.8",
     "react-css-modules": "^3.7.6",
     "react-dom": "15.3.1",
     "react-redux": "4.4.5",
@@ -91,7 +90,6 @@
     "supertest": "2.0.0",
     "url-loader": "0.5.7",
     "webpack": "1.13.2",
-    "webpack-hot-middleware": "2.12.2",
-    "webpack-validator": "2.2.7"
+    "webpack-hot-middleware": "2.12.2"
   }
 }

@@ -31,22 +31,22 @@ class Popup extends Component {
     const val  = e.target.value.trim()
     val.length > 0 ? this.setUpEmailState(true, val) : this.setUpEmailState(false, undefined)
   }
-  strategyPopupAction() {
-    return {
-      'email-input-popup': () => {
+  strategyPopupAction(icon) {
+    switch(icon) {
+      case 'email-input-popup':
         const { email } = this.state
         return this.props.auth.forgetPSRequest(email)
-      },
-      'delete-post-popup': () => {
+      case 'delete-post-popup':
         const { id, title, content } = this.props.popupMsg
         return this.props.post.deletePostRequest({ id, title, content })
-      },
+      default:
+        return null
     }
   }
   handlePopupClickConfirm(e) {
     e.preventDefault()
     const { icon } = this.props.popupMsg
-    this.strategyPopupAction()[icon]()
+    this.strategyPopupAction(icon)
     this.handlePopupClickCancel(e)
   }
   handlePopupClickCancel(e) {
@@ -57,7 +57,6 @@ class Popup extends Component {
   render() {
     const { icon, message, btnTxt } = this.props.popupMsg
     const { valid } = this.state
-
     return (
       <div className={cx('popup', { off: this.state.offPopup })}>
         <div className='popup-panel'>

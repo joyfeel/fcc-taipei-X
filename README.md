@@ -28,6 +28,34 @@ $ npm start
 # View your site at "http://localhost:3000"
 ```
 
+Configuration
+-------------
+
+In order to sending an authentication/verification email (by Google SMTP server) for users. You need to change some email and password fields in `server/config/env/mail.js` file.
+
+```javascript
+// mail.js
+export default {
+  gmailSender: process.env.GMAIL_USERNAME,  // Here!
+  gmailConfig: {
+    service: 'Gmail',
+    auth: {
+      user: process.env.GMAIL_USERNAME,     // Here!
+      pass: process.env.GMAIL_PASSWORD,     // Here!
+    },
+    logger: true,
+    debug: true,
+  },
+  registerMailTemplate: {
+    subject: 'Hello subject',
+    text: 'Click here to activate your account: http://www.google.com.tw', // plaintext body
+    html: '<h1><a href="www.google.com.tw">Click here to activate your account</a></h1>',
+  },
+}
+```
+
+
+
 License
 -------
 
