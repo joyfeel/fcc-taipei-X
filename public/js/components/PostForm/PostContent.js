@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-const PostContent = ({ detectPostForm }) =>
+const PostContent = ({ detectPostForm, value }) =>
   <textarea
     className='post-content-input'
     name='post_content' id='post_content'
@@ -10,12 +10,17 @@ const PostContent = ({ detectPostForm }) =>
     onKeyDown={detectPostForm}
     onBlur={detectPostForm}
     onKeyUp={detectPostForm}
-    onChange={detectPostForm}>
+    onChange={detectPostForm}
+    value={value}>
   </textarea>
 
-  PostContent.propTypes = {
-    detectPostForm: PropTypes.func.isRequired,
-  }
+PostContent.propTypes = {
+  detectPostForm: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+}
 
+PostContent.defaultProps = {
+  value: '',
+}
 
 export default PostContent

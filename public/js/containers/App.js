@@ -14,11 +14,6 @@ import auth from '../utils/auth'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { filter: false }
-    this.setFilter = this.setFilter.bind(this)
-  }
-  setFilter(val) {
-    this.setState({ filter: val })
   }
   renderPopup() {
     const { popupMsg, isPopup } = this.props
@@ -29,28 +24,25 @@ class App extends Component {
       />
     )
   }
-  renderPostForm(){
-    const { filter } = this.state
-    const { isFetching } = this.props
+  renderPostForm() {
+    const { isFetching, isPostformOpen } = this.props
     return (
       <PostForm
-        filter={filter}
-        setFilter={this.setFilter}
+        isPostformOpen={isPostformOpen}
         isFetching={isFetching}
       />
     )
   }
   render() {
-    const { isFetching, isPopup, popupMsg, profile } = this.props
-    const { filter } = this.state
+    const { isFetching, isPostformOpen, isPopup, popupMsg, profile } = this.props
     const wrapperClasses = cx({
       'wrapper': true,
-      'mask': isFetching || isPopup || filter,
+      'mask': isFetching || isPopup || isPostformOpen,
       'login': profile.token,
     })
     return (
       <div>
-        <Header filter={filter} />
+        <Header isPostformOpen={isPostformOpen} />
         <div className={wrapperClasses}>
           {this.props.children}
         </div>
@@ -71,9 +63,10 @@ class App extends Component {
 const mapStateToProps = (state) => {
   const { profile } = state.auth
   const { isPopup, popupMsg } = state.popup
-  const { isFetching } = state.combine
+  const { isFetching, isPostformOpen } = state.combine
   return {
     isFetching,
+    isPostformOpen,
     isPopup,
     popupMsg,
     profile,

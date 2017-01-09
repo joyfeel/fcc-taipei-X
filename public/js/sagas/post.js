@@ -1,8 +1,9 @@
 import { call, put, select } from 'redux-saga/effects'
-import { takeEvery } from 'redux-saga'
+import { takeEvery, delay } from 'redux-saga'
 import { eventChannel } from 'redux-saga'
 import * as PostActions from '../actions/post'
 import * as CombineActions from '../actions/combine'
+import * as SliderActions from '../actions/slider'
 import postAPI from '../utils/postAPI'
 import { getOldestPostID, getNewestPostID, getPostTimeSocket } from '../reducers/selectors'
 import auth from '../utils/auth'
@@ -14,6 +15,7 @@ const {
   findNewerPostSuccess, findNewerPostFailure,
   findOlderPostSuccess, findOlderPostFailure,
   deletePostRequest, deletePostSuccess, deletePostFailure,
+  editPostRequest, editPostSuccess, editPostFailure,
   displayNewerPost,
 } = PostActions
 
@@ -21,6 +23,10 @@ const {
   sendingRequest, cancelRequest,
   sendingRequestFindOlderPost, cancelRequestFindOlderPost,
 } = CombineActions
+
+const {
+  sliderRequest, sliderClose,
+} = SliderActions
 
 /************************* CreatePost *************************/
 function* createPostFlow(post) {
@@ -117,4 +123,27 @@ function* deletePostFlows({ post }) {
 }
 export function* watchDeletePostFlow() {
   yield* takeEvery(PostActions.DELETE_POST_REQUEST, deletePostFlows)
+}
+
+/************************* editPost *************************/
+function* editPostFlow(post) {
+  try {
+    const response = yield call(postAPI.editPost, post)
+    if (response) {
+      yield put(editPostSuccess(response))
+      yield put(cancelRequest())
+      yield sliderFlow(response)
+    }
+  } catch(error) {
+    yield put(editPostFailure(error))
+    yield put(cancelRequest())
+    yield sliderFlow(error)
+  }
+}
+function* editPostFlows({ post }) {
+  yield put(sendingRequest())
+  yield call(editPostFlow, post)
+}
+export function* watchEditPostFlow() {
+  yield* takeEvery(PostActions.EDIT_POST_REQUEST, editPostFlows)
 }
