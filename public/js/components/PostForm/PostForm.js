@@ -6,6 +6,8 @@ import PostTitle from './PostTitle'
 import PostContent from './PostContent'
 import * as PostActions from '../../actions/post'
 import * as CombineActions from '../../actions/combine'
+import * as PopupActions from '../../actions/popup'
+import { popupMethodToCode } from '../../utils/apicode'
 
 class PostForm extends Component {
   constructor(props) {
@@ -19,7 +21,7 @@ class PostForm extends Component {
       post_content: '',
     }
     /* Post form related function */
-    this.shrinkPostForm = this.shrinkPostForm.bind(this)
+    this.closePostForm = this.closePostForm.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.detectPostForm = this.detectPostForm.bind(this)
     /* Time related function */
@@ -74,6 +76,7 @@ class PostForm extends Component {
       post_content: '',
     })
   }
+  //點擊發文區塊時觸發
   detectPostForm(e) {
     const { isPostformOpen, editPost } = this.props
     const bolder = (this.refs['titleValue'].refs['inp'].value.trim().length > 0) ? true : false
@@ -87,13 +90,30 @@ class PostForm extends Component {
 
     !isPostformOpen && this.props.combine.postformOpen()
   }
-  shrinkPostForm() {
-    if(this.props.editPost) {
+  //點擊 close 時觸發
+  closePostForm(e) {
+    const { editPost } = this.props
+    const { post_title, post_content } = this.state
+    /*
+      當關閉 post form 時，先做 edit 部分的邏輯驗證
+      若 form 上的 title 與 content 跟原先的內容一樣，就可以直接退出關閉
+    */
+    if (editPost && (editPost.title === post_title && editPost.content === post_content)) {
       this.resetStates()
-      this.props.combine.editformClose()
+      return this.props.combine.editformClose()
     }
 
-    this.props.combine.postformClose()
+    /*
+      再來接著做 post form 部分的邏輯驗證
+      若 form 上的 title 與 content 的內容不存在，就可以直接退出關閉
+    */
+    const hasText = post_title.length > 0 || post_content.length > 0 ? true : false
+    if (!hasText) {
+      return this.props.combine.postformClose()
+    }
+
+    const code = popupMethodToCode[e.target.className]
+    this.props.popup.popupRequest({ code })
   }
   detectEditPostRequest(title, content, editPost) {
     const { id } = editPost
@@ -119,7 +139,6 @@ class PostForm extends Component {
     e.target.reset()
     this.resetStates()
   }
-
   componentWillReceiveProps(nextProps) {
     /*
       The property `create_post_time` is pushing from server side of socket.io
@@ -130,11 +149,16 @@ class PostForm extends Component {
       this.timeCalc(nextProps.create_post_time)
     }
 
-    //for  editPost
+    //for editPost
     const { post_title } = this.state
     if(nextProps.editPost !== null && post_title.length === 0) {
       const {title, content } = nextProps.editPost
       this.setEditValue(title, content)
+    }
+
+    // Horrible logic, need to be refactored
+    if (this.props.isPostformOpen === true && nextProps.isPostformOpen === false) {
+      this.resetStates()
     }
   }
   render() {
@@ -144,7 +168,7 @@ class PostForm extends Component {
 
     return (
       <form className={cx('post-form', { expand: isPostformOpen, hidden: isFetching || isPopup })} onSubmit={this.handleSubmit}>
- 	    	<i className='close' onClick={this.shrinkPostForm}>close</i>
+ 	    	<i className='close' onClick={this.closePostForm}>close</i>
         { counting && editPost === null ?
           <div className='post-btn'>{this.timeFormat(count)}</div> :
           <button className='post-btn' role='submit' disabled={disabled}>POST</button>
@@ -193,6 +217,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     post: bindActionCreators(PostActions, dispatch),
     combine: bindActionCreators(CombineActions, dispatch),
+    popup: bindActionCreators(PopupActions, dispatch),
   }
 }
 

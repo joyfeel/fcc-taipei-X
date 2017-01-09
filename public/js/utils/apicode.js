@@ -1,5 +1,6 @@
 export const popupMethodToCode = {
   'cancel-3': 100002,
+  'close': 100003,
 }
 
 const codeTable = (res) => {

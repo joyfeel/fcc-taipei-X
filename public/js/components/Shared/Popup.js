@@ -5,6 +5,7 @@ import cx from 'classnames'
 import SubmitBtn from './SubmitBtn'
 import SignFormEmail from './SignFormEmail'
 import * as AuthActions from '../../actions/auth'
+import * as CombineActions from '../../actions/combine'
 import * as PopupActions from '../../actions/popup'
 import * as PostActions from '../../actions/post'
 
@@ -39,16 +40,21 @@ class Popup extends Component {
       case 'delete-post-popup':
         const { id, title, content } = this.props.popupMsg
         return this.props.post.deletePostRequest({ id, title, content })
+      case 'not-save-post-popup':
+        return this.props.combine.postformClose()
       default:
         return null
     }
   }
+  //點選 popup 的 Yes 時
   handlePopupClickConfirm(e) {
     e.preventDefault()
     const { icon } = this.props.popupMsg
     this.strategyPopupAction(icon)
+    // 做完 Yes 該做得事後，就可以把 popup 視窗關掉了
     this.handlePopupClickCancel(e)
   }
+  //點選 popup 的 No 時
   handlePopupClickCancel(e) {
     e.preventDefault()
     this.setState({ offPopup: true, email: null })
@@ -80,6 +86,7 @@ class Popup extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     auth: bindActionCreators(AuthActions, dispatch),
+    combine: bindActionCreators(CombineActions, dispatch),
     popup: bindActionCreators(PopupActions, dispatch),
     post: bindActionCreators(PostActions, dispatch),
   }
