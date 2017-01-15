@@ -1,17 +1,12 @@
 //mongod --dbpath ~/data/db/
+import 'babel-polyfill'
 import Koa from 'koa'
 import convert from 'koa-convert'
 import path from 'path'
 import bodyParser from 'koa-bodyparser'
 import logger from 'koa-logger'
 
-import serve from 'koa-static'
 import historyApiFallback from 'koa-connect-history-api-fallback'
-
-import webpack from 'webpack'
-import WebpackDevMiddleware from "koa-webpack-dev-middleware"
-import WebpackHotMiddleware from "koa-webpack-hot-middleware"
-import webpackConfig from '../webpack.config'
 
 import jwt from 'koa-jwt'
 import cors from 'kcors'
@@ -87,21 +82,29 @@ app.use(convert(historyApiFallback({
   verbose: false,
 })))
 
-const compiler = webpack(webpackConfig)
-app.use(convert(WebpackDevMiddleware(compiler, {
-  hot: true,
-  noInfo: true,
-  publicPath: webpackConfig.output.publicPath,
-  historyApiFallback: true,
-})))
+if (process.env.NODE_ENV !== 'production') {
+  const webpack = require('webpack')
+  const WebpackDevMiddleware = require('koa-webpack-dev-middleware')
+  const webpackDevelopmentConfig = require('../webpack.development')
 
-app.use(convert(WebpackHotMiddleware(compiler, {
-  log: console.log,
-  path: '/__webpack_hmr',
-  heartbeat: 10 * 1000,
-})))
+  app.use(convert(WebpackDevMiddleware(webpack(webpackDevelopmentConfig), {
+    stats: {
+      colors: true,
+      cached: false,
+      chunks: false,
+      hash: false,
+      version: false,
+      warnings: false,
+      children: false,
+      assets: false,
+    },
+  })))
 
-app.use(serve(__dirname + '/../public'))
+} else {
+  const serve = require('koa-static')
+  app.use(serve(path.join(__dirname, '../dist')))
+}
+
 app.use(convert(jwt({
   secret: process.env.JWT_SECRET
 }).unless({
@@ -118,6 +121,7 @@ app.use(convert(jwt({
 const server = app.listen(Config.port, () => {
   console.log(`listening on port ${Config.port}`)
 })
+
 const io = require('socket.io')(server)
 initialSocket(io)
 
@@ -149,5 +153,3 @@ app.use(commentRouter.routes()).use(commentRouter.allowedMethods({
 app.use(checkPostLimitRouter.routes()).use(checkPostLimitRouter.allowedMethods({
   throw: true
 }))
-
-export default app
