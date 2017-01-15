@@ -2,11 +2,11 @@ import Router from 'koa-router'
 import Boom from 'boom'
 import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
+import _ from 'lodash'
 import User from '../../models/users'
 import { getCleanUser } from '../../utils/mixed'
 import { mailTransport, checkEmailStatus } from '../../utils/email'
 import Config from '../../config'
-import _ from 'lodash'
 /*
   account-settings (!!!此 component 頁面可跟 register component 頁面共用，差別在於 email 不能改)
   (1) Login => jwt token

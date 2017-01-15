@@ -1,7 +1,6 @@
 import Router from 'koa-router'
 import Boom from 'boom'
 import _ from 'lodash'
-import nodemailer from 'nodemailer'
 import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
 import { getToken, verifyToken } from '../../utils/auth'
@@ -9,7 +8,6 @@ import { getCleanUser } from '../../utils/mixed'
 import { mailTransport, checkEmailStatus } from '../../utils/email'
 import Config from '../../config'
 import User from '../../models/users'
-
 /*
   Signup
   (1) User input their user info
@@ -38,16 +36,16 @@ router.post('/',
         throw Boom.create(403, 'The email has already been registered in social account', { code: 403001 })
       }
 
-      //1. Check the account is unique
+      // 1. Check the account is unique
       const accountExist = await User.findOne({ email, isEmailActived: true })
       if (accountExist) {
         throw Boom.create(403, 'The email has already been registered', { code: 403002 })
       }
-      //2. The user may forget to receive their email to authentication
+      // 2. The user may forget to receive their email to authentication
       const result = await User.findOne({ email, isEmailActived: false })
       const emailToken = await getToken['EMAIL'](email)
       let user
-      //If email account is not active, resend email again.
+      // If email account is not active, resend email again.
       if (result) {
         user = await User.findById(result._id)
         _.extend(user, {
@@ -57,7 +55,7 @@ router.post('/',
         })
         await user.save()
       } else {
-        //3. Store new user info in DB (finally)
+        // 3. Store new user info in DB (finally)
         user = new User(ctx.request.body)
         await user.save()
 
@@ -80,7 +78,7 @@ router.post('/',
   checkEmailStatus
 )
 
-//Active the account, and verify the email token
+// Active account and verify email token
 router.get('/',
   validate({
     'token:query': ['require', 'token is required'],

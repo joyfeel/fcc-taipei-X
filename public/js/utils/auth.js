@@ -2,21 +2,21 @@ import { fetchBody, fetchGet } from './fetch'
 
 const auth = {
   login(formData) {
-    return fetchBody('http://localhost:3000/v1/signin', formData)
+    return fetchBody('/v1/signin', formData)
   },
   signup(formData) {
-    return fetchBody('http://localhost:3000/v1/signup', formData)
+    return fetchBody('/v1/signup', formData)
   },
   forgetPS(email) {
-    return fetchBody('http://localhost:3000/v1/forgot_password', email)
+    return fetchBody('/v1/forgot_password', email)
   },
   verifyAccessToken() {
     const accessToken = auth.getToken()
-    return fetchGet(`http://localhost:3000/v1/verifyToken?token=${accessToken}`)
+    return fetchGet(`/v1/verifyToken?token=${accessToken}`)
   },
   verifyEmailToken() {
     const emailToken = location.search.split('?token=')[1]
-    return fetchGet(`http://localhost:3000/v1/signup?token=${emailToken}`)
+    return fetchGet(`/v1/signup?token=${emailToken}`)
   },
   loggedIn() {
     return !!localStorage.token
@@ -37,8 +37,8 @@ const auth = {
   },
   setToken(token) {
     try {
-      const serializedState = JSON.stringify(token);
-      localStorage.setItem('token', serializedState);
+      const serializedState = JSON.stringify(token)
+      localStorage.setItem('token', serializedState)
     } catch (err) {
       // Ignore write errors.
     }

@@ -54,27 +54,26 @@ const editPresentArticle = (api, form, token) => fetch(api,{
 
 }).then(res => res.ok ? res.json() : res.json().then(err => Promise.reject(err)))
 
-
 const postAPI = {
   createPost(post) {
-    return fetchAuthorizationBody('http://localhost:3000/v1/posts', post, auth.getToken())
+    return fetchAuthorizationBody('/v1/posts', post, auth.getToken())
   },
   deletePost(post) {
     const { title, content } = post
-    return deletePresentArticle(`http://localhost:3000/v1/posts/${post.id}`, { title, content }, auth.getToken())
+    return deletePresentArticle(`/v1/posts/${post.id}`, { title, content }, auth.getToken())
   },
   editPost(post) {
     const { title, content } = post
-    return editPresentArticle(`http://localhost:3000/v1/posts/${post.id}`, { title, content }, auth.getToken())
+    return editPresentArticle(`/v1/posts/${post.id}`, { title, content }, auth.getToken())
   },
   findPresentPost() {
-    return fetchPresentArticles('http://localhost:3000/v1/posts/findPresent', auth.getToken())
+    return fetchPresentArticles('/v1/posts/findPresent', auth.getToken())
   },
   findNewerPost(postId) {
-    return fetchNewerArticles(`http://localhost:3000/v1/posts/findNewer?postID=${postId}`, auth.getToken())
+    return fetchNewerArticles(`/v1/posts/findNewer?postID=${postId}`, auth.getToken())
   },
   findOlderPost(postID) {
-    return fetchOlderArticles(`http://localhost:3000/v1/posts/findOlder/?postID=${postID}`, auth.getToken())
+    return fetchOlderArticles(`/v1/posts/findOlder/?postID=${postID}`, auth.getToken())
   },
 }
 

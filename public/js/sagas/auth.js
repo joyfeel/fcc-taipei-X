@@ -15,7 +15,6 @@ const {
   verifyEmailTokenSuccess, verifyEmailTokenFailure,
   signUpSuccess, signUpFailure,
   forgetPSSuccess, forgetPSFailure,
-  socketCreatePostTimeSuccess, socketCreatePostTimeFailure
 } = AuthActions
 
 const {

@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "start": "nodemon --ignore public/ --exec babel-node ./server",
-    "build": "NODE_ENV=production npm run clean && babel --minified ./server -d dist && webpack --config webpack.build.js -p",
+    "build": "NODE_ENV=production npm run clean && npm run build:server && npm run build:app",
     "production": "NODE_ENV=production node ./dist",
     "build:app": "NODE_ENV=production webpack --config webpack.build.js -p",
     "build:server": "NODE_ENV=production babel --minified ./server -d dist",
@@ -24,6 +24,9 @@
     "url": "https://github.com/joyfeel/fcc-taipei-X/issues"
   },
   "homepage": "https://github.com/joyfeel/fcc-taipei-X#readme",
+  "engines": {
+    "node": "6.9.4"
+  },
   "dependencies": {
     "babel-polyfill": "6.20.0",
     "bcryptjs-then": "1.0.1",
@@ -46,6 +49,7 @@
     "mongoose": "4.5.10",
     "mongoose-deep-populate": "3.0.0",
     "mongoose-timestamp": "0.6.0",
+    "node-base64-image": "1.0.3",
     "node-fetch": "2.0.0-alpha.1",
     "node-uuid": "1.4.7",
     "nodemailer": "2.5.0",
@@ -59,6 +63,7 @@
     "react-router": "2.7.0",
     "redux": "3.5.2",
     "redux-saga": "0.11.0",
+    "sendgrid": "4.7.1",
     "socket.io": "1.7.2",
     "socket.io-client": "1.7.2",
     "validator": "5.5.0",
@@ -83,7 +88,6 @@
     "istanbul": "1.0.0-alpha.2",
     "koa-webpack-dev-middleware": "1.2.2",
     "mocha": "3.0.2",
-    "node-base64-image": "1.0.1",
     "node-sass": "4.3.0",
     "postcss-apply": "^0.3.0",
     "postcss-cssnext": "^2.7.0",

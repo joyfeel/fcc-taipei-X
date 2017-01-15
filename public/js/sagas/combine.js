@@ -54,8 +54,6 @@ function* read(socket) {
 
 function* combineSignInFlows({ formData }) {
   yield put(sendingRequest())
-  // Listen to socket
-  yield fork(listenSocketEvent)
   // Send signin request. Then get token and user information from backend
   yield call(signInFlow, formData)
   // Get present 10 posts
@@ -91,7 +89,6 @@ export function* watchRefreshFlow() {
 function* verifyEmailTokenFlows() {
   yield put(sendingRequest())
   // Listen to socket
-  yield fork(listenSocketEvent)
   yield call(verifyEmailTokenFlow)
   if (auth.loggedIn()) {
     yield call(findPresentPostFlow)

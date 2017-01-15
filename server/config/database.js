@@ -1,12 +1,8 @@
 import mongoose from 'mongoose'
 import config from './index'
 
-if (!config.database) {
-  throw 'Need the db name'
-}
-
 mongoose.Promise = global.Promise
-mongoose.connect(config.database)
+mongoose.connect(config.databaseURI, config.databaseOption || null)
 
 mongoose.connection.on('connected', () => {
   console.log('mongo connection open')
