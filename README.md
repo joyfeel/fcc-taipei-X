@@ -1,6 +1,12 @@
 # fcc-taipei-X
 Free Code Camp Taipei - For practice
 
+
+View the [Live Demo](https://thawing-anchorage-84508.herokuapp.com)
+-------------------------------------------------------------------
+
+The code for the demo is [here](https://github.com/joyfeel/fcc-taipei-X).
+
 Prerequisites
 -------------
 
@@ -15,18 +21,17 @@ Installation
 $ git clone https://github.com/joyfeel/fcc-taipei-X
 $ cd fcc-taipei-X/
 
-# Install NPM dependencies
 $ npm install
-
-# Open another terminal, and launch mongodb
-$ mongod --dbpath ~/data/db/
-
-# Start the app
-$ npm start
-
-# Node server is listening on port 3000
-# View your site at "http://localhost:3000"
+$ mongod --dbpath ~/data/db/ # Open another terminal, and launch mongodb
 ```
+
+Development Mode
+----------------
+
+```shell
+$ npm start  # Start the app, node server is listening on port 3000
+```
+[http://localhost:3000](http://localhost:3000)
 
 Configuration
 -------------
@@ -36,22 +41,37 @@ In order to sending an authentication/verification email (by Google SMTP server)
 ```javascript
 // mail.js
 export default {
-  gmailSender: process.env.GMAIL_USERNAME,  // Here!
-  gmailConfig: {
-    service: 'Gmail',
-    auth: {
-      user: process.env.GMAIL_USERNAME,     // Here!
-      pass: process.env.GMAIL_PASSWORD,     // Here!
+  gmail: {
+    gmailSender: process.env.GMAIL_USERNAME,  // Here!
+    gmailConfig: {
+      service: 'Gmail',
+      auth: {
+        user: process.env.GMAIL_USERNAME,     // Here!
+        pass: process.env.GMAIL_PASSWORD,     // Here!
+      },
+      logger: true,
+      debug: true,
     },
-    logger: true,
-    debug: true,
   },
-  registerMailTemplate: {
-    subject: 'Hello subject',
-    text: 'Click here to activate your account: http://www.google.com.tw', // plaintext body
-    html: '<h1><a href="www.google.com.tw">Click here to activate your account</a></h1>',
+  sendgrid: {
+    sendgridSender: process.env.SENDGRID_USERNAME,
+    apiKey: process.env.SENDGRID_API_KEY,
+  },
+  mailTemplate: {
+    subject: 'Please comfirm your email address',
   },
 }
+```
+
+Production Mode (Under construction)
+----------------
+
+```shell
+$ npm run build  # Build to dist/
+$ git add -A && git commit -m 'Update heroku'
+$ git push heroku master
+$ heroku open
+$ heroku logs  # Check building status
 ```
 
 
