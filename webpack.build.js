@@ -1,14 +1,10 @@
-const webpack = require('webpack')
 const path = require('path')
+const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: [
-    path.join(__dirname, 'public', 'js', 'index.js'),
-    'whatwg-fetch',
-    'babel-polyfill',
-  ],
+  entry: path.join(__dirname, 'public', 'js', 'index.js'),
   output: {
     filename: 'bundle.js',
     path: path.join(__dirname, 'dist'),
