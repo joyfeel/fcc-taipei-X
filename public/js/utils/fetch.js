@@ -1,4 +1,4 @@
- export const fetchBody = (api, form) => fetch(api, {
+export const fetchBody = (api, form) => fetch(api, {
   method: 'post',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(form)
