@@ -7,6 +7,7 @@ module.exports = {
   entry: [
     path.join(__dirname, 'public', 'js', 'index.js'),
     'whatwg-fetch',
+    'babel-polyfill',
   ],
   output: {
     filename: 'bundle.js',
