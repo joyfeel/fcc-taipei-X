@@ -38,8 +38,8 @@ class Popup extends Component {
         const { email } = this.state
         return this.props.auth.forgetPSRequest(email)
       case 'delete-post-popup':
-        const { id, title, content } = this.props.popupMsg
-        return this.props.post.deletePostRequest({ id, title, content })
+        const { id } = this.props.popupMsg
+        return this.props.post.deletePostRequest({ id })
       case 'not-save-post-popup':
         return this.props.combine.postformClose()
       default:

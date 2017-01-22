@@ -14,9 +14,9 @@ class SelfArticleMenu extends Component {
   }
   deletePostPopup(e) {
     // 若有 popup 的操作，都需要提供 popupCode
-    const { id, title, content } = this.props
+    const { id } = this.props
     const code = popupMethodToCode[e.target.className]
-    const deletePostPopup = { code, id, title, content }
+    const deletePostPopup = { code, id }
     this.props.popup.popupRequest(deletePostPopup)
   }
   editformOpen(e) {

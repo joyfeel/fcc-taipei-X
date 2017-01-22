@@ -262,22 +262,13 @@
                         "description": "postID that need to be deleted",
                         "required": true,
                         "type": "string"
-                    },
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Post information",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/PostRequest"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "Successful operation",
                         "schema": {
-                            "$ref": "#/definitions/newPostResponse"
+                            "$ref": "#/definitions/deletePostResponse"
                         }
                     },
                     "401": {
@@ -559,6 +550,29 @@
                 },
                 "post": {
                     "$ref": "#/definitions/Post"
+                }
+            }
+        },
+        "deletePostResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "integer"
+                },
+                "post": {
+                    "$ref": "#/definitions/deletedPost"
+                }
+            }
+        },
+        "deletedPost": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
                 }
             }
         },

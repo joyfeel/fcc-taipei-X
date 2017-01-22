@@ -33,14 +33,13 @@ const fetchOlderArticles = (api, token) => fetch(api, {
   },
 }).then(res => res.ok ? res.json() : res.json().then(err => Promise.reject(err)))
 
-const deletePresentArticle = (api, form, token) => fetch(api,{
+const deletePresentArticle = (api, token) => fetch(api, {
   method: 'DELETE',
   headers: {
     'accept': 'application/json',
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
   },
-  body: JSON.stringify(form),
 }).then(res => res.ok ? res.json() : res.json().then(err => Promise.reject(err)))
 
 const editPresentArticle = (api, form, token) => fetch(api,{
@@ -59,8 +58,7 @@ const postAPI = {
     return fetchAuthorizationBody('/v1/posts', post, auth.getToken())
   },
   deletePost(post) {
-    const { title, content } = post
-    return deletePresentArticle(`/v1/posts/${post.id}`, { title, content }, auth.getToken())
+    return deletePresentArticle(`/v1/posts/${post.id}`, auth.getToken())
   },
   editPost(post) {
     const { title, content } = post

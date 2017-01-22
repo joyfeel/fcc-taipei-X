@@ -23,7 +23,7 @@ router.get('/',
       const { findUser, canPost } = await canPostArticle(userId)
       const user = getCleanUser(findUser)
       if (!canPost) {
-        throw Boom.create(403, `You can't repeatly post article in ${Config.user.createdPostTime}`, {
+        throw Boom.create(403, `You can't repeatly post article in ${Config.post.createdPostTime}`, {
           code: 403003,
           create_post_time: user.create_post_time,
         })

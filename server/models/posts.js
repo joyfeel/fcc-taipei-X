@@ -13,6 +13,10 @@ const PostSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Comment',
   }],
+  realCommentCount: {
+    type: Number,
+    default: 0,
+  },
   title: {
     type: String,
     required: true,

@@ -4,8 +4,13 @@ import _ from 'lodash'
 import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
 import Post from '../../models/posts'
+import Comment from '../../models/comments'
 import { getCleanUser, getCleanPost, canPostArticle, checkAuth } from '../../utils/mixed'
 import Config from '../../config'
+
+const commentsDefaultCount = Config.comment.defaultCount
+const loadPostCount = Config.post.loadPostCount()
+const createdPostTime = Config.post.createdPostTime
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
@@ -29,7 +34,7 @@ router.post('/',
       const { findUser, canPost } = await canPostArticle(userId)
       const user = getCleanUser(findUser)
       if (!canPost) {
-        throw Boom.create(403, `You can't repeatly post article in ${Config.user.createdPostTime}`, {
+        throw Boom.create(403, `You can't repeatly post article in ${createdPostTime}`, {
           code: 403003,
           create_post_time: user.create_post_time,
         })
@@ -40,7 +45,7 @@ router.post('/',
       }
 
       _.extend(canPost, {
-        createdPostLimit: Config.user.createdPostLimit(),
+        createdPostLimit: Config.post.createdPostLimit(),
       })
       await canPost.save()
       const post = new Post(article)
@@ -64,8 +69,16 @@ router.post('/',
 router.get('/findPresent',
   async(ctx, next) => {
     try {
-      const count = Config.user.loadPostCount()
-      const posts = await Post.find().sort('-createdAt').limit(count).deepPopulate('author comments.author')
+      const count = loadPostCount
+      const posts = await Post.find().sort('-createdAt').limit(count).deepPopulate('author comments.author', {
+        populate: {
+          'comments': {
+            options: {
+              limit: commentsDefaultCount,   // 限制一次只能取少量筆comments
+            },
+          },
+        },
+      })
       ctx.body = {
         status: 'success',
         code: 200006,
@@ -87,9 +100,17 @@ router.get('/findOlder',
   }),
   async(ctx, next) => {
     try {
-      const count = Config.user.loadPostCount()
+      const count = loadPostCount
       const { postID } = ctx.request.query
-      const posts = await Post.find().where('_id').lt(postID).sort('-createdAt').limit(count).deepPopulate('author comments.author')
+      const posts = await Post.find().where('_id').lt(postID).sort('-createdAt').limit(count).deepPopulate('author comments.author',{
+        populate: {
+          'comments': {
+            options: {
+              limit: commentsDefaultCount,   // 限制一次只能取少量筆comments
+            },
+          },
+        },
+      })
       ctx.body = {
         status: 'success',
         code: 200006,
@@ -111,9 +132,17 @@ router.get('/findNewer',
   }),
   async(ctx, next) => {
     try {
-      const count = Config.user.loadPostCount()
+      const count = loadPostCount
       const { postID } = ctx.request.query
-      const posts = await Post.find().where('_id').gt(postID).sort('createdAt').limit(count).deepPopulate('author comments.author')
+      const posts = await Post.find().where('_id').gt(postID).sort('createdAt').limit(count).deepPopulate('author comments.author', {
+        populate: {
+          'comments': {
+            options: {
+              limit: commentsDefaultCount,   // 限制一次只能取少量筆comments
+            },
+          },
+        },
+      })
       posts.sort((a, b) => {
         return a._id < b._id
       })
@@ -197,12 +226,17 @@ router.delete('/:postID',
       if (author !== userId) {
         throw Boom.create(403, `Delete other people's post is not allowed`, { code: 403005 })
       }
+      // (1) Delete the target post
       const updatedPost = await Post.findByIdAndRemove(postID)
       await updatedPost.populate('author').execPopulate()
+      // (2) Delete related comments of ths post
+      const allComments = await Comment.remove({ post: postID })
       ctx.body = {
         status: 'success',
         code: 200008,
-        post: getCleanPost(updatedPost),
+        post: {
+          id: updatedPost._id,
+        },
       }
     } catch (err) {
       if (err.output && err.output.statusCode) {

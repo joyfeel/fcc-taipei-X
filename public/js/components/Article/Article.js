@@ -54,7 +54,6 @@ Article.propTypes = {
   findOlderFetching: PropTypes.bool.isRequired,
 }
 
-
 const mapDispatchToProps = (dispatch) => {
   return {
     post: bindActionCreators(PostActions, dispatch),

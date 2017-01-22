@@ -28,12 +28,16 @@ export const getCleanPost = (post) => {
     like_count: p.likeCount,
     dislike_count: p.dislikeCount,
     comments: comments.map(comment => getCleanComment(comment)),
+    realCommentCount: p.realCommentCount,
     created_time: p.createdAt,
     updated_time: p.updatedAt,
   }
 }
 
 export const getCleanComment = (comment) => {
+  if (typeof comment.author === 'undefined') {
+    return null
+  }
   const { author } = comment
   const c = comment.toObject()
   return {

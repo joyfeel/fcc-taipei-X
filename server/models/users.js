@@ -44,7 +44,7 @@ const UserSchema = new Schema({
   },
   createdPostLimit: {
     type: Date,
-    default: Config.user.createdPostLimit(),
+    default: Config.post.createdPostLimit(),
   },
   social: {
     type: Boolean,
