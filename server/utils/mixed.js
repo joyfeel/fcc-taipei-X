@@ -18,7 +18,7 @@ export const getCleanUser = (user) => {
 }
 
 export const getCleanPost = (post) => {
-  const { author, comments } = post
+  const { author } = post
   const p = post.toObject()
   return {
     id: p._id,
@@ -27,7 +27,7 @@ export const getCleanPost = (post) => {
     content: p.content,
     like_count: p.likeCount,
     dislike_count: p.dislikeCount,
-    comments: comments.map(comment => getCleanComment(comment)),
+    comments: [],     // 一開始不給前端 comments，前端必須自己調用 get comment API
     realCommentCount: p.realCommentCount,
     created_time: p.createdAt,
     updated_time: p.updatedAt,

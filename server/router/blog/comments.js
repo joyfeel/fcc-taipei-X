@@ -105,18 +105,27 @@ router.get('/:postID',
         throw Boom.create(404, 'This post is not exist', { code: 404003 })
       }
 
-      // 檢查 目前的評論ID 是否存在
+      const count = Number(strCount)
+      let commentLists
+
       const { currentCommentID } = ctx.request.query
-      const currentComment = await Comment.findById(currentCommentID)
-      if (!currentComment) {
-        throw Boom.create(404, 'This comment is not exist', { code: 404004 })
+      // 使用者可以不輸入 currentCommentID，那就表是取最初的幾筆 comments
+      if (typeof currentCommentID === 'undefined') {
+        commentLists = await Comment.find({
+          post: postID,
+        }).where('_id').sort('createdAt').limit(count).deepPopulate('author')
+      } else {
+        // 檢查 目前的評論ID 是否存在
+        const currentComment = await Comment.findById(currentCommentID)
+        if (!currentComment) {
+          throw Boom.create(404, 'This comment is not exist', { code: 404004 })
+        }
+        // 從 評論ID 取其它的 comments
+        commentLists = await Comment.find({
+          post: postID,
+        }).where('_id').gt(currentCommentID).sort('createdAt').limit(count).deepPopulate('author')
       }
 
-      // 找出符合條件的所有 comments
-      const count = Number(strCount)
-      const commentLists = await Comment.find({
-        post: postID,
-      }).where('_id').lt(currentCommentID).sort('-createdAt').limit(count).deepPopulate('author')
       ctx.body = {
         status: 'success',
         comment: commentLists,

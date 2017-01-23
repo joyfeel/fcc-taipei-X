@@ -480,8 +480,8 @@
                     {
                         "in": "query",
                         "name": "currentCommentID",
-                        "description": "current comment id",
-                        "required": true,
+                        "description": "optional, if not set, user can get the oldest comments",
+                        "required": false,
                         "type": "string"
                     }
                 ],

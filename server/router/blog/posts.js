@@ -70,15 +70,7 @@ router.get('/findPresent',
   async(ctx, next) => {
     try {
       const count = loadPostCount
-      const posts = await Post.find().sort('-createdAt').limit(count).deepPopulate('author comments.author', {
-        populate: {
-          'comments': {
-            options: {
-              limit: commentsDefaultCount,   // 限制一次只能取少量筆comments
-            },
-          },
-        },
-      })
+      const posts = await Post.find().select('-comments').sort('-createdAt').limit(count).deepPopulate('author')
       ctx.body = {
         status: 'success',
         code: 200006,
@@ -102,15 +94,7 @@ router.get('/findOlder',
     try {
       const count = loadPostCount
       const { postID } = ctx.request.query
-      const posts = await Post.find().where('_id').lt(postID).sort('-createdAt').limit(count).deepPopulate('author comments.author',{
-        populate: {
-          'comments': {
-            options: {
-              limit: commentsDefaultCount,   // 限制一次只能取少量筆comments
-            },
-          },
-        },
-      })
+      const posts = await Post.find().select('-comments').where('_id').lt(postID).sort('-createdAt').limit(count).deepPopulate('author')
       ctx.body = {
         status: 'success',
         code: 200006,
@@ -134,15 +118,7 @@ router.get('/findNewer',
     try {
       const count = loadPostCount
       const { postID } = ctx.request.query
-      const posts = await Post.find().where('_id').gt(postID).sort('createdAt').limit(count).deepPopulate('author comments.author', {
-        populate: {
-          'comments': {
-            options: {
-              limit: commentsDefaultCount,   // 限制一次只能取少量筆comments
-            },
-          },
-        },
-      })
+      const posts = await Post.find().select('-comments').where('_id').gt(postID).sort('createdAt').limit(count).deepPopulate('author')
       posts.sort((a, b) => {
         return a._id < b._id
       })
