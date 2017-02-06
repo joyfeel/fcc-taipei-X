@@ -8,8 +8,8 @@ import Comment from '../../models/comments'
 import { getCleanComment, checkAuth } from '../../utils/mixed'
 import Config from '../../config'
 
-const minCommentCount = Config.comment.getMinCommentCount
-const maxCommentCount = Config.comment.getMaxCommentCount
+const minCommentCount = Config.dbSchema.comment.getMinCommentCount
+const maxCommentCount = Config.dbSchema.comment.getMaxCommentCount
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({

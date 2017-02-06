@@ -3,9 +3,11 @@ import { takeEvery } from 'redux-saga'
 import { eventChannel } from 'redux-saga'
 import postAPI from '../utils/postAPI'
 import * as AuthActions from '../actions/auth'
+import * as OauthActions from '../actions/oauth'
 import * as CombineActions from '../actions/combine'
 import * as SocketActions from '../actions/socket'
 import { signInFlow, identifyTokenFlow, verifyEmailTokenFlow } from './auth'
+import { oauthSignInFlow } from './oauth'
 import { findPresentPostFlow } from './post'
 import auth from '../utils/auth'
 import { connectPostTimeSocket } from '../utils/socket'
@@ -50,6 +52,18 @@ function* read(socket) {
     const action = yield take(channel)
     yield put(action)
   }
+}
+
+function* combineOauthSignInFlows({ provider }) {
+  yield put(sendingRequest())
+  yield call(oauthSignInFlow, provider)
+  if (auth.loggedIn()) {
+    yield call(findPresentPostFlow)
+  }
+  yield put(cancelRequest())
+}
+export function* watchOauthSignInFlow() {
+  yield* takeEvery(OauthActions.OAUTH_REQUEST, combineOauthSignInFlows)
 }
 
 function* combineSignInFlows({ formData }) {

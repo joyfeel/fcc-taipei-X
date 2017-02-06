@@ -51,7 +51,7 @@ router.post('/',
         _.extend(user, {
           ...ctx.request.body,
           verifyEmailToken: emailToken,
-          nicknameChangeLimit: Config.user.nicknameChangeLimit()
+          nicknameChangeLimit: Config.dbSchema.user.nicknameChangeLimit()
         })
         await user.save()
       } else {

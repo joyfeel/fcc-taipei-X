@@ -7,6 +7,7 @@ import convert from 'koa-convert'
 import _validate from 'koa-req-validator'
 import User from '../../models/users'
 import { getToken } from '../../utils/auth'
+import { getCleanUser } from '../../utils/mixed'
 import { encodeRemoteImg } from '../../utils/mixed'
 import Config from '../../config'
 
@@ -22,11 +23,11 @@ router.post('/',
   async(ctx, next) => {
     try {
       const { code } = ctx.request.body
-      const { accessTokenUrl, peopleApiUrl } = Config.google
+      const { accessTokenUrl, peopleApiUrl } = Config.auth.google
 
       const params = {
         code,
-        ...Config.google,
+        ...Config.auth.google,
       }
       const accessTokenResponse = await fetch(accessTokenUrl, {
         method: 'post',
@@ -52,36 +53,43 @@ router.post('/',
             throw Boom.forbidden('The email has already been registered in our web approach')
           }
           const socialAccountExist = await User.findOne({ googleId: id })
-          const base64URI = await encodeRemoteImg(picture)
-          const userBdy = {
-            nickname: name,
-            email,
-            avatar: base64URI,
-          }
-          const token = getToken['JWT'](email)
-          if (socialAccountExist) {
+          let token
+          // 從未 google signin 過
+          if (!socialAccountExist) {
+            const base64URI = await encodeRemoteImg(picture)
+            const user = new User({
+              email,
+              nickname: name,
+              avatar: base64URI,
+              isEmailActived: true,
+              social: true,
+              googleAccessToken: access_token,
+              googleId: id,
+            })
+            await user.save()
+            const userId = user._id
+            token = getToken['JWT']({ userId , email })
             return ctx.response.body = {
               status: 'success',
               auth: {
                 token,
-                ...userBdy
+                ...getCleanUser(user),
+                code: 200010,
+                message: 'Google signin success',
               }
             }
-          }
-
-          const user = new User(_.extend(userBdy, {
-            isEmailActived: true,
-            social: true,
-            googleAccessToken: access_token,
-            googleId: id
-          }))
-          await user.save()
-
-          return ctx.response.body = {
-            status: 'success',
-            auth: {
-              token,
-              ...userBdy
+          } else {
+            // 曾經 google signin 過
+            const userId = socialAccountExist._id
+            token = getToken['JWT']({ userId, email })
+            return ctx.response.body = {
+              status: 'success',
+              auth: {
+                token,
+                ...getCleanUser(socialAccountExist),
+              },
+              code: 200009,
+              message: 'Google signup success',
             }
           }
         }

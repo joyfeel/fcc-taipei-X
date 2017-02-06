@@ -8,9 +8,10 @@ import Comment from '../../models/comments'
 import { getCleanUser, getCleanPost, canPostArticle, checkAuth } from '../../utils/mixed'
 import Config from '../../config'
 
-const commentsDefaultCount = Config.comment.defaultCount
-const loadPostCount = Config.post.loadPostCount()
-const createdPostTime = Config.post.createdPostTime
+const commentsDefaultCount = Config.dbSchema.comment.defaultCount
+const loadPostCount = Config.dbSchema.post.loadPostCount()
+const createdPostTime = Config.dbSchema.post.createdPostTime
+const createdPostLimit = Config.dbSchema.post.createdPostLimit()
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
@@ -45,7 +46,7 @@ router.post('/',
       }
 
       _.extend(canPost, {
-        createdPostLimit: Config.post.createdPostLimit(),
+        createdPostLimit: Config.dbSchema.post.createdPostLimit(),
       })
       await canPost.save()
       const post = new Post(article)

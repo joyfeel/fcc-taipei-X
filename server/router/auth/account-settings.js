@@ -49,7 +49,7 @@ router.post('/',
           nickname,
           password,
           photo,
-          nicknameChangeLimit: Config.user.nicknameChangeLimit()
+          nicknameChangeLimit: Config.dbSchema.user.nicknameChangeLimit()
         })
         await user.save()
       } else {

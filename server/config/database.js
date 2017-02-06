@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import config from './index'
 
 mongoose.Promise = global.Promise
-mongoose.connect(config.databaseURI, config.databaseOption || null)
+mongoose.connect(config.databaseURI, config.databaseOption)
 
 mongoose.connection.on('connected', () => {
   console.log('mongo connection open')

@@ -16,10 +16,10 @@ export async function checkEmailStatus(ctx, next) {
 export function mailTransport(userInfo, routePath, option, emailToken = undefined) {
   return new Promise((resolve, reject) => {
     const helper = require('sendgrid').mail
-    const sg = require('sendgrid')(Config.sendgrid.apiKey)
-    const from_email = new helper.Email(Config.sendgrid.sendgridSender)
+    const sg = require('sendgrid')(Config.mailServer.sendgrid.apiKey)
+    const from_email = new helper.Email(Config.mailServer.sendgrid.sendgridSender)
     const to_email = new helper.Email(userInfo.email)
-    const subject = Config.mailTemplate.subject
+    const subject = Config.mailServer.mailTemplate.subject
     let content
     if (emailToken) {
       content = new helper.Content('text/html',

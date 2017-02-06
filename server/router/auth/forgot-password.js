@@ -6,7 +6,6 @@ import _ from 'lodash'
 import User from '../../models/users'
 import { getToken } from '../../utils/auth'
 import { mailTransport, checkEmailStatus } from '../../utils/email'
-import Config from '../../config'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({

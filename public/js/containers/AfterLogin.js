@@ -30,7 +30,6 @@ class AfterLogin extends Component {
 
 const mapStateToProps = (state) => {
   const { findOlderFetching } = state.combine
-
   return {
     posts: state.posts,
     findOlderFetching,

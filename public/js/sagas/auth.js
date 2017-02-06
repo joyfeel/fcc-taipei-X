@@ -18,7 +18,7 @@ const {
 } = AuthActions
 
 const {
-  popupRequest, popupClose,
+  popupRequest,
 } = PopupActions
 
 const {
@@ -32,7 +32,7 @@ export function* signInFlow(formData) {
     if (response && response.auth && response.auth.token) {
       yield call(auth.setToken, response.auth.token)
       yield put(signInSuccess(response))
-      forwardTo('/')
+      yield forwardTo('/')
     }
   } catch (error) {
     yield put(signInFailure())
@@ -62,7 +62,7 @@ function* logoutFlows() {
   yield call(auth.logout)
   yield put(logoutNormal())
   yield put(cancelRequest())
-  forwardTo('/signin')
+  yield forwardTo('/signin')
 }
 export function* watchLogoutFlow() {
   yield* takeEvery(AuthActions.LOGOUT_REQUEST, logoutFlows)
@@ -83,7 +83,7 @@ export function* verifyEmailTokenFlow() {
     yield put(verifyEmailTokenFailure())
     yield put(popupRequest(error))
   }
-  forwardTo('/')
+  yield forwardTo('/')
 }
 
 /************************* SignUp *************************/
@@ -93,7 +93,7 @@ function* signUpFlow(formData) {
     if (response) {
       yield put(signUpSuccess(response))
       yield put(popupRequest(response))
-      forwardTo('/signin')
+      yield forwardTo('/signin')
     }
   } catch(error) {
     yield put(signUpFailure())

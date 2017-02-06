@@ -1,7 +1,6 @@
 import { encode } from 'node-base64-image'
 import User from '../models/users'
 import { bearerToToken, verifyToken } from './auth'
-import Config from '../config'
 
 export const getCleanUser = (user) => {
   const u = user.toObject()

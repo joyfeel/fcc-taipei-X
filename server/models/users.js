@@ -40,11 +40,11 @@ const UserSchema = new Schema({
   },
   nicknameChangeLimit: {
     type: Date,
-    default: Config.user.nicknameChangeLimit(),
+    default: Config.dbSchema.user.nicknameChangeLimit(),
   },
   createdPostLimit: {
     type: Date,
-    default: Config.post.createdPostLimit(),
+    default: Config.dbSchema.post.createdPostLimit(),
   },
   social: {
     type: Boolean,

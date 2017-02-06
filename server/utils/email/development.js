@@ -16,12 +16,12 @@ export async function checkEmailStatus(ctx, next) {
 
 export function mailTransport(userInfo, routePath, option, emailToken = undefined) {
   return new Promise((resolve, reject) => {
-    const transporter = nodemailer.createTransport(Config.gmail.gmailConfig)
+    const transporter = nodemailer.createTransport(Config.mailServer.gmailSMTP.gmailConfig)
     let message
     if (emailToken) {
       message = {
-        title: Config.mailTemplate.subject,
-        from: Config.gmail.gmailSender,
+        title: Config.mailServer.mailTemplate.subject,
+        from: Config.mailServer.gmailSMTP.gmailSender,
         to: userInfo.email,
         html:
           `<h1>Hi, ${userInfo.nickname}</h1>
@@ -34,8 +34,8 @@ export function mailTransport(userInfo, routePath, option, emailToken = undefine
       }
     } else {
       message = {
-        title: Config.mailTemplate.subject,
-        from: Config.gmail.gmailSender,
+        title: Config.mailServer.mailTemplate.subject,
+        from: Config.mailServer.gmailSMTP.gmailSender,
         to: userInfo.email,
         html:
           `<h1>Hi, ${userInfo.nickname}</h1>
