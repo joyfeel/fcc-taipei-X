@@ -19,4 +19,4 @@ const googleParams = {
   response_type: 'code'
 }
 
-export const googleUrl = googleConfig.authorizationUrl + '?' + qs.stringify(googleParams)
+export const googleRequestUri = googleConfig.authorizationUrl + '?' + qs.stringify(googleParams)

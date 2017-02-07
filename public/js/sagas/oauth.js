@@ -6,7 +6,8 @@ import * as PopupActions from '../actions/popup'
 import auth from '../utils/auth'
 import openPopup from '../utils/popup'
 import { forwardTo } from '../utils/mixed'
-import { googleConfig, googleUrl } from '../utils/oauth'
+import { googleConfig, googleRequestUri } from '../utils/oauth/google'
+import { facebookConfig, facebookRequestUri } from '../utils/oauth/facebook'
 
 const {
   signInSuccess, signInFailure,
@@ -37,8 +38,8 @@ const pollingPopup = (popWin) => {
   })
 }
 
-function exchangeCodeForToken(code) {
-  return fetch(googleConfig.url, {
+function exchangeCodeForToken(url, code) {
+  return fetch(url, {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ code })
@@ -55,10 +56,19 @@ function exchangeCodeForToken(code) {
 
 const providerStrategy = {
   'google': function* () {
-    const popup = yield call(openPopup, googleUrl, '_blank', 'google')
+    const popup = yield call(openPopup, googleRequestUri, '_blank', 'google')
     const code = yield call(pollingPopup, popup)
     if (code) {
-      return yield call(exchangeCodeForToken, code)
+      return yield call(exchangeCodeForToken, googleConfig.url, code)
+    } else {
+      return null
+    }
+  },
+  'facebook': function* () {
+    const popup = yield call(openPopup, facebookRequestUri, '_blank', 'facebook')
+    const code = yield call(pollingPopup, popup)
+    if (code) {
+      return yield call(exchangeCodeForToken, facebookConfig.url, code)
     } else {
       return null
     }

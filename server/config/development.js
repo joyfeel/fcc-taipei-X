@@ -60,6 +60,17 @@ const config = {
       redirect_uri: 'http://localhost:3000/v1/auth/google/callback',
       grant_type: 'authorization_code',
     },
+    facebook: {
+      accessTokenUrl: 'https://graph.facebook.com/v2.8/oauth/access_token',
+      profileFields: ['id', 'name', 'email']
+      graphApiUrl() {
+        return `https://graph.facebook.com/v2.8/me?fields=${this.profileFields.join(',')}`
+      },
+      client_id: '714795635361315',
+      client_secret: '5b33a8a2a9d556114ffc5b5cabb3b7c7',
+      redirect_uri: 'http://localhost:3000/v1/auth/facebook/callback',
+      grant_type: 'authorization_code',
+    },
   },
   hostUrl: 'http://localhost:3000',
   databaseURI: 'mongodb://127.0.0.1:27017/fcc-taipei-x',
