@@ -3,6 +3,11 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+const envToBeInjected = {
+  NODE_ENV: 'production',
+  DEPLOY_SITE: process.env.DEPLOY_SITE,
+}
+
 module.exports = {
   entry: path.join(__dirname, 'public', 'js', 'index.js'),
   output: {
@@ -43,9 +48,7 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('style.css'),
     new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify('production'),
-      },
+      'process.env': JSON.stringify(envToBeInjected),
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',

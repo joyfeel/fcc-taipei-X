@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "start": "nodemon --ignore public/ --exec babel-node ./server",
-    "build": "NODE_ENV=production npm run clean && npm run build:server && npm run build:app",
+    "build": "npm run clean && npm run build:server && npm run build:app",
     "production": "NODE_ENV=production node ./dist",
     "build:app": "NODE_ENV=production webpack --config webpack.build.js -p",
     "build:server": "NODE_ENV=production babel --minified ./server -d dist",
@@ -100,7 +100,7 @@
     "style-loader": "0.13.1",
     "supertest": "2.0.0",
     "url-loader": "0.5.7",
-    "webpack": "2.2.0-rc.3",
+    "webpack": "2.2.1",
     "webpack-hot-middleware": "2.12.2"
   }
 }

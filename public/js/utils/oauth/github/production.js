@@ -6,8 +6,8 @@ export const githubConfig = {
   clientId: '31b61d31f73d89b7eacc',
   redirectUri: `${process.env.DEPLOY_SITE}/v1/auth/github/callback`,
   authorizationUrl: 'https://github.com/login/oauth/authorize',
-  scope: 'user',
-  state: v4()
+  scope: 'user:email',
+  state: v4(),
 }
 
 const githubParams = {
@@ -15,7 +15,6 @@ const githubParams = {
   redirect_uri: githubConfig.redirectUri,
   scope: githubConfig.scope,
   state: githubConfig.state,
-  //display: 'popup',
   response_type: 'code'
 }
 
