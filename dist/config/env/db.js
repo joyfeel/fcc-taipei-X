@@ -1,1 +1,0 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default={user:{nicknameChangeTime:"45 days",nicknameChangeLimit:function nicknameChangeLimit(){return Date.now()+1000*45},createdPostTime:"2 minutes",createdPostLimit:function createdPostLimit(){return Date.now()+1000*1.5*60},loadPostCount:function loadPostCount(){return 10}}};
