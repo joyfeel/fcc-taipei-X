@@ -37,7 +37,6 @@ router.post('/',
       const oldNickname = result.nickname
       //如果 user 有嘗試改動 nickname
       if (oldNickname !== nickname) {
-        //console.log('Starting change the oldname.........zzz')
         user = await User.findById(result._id).where('nicknameChangeLimit').lt(Date.now())
 
         if (!user) {

@@ -2,7 +2,7 @@ import { v4 } from 'node-uuid'
 import qs from 'querystring'
 //https://dev.twitter.com/web/sign-in/implementing
 export const twitterConfig = {
-  url: 'http://127.0.0.1:3000/v1/auth/twitter',
+  url: '/v1/auth/twitter',
   //clientId: 'SBUdNkTyybaSKnzReXPnGEFMh',
   redirectUri: 'http://127.0.0.1:3000/v1/auth/twitter/callback',
   authorizationUrl: 'https://api.twitter.com/oauth/authenticate',

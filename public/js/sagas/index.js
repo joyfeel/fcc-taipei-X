@@ -26,7 +26,6 @@ import {
 function subscribe(socket) {
   return eventChannel(emit => {
     // socket.on('t', ({ time }) => {
-    //   console.log('tttttttttttt')
     //   emit(addUser({ time }))
     // })
     // socket.on('users.logout', ({ username }) => {

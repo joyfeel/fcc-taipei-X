@@ -37,7 +37,6 @@ router.post('/',
       if (!response.ok) {
         throw Boom.create(response.status, response.statusText, { code: 400000 })
       }
-
       const { access_token, token_type } = await response.json()
       const graphApiUrl = Config.auth.facebook.graphApiUrl(access_token)
       const userInfoResponse = await fetch(graphApiUrl, {

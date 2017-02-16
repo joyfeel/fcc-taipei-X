@@ -22,21 +22,23 @@ const {
 const pollingPopup = (popWin) => {
   return new Promise((resolve, reject) => {
     const intervalId = setInterval(() => {
+      if (!popWin || popWin.closed) {
+        clearInterval(intervalId)
+        resolve(null)
+      }
       try {
-        if (!popWin.location.search) {
-          clearInterval(intervalId)
-          resolve(null)
-        }
-        const query = popWin.location.search.substring(1)
-        const parsedQuery = qs.parse(query)
-        if (parsedQuery.code) {
-          clearInterval(intervalId)
-          popWin.close()
-          resolve(parsedQuery.code)
+        if (popWin.location.search) {
+          const query = popWin.location.search.substring(1)
+          const parsedQuery = qs.parse(query)
+          if (parsedQuery && parsedQuery.code) {
+            clearInterval(intervalId)
+            popWin.close()
+            resolve(parsedQuery.code)
+          }
         }
       } catch (e) {
       }
-    }, 1000)
+    }, 500)
   })
 }
 

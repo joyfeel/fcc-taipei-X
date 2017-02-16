@@ -14,11 +14,11 @@ function getPopupOffset(width, height) {
 function getPopupSize(provider) {
   switch (provider) {
     case "facebook":
-      return {width: 580, height: 400}
+      return {width: 1000, height: 800}
     case "google":
-      return {width: 452, height: 633}
+      return {width: 1000, height: 800}
     case "github":
-      return {width: 1020, height: 618}
+      return {width: 1000, height: 800}
     case "linkedin":
       return {width: 527, height: 582}
     case "twitter":

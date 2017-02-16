@@ -6,9 +6,11 @@
   "scripts": {
     "clean": "rimraf dist",
     "start": "nodemon --ignore public/ --exec babel-node ./server",
-    "build": "npm run clean && npm run build:server && npm run build:app",
+    "build:alpha": "npm run clean && npm run build:server && npm run build:client:alpha",
+    "build": "npm run clean && npm run build:server && npm run build:client",
     "production": "NODE_ENV=production node ./dist",
-    "build:app": "NODE_ENV=production webpack --config webpack.build.js -p",
+    "build:client:alpha": "webpack --config webpack.build.js -p --env.alpha",
+    "build:client": "webpack --config webpack.build.js -p",
     "build:server": "NODE_ENV=production babel --minified ./server -d dist",
     "test": "mocha ./test",
     "test-cov": "istanbul cover --dir ./coverage _mocha -- ./test --opts ./test/mocha.opts",
