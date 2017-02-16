@@ -10,7 +10,7 @@ const Schema = mongoose.Schema
 const UserSchema = new Schema({
   email: {
     type: String,
-    required: true,
+    required: false,
     index: {
       unique: true,
     },
@@ -59,17 +59,14 @@ const UserSchema = new Schema({
   twitter: {
     type: String,
   },
-  googleAccessToken: {
-    type: String,
-  },
-  googleId: {
+  google: {
     type: String,
   },
 })
 
 UserSchema.plugin(timestamps)
 UserSchema.path('nickname').required(true, 'nickname is required')
-UserSchema.path('email').required(true, 'email is required')
+//UserSchema.path('email').required(true, 'email is required')
 
 UserSchema.virtual('password')
   .set(function(value) {

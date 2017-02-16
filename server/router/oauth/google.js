@@ -29,20 +29,20 @@ router.post('/',
         code,
         ...Config.auth.google,
       }
-      const accessTokenResponse = await fetch(accessTokenUrl, {
+      const response = await fetch(accessTokenUrl, {
         method: 'post',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: qs.stringify(params)
+        body: qs.stringify(params),
       })
-      if (accessTokenResponse.ok) {
-        const { access_token, token_type } = await accessTokenResponse.json()
+      if (response.ok) {
+        const { access_token, token_type } = await response.json()
         const userInfoResponse = await fetch(peopleApiUrl, {
           method: 'get',
           headers: {
-            Authorization: `${token_type} ${access_token}`
-          }
+            Authorization: `${token_type} ${access_token}`,
+          },
         })
         if (userInfoResponse.ok) {
           const userInfo = await userInfoResponse.json()
@@ -50,21 +50,24 @@ router.post('/',
 
           const accountExist = await User.findOne({ email, social: false })
           if (accountExist) {
-            throw Boom.forbidden('The email has already been registered in our web approach')
+            throw Boom.create(403, 'The email has already been registered in our web approach', { code: 403007 })
           }
-          const socialAccountExist = await User.findOne({ googleId: id })
+          const socialAccountExist = await User.findOne({ google: id })
           let token
           // 從未 google signin 過
           if (!socialAccountExist) {
+            let user = await User.findOne({ email })
+            if (user) {
+              throw Boom.create(403, 'The email has already been registered in other social approach', { code: 403001 })
+            }
             const base64URI = await encodeRemoteImg(picture)
-            const user = new User({
+            user = new User({
               email,
               nickname: name,
               avatar: base64URI,
               isEmailActived: true,
               social: true,
-              googleAccessToken: access_token,
-              googleId: id,
+              google: id,
             })
             await user.save()
             const userId = user._id
@@ -95,8 +98,8 @@ router.post('/',
         }
       }
       /* Bad */
-      const BadRequestError = Boom.badRequest(`${userInfoResponse.statusText} ${userInfoResponse.url}`)
-      ctx.throw(BadRequestError.output.statusCode, BadRequestError)
+      // const BadRequestError = Boom.badRequest(`${userInfoResponse.statusText} ${userInfoResponse.url}`)
+      // ctx.throw(BadRequestError.output.statusCode, BadRequestError)
     } catch(err) {
       if (err.output.statusCode) {
         ctx.throw(err.output.statusCode, err)

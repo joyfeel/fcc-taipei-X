@@ -17,7 +17,10 @@ import signinRouter from './router/auth/signin'
 import accountSettingsRouter from './router/auth/account-settings'
 import forgotPasswordRouter from './router/auth/forgot-password'
 import verifyTokenRouter from './router/auth/verifyToken'
+import facebookRouter from './router/oauth/facebook'
+import twitterRouter from './router/oauth/twitter'
 import googleRouter from './router/oauth/google'
+import githubRouter from './router/oauth/github'
 
 import postRouter from './router/blog/posts'
 import commentRouter from './router/blog/comments'
@@ -99,7 +102,6 @@ if (process.env.NODE_ENV !== 'production') {
       assets: false,
     },
   })))
-
 } else {
   const serve = require('koa-static')
   app.use(serve(path.join(__dirname, '../dist')))
@@ -113,7 +115,10 @@ app.use(convert(jwt({
     '/v1/signin',
     '/v1/forgot_password',
     '/v1/verifyToken',
+    '/v1/auth/facebook',
+    '/v1/auth/twitter',
     '/v1/auth/google',
+    '/v1/auth/github',
     '/favicon.ico',
   ]
 })))
@@ -140,7 +145,16 @@ app.use(forgotPasswordRouter.routes()).use(forgotPasswordRouter.allowedMethods({
 app.use(verifyTokenRouter.routes()).use(verifyTokenRouter.allowedMethods({
   throw: true
 }))
+app.use(facebookRouter.routes()).use(facebookRouter.allowedMethods({
+  throw: true
+}))
+app.use(twitterRouter.routes()).use(twitterRouter.allowedMethods({
+  throw: true
+}))
 app.use(googleRouter.routes()).use(googleRouter.allowedMethods({
+  throw: true
+}))
+app.use(githubRouter.routes()).use(githubRouter.allowedMethods({
   throw: true
 }))
 

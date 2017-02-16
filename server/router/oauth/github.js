@@ -13,7 +13,7 @@ import Config from '../../config'
 
 const validate = (...args) => convert(_validate(...args))
 const router = new Router({
-  prefix: '/v1/auth/facebook',
+  prefix: '/v1/auth/github',
 })
 
 router.post('/',
@@ -23,7 +23,7 @@ router.post('/',
   async(ctx, next) => {
     try {
       const { code } = ctx.request.body
-      const { accessTokenUrl, client_id, redirect_uri, client_secret } = Config.auth.facebook
+      const { accessTokenUrl, client_id, redirect_uri, client_secret } = Config.auth.github
       const params = {
         client_id,
         redirect_uri,
@@ -32,42 +32,45 @@ router.post('/',
       }
       const OAuthEndpointUrl = `${accessTokenUrl}?${qs.stringify(params)}`
       const response = await fetch(OAuthEndpointUrl, {
-        method: 'get',
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+        },
       })
       if (!response.ok) {
         throw Boom.create(response.status, response.statusText, { code: 400000 })
       }
-
       const { access_token, token_type } = await response.json()
-      const graphApiUrl = Config.auth.facebook.graphApiUrl(access_token)
-      const userInfoResponse = await fetch(graphApiUrl, {
+      const userApiUrl = Config.auth.github.userApiUrl(access_token)
+      const userInfoResponse = await fetch(userApiUrl, {
         method: 'get',
+        Authorization: `token ${access_token}`,
       })
+
       if (!userInfoResponse.ok) {
         throw Boom.create(userInfoResponse.status, userInfoResponse.statusText, { code: 400000 })
       }
-      const userInfo = await userInfoResponse.json()
-      const { name, email, picture, id } = userInfo
-
+      const { id, name, email, avatar_url } = await userInfoResponse.json()
       const accountExist = await User.findOne({ email, social: false })
       if (accountExist) {
         throw Boom.create(403, 'The email has already been registered in our web approach', { code: 403007 })
       }
-      const socialAccountExist = await User.findOne({ facebook: id })
+      const socialAccountExist = await User.findOne({ github: id })
+
       let token
       if (!socialAccountExist) {
         let user = await User.findOne({ email })
         if (user) {
           throw Boom.create(403, 'The email has already been registered in other social approach', { code: 403001 })
         }
-        const base64URI = await encodeRemoteImg(picture.data.url)
+        const base64URI = await encodeRemoteImg(avatar_url)
         user = new User({
           email,
           nickname: name,
           avatar: base64URI,
           isEmailActived: true,
           social: true,
-          facebook: id,
+          github: id,
         })
         await user.save()
         const userId = user._id
@@ -78,11 +81,11 @@ router.post('/',
             token,
             ...getCleanUser(user),
             code: 200012,
-            message: 'Facebook signin success',
+            message: 'Github signin success',
           }
         }
       } else {
-        // 曾經 facebook signin 過
+        // 曾經 signin 過
         const userId = socialAccountExist._id
         token = getToken['JWT']({ userId, email })
         return ctx.response.body = {
@@ -92,7 +95,7 @@ router.post('/',
             ...getCleanUser(socialAccountExist),
           },
           code: 200011,
-          message: 'Facebook signup success',
+          message: 'Github signup success',
         }
       }
     } catch(err) {

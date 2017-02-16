@@ -1,3 +1,5 @@
+import qs from 'querystring'
+
 const config = {
   port: process.env.PORT || 3000,
   jwt: {
@@ -52,23 +54,42 @@ const config = {
     },
   },
   auth: {
+    facebook: {
+      accessTokenUrl: 'https://graph.facebook.com/v2.8/oauth/access_token',
+      profileFields: ['id', 'name', 'email', 'picture'],
+      graphApiUrl(access_token) {
+        return `https://graph.facebook.com/v2.8/me?${qs.stringify({
+          fields: this.profileFields.join(','),
+          access_token,
+          debug: 'all',
+        })}`
+      },
+      client_id: '714795635361315',
+      client_secret: process.env.FACEBOOK_SECRET,
+      redirect_uri: 'http://localhost:3000/v1/auth/facebook/callback',
+      grant_type: 'authorization_code',
+    },
+    twitter: {
+
+    },
     google: {
       accessTokenUrl: 'https://www.googleapis.com/oauth2/v4/token',
       peopleApiUrl: 'https://www.googleapis.com/oauth2/v2/userinfo',
       client_id: '524481294139-03nll8r7ohb5hnb94m89jdtj8b319svc.apps.googleusercontent.com',
-      client_secret: 'u8yj8r01dKIExw-al9OEigYU',
+      client_secret: process.env.GOOGLE_SECRET,
       redirect_uri: 'http://localhost:3000/v1/auth/google/callback',
       grant_type: 'authorization_code',
     },
-    facebook: {
-      accessTokenUrl: 'https://graph.facebook.com/v2.8/oauth/access_token',
-      profileFields: ['id', 'name', 'email']
-      graphApiUrl() {
-        return `https://graph.facebook.com/v2.8/me?fields=${this.profileFields.join(',')}`
+    github: {
+      accessTokenUrl: 'https://github.com/login/oauth/access_token',
+      userApiUrl(access_token) {
+        return `https://api.github.com/user?${qs.stringify({
+          access_token,
+        })}`
       },
-      client_id: '714795635361315',
-      client_secret: '5b33a8a2a9d556114ffc5b5cabb3b7c7',
-      redirect_uri: 'http://localhost:3000/v1/auth/facebook/callback',
+      client_id: '31b61d31f73d89b7eacc',
+      client_secret: process.env.GITHUB_SECRET,
+      redirect_uri: 'http://localhost:3000/v1/auth/github/callback',
       grant_type: 'authorization_code',
     },
   },

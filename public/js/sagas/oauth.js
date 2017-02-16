@@ -8,6 +8,8 @@ import openPopup from '../utils/popup'
 import { forwardTo } from '../utils/mixed'
 import { googleConfig, googleRequestUri } from '../utils/oauth/google'
 import { facebookConfig, facebookRequestUri } from '../utils/oauth/facebook'
+import { twitterConfig, twitterRequestUri } from '../utils/oauth/twitter'
+import { githubConfig, githubRequestUri } from '../utils/oauth/github'
 
 const {
   signInSuccess, signInFailure,
@@ -41,38 +43,54 @@ const pollingPopup = (popWin) => {
 function exchangeCodeForToken(url, code) {
   return fetch(url, {
     method: 'post',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({ code })
   }).then(response => {
     if (response.ok) {
       return response.json().then(json => json)
     }
-
     return response.json()
-      .then(json => Boom.create(response.status, json.message))   //get error response from backend
+      .then(json => Boom.create(response.status, json.message))
       .then(error => Promise.reject(error))
   }).catch(error => Promise.reject(error))
 }
 
 const providerStrategy = {
-  'google': function* () {
-    const popup = yield call(openPopup, googleRequestUri, '_blank', 'google')
-    const code = yield call(pollingPopup, popup)
-    if (code) {
-      return yield call(exchangeCodeForToken, googleConfig.url, code)
-    } else {
-      return null
-    }
-  },
   'facebook': function* () {
     const popup = yield call(openPopup, facebookRequestUri, '_blank', 'facebook')
     const code = yield call(pollingPopup, popup)
     if (code) {
       return yield call(exchangeCodeForToken, facebookConfig.url, code)
-    } else {
-      return null
     }
-  }
+    return null
+  },
+  'twitter': function* () {
+    /* WIP */
+    const popup = yield call(openPopup, twitterRequestUri, '_blank', 'twitter')
+    const code = yield call(pollingPopup, popup)
+    if (code) {
+      return yield call(exchangeCodeForToken, twitterConfig.url, code)
+    }
+    return null
+  },
+  'google': function* () {
+    const popup = yield call(openPopup, googleRequestUri, '_blank', 'google')
+    const code = yield call(pollingPopup, popup)
+    if (code) {
+      return yield call(exchangeCodeForToken, googleConfig.url, code)
+    }
+    return null
+  },
+  'github': function* () {
+    const popup = yield call(openPopup, githubRequestUri, '_blank', 'github')
+    const code = yield call(pollingPopup, popup)
+    if (code) {
+      return yield call(exchangeCodeForToken, githubConfig.url, code)
+    }
+    return null
+  },
 }
 
 /************************* OAuthSignIn *************************/

@@ -33,7 +33,7 @@ router.post('/',
       const { email, nickname } = ctx.request.body
       const socialAccountExist = await User.findOne({ email, social: true })
       if (socialAccountExist) {
-        throw Boom.create(403, 'The email has already been registered in social account', { code: 403001 })
+        throw Boom.create(403, 'The email has already been registered in other social approach', { code: 403001 })
       }
 
       // 1. Check the account is unique
