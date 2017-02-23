@@ -96,9 +96,9 @@
 			margin: 5px 10px 0;
 			width: calc( 100% - 20px);
 			border-top: 1px solid $hightLight;
-			border-bottom: 1px solid $bgContain;
+			// border-bottom: 1px solid $bgContain;
 			height: 35px;
-			transition: border-color .3s;
+			transition: border-color .3s, background-color .3s;
 			cursor: pointer;
 			clear: both;
 	}
@@ -117,47 +117,6 @@
 	}
 
 }//.article
-
-.article-analysis {
-	> i {
-		color: $hightLight;
-		transition: color .3s;
-		font-style: normal;
-		font-size: $smFz;
-		line-height: 30px;
-		margin-top: 5px;
-		vertical-align: bottom;
-		&:hover {
-			color: $active1;
-		}
-		&:first-child {
-			float: left;
-			margin-left: 3px;
-		}
-		&:before {
-			@extend %icon;
-			font-size: $mdFz;
-			margin-right: 5px;
-		}
-	}
-
-	> .thumb-down-1 {
-		float: right;
-		margin-right: 3px;
-	}
-
-	> .thumb-up-1 {
-		float: right;
-		margin-right: 12px;
-	}
-
-	.clicked {
-		color: $active2;
-		&:hover {
-			color: $active2;
-		}
-	}
-}
 
 @media (max-width: 580px) {
 	.wrapper .main {

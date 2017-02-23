@@ -1,6 +1,7 @@
 import * as ActionTypes from '../actions/combine'
 
 const initialState = {
+  // commentFetching: false,
   isFetching: false,
   findOlderFetching: false,
   isPostformOpen: false,
@@ -50,6 +51,16 @@ const combine = (state = initialState, action) => {
         ...state,
         isPostformOpen: false,
         editPost: null,
+      }
+    case ActionTypes.SENDING_COMMENT_REQUEST:
+      return {
+        ...state,
+        // commentFetching: true,
+      }
+    case ActionTypes.CANCEL_COMMENT_REQUEST:
+      return {
+        ...state,
+        // commentFetching: false,
       }
     default:
       return state

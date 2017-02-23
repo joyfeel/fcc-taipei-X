@@ -5,6 +5,7 @@ import posts from './posts'
 import combine from './combine'
 import socket from './socket'
 import slider from './slider'
+import comment from './comment'
 
 const appReducer = combineReducers({
   auth,
@@ -13,6 +14,7 @@ const appReducer = combineReducers({
   combine,
   socket,
   slider,
+  comment,
 })
 
 const rootReducer = (state, action) => {

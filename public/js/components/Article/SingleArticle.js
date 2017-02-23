@@ -6,21 +6,59 @@ import ArticleAnalysis from './ArticleAnalysis'
 import { formatDate } from '../../utils/time/time'
 import SelfArticleMenu from './SelfArticleMenu'
 import OtherArticleMenu from './OtherArticleMenu'
+import Comment from '../Comment/Comment'
+import * as CommentActions from '../../actions/comment'
 
 class SingleArticle extends Component {
   constructor(props) {
     super(props)
     this.state = {
       show: false,
+      commentToggle: false,
+      fold: false,
+      commentsIdLength: 0,
+      commentFetching: false,
     }
     this.toggleArticleMenu = this.toggleArticleMenu.bind(this)
     this.closeArticleMenu = this.closeArticleMenu.bind(this)
     this.detectArticleMenu = this.detectArticleMenu.bind(this)
     this.displayDate = this.displayDate.bind(this)
+    this.toggleCommentForm = this.toggleCommentForm.bind(this)
+    this.commentFormStateChange = this.commentFormStateChange.bind(this)
   }
   toggleArticleMenu() {
     this.setState({
       show: !this.state.show,
+    })
+  }
+  commentFormStateChange(realCommentCount, commentLength) {
+    const { commentsIdLength } = this.state
+    this.setState({
+      fold: (realCommentCount > commentLength) ? true : false,
+      commentsIdLength: commentLength,
+      commentFetching: false,
+    })
+  }
+  toggleCommentForm(e) {
+    const { id, comments, realCommentCount } = this.props.post
+    const { commentsIdLength, commentFetching } = this.state
+
+    //打開留言區
+    if(e.target.id === 'comment-toggle') {
+      this.setState({
+        commentToggle: !this.state.commentToggle,
+      })
+      /* 已打開過部分留言，但不是要再找新留言，當store.post.comments裡comment id 等於 react ui state 且 DOM已有留言 commentsIdLength > 0 */
+      if(comments.length === commentsIdLength && commentsIdLength > 0) return
+    }
+    /* 如果上一次的request還沒response ，return 掉，不讓再發request */
+    if(e.target.id === 'arrow-down') if(commentFetching) return
+
+    /*無留言數，不用 dispatch action，以及 laoding 訊息*/
+    if(realCommentCount === 0) return
+    this.props.comment.getCommentRequest({ id, comments })
+    this.setState({
+      commentFetching: true,
     })
   }
   closeArticleMenu() {
@@ -45,10 +83,18 @@ class SingleArticle extends Component {
 
     return <OtherArticleMenu show={show} ref='articleMenu' />
   }
+  componentWillReceiveProps(nextProps) {
+    const { realCommentCount , comments } = nextProps.post
+    const { commentsIdLength } = this.state
+    /*當store.post.comments 留言id增加後，與 react ui state commentsIdLength 留言數 比對，改變停止loading狀態並更新react ui 留言數，
+    以及 留言數與 store.post.comments 留言 比對 顯示 更多留言 fold 存在必要*/
+    if(comments.length > commentsIdLength) return this.commentFormStateChange(realCommentCount, comments.length)
+  }
+
   render() {
     const { post, authId } = this.props
-    const { id, title, content } = this.props.post
-    const { show } = this.state
+    const { id, title, content, comments } = this.props.post
+    const { show, commentToggle, fold, commentFetching } = this.state
     return (
       <article className='article'>
         <a href='' className='article-avatar'>
@@ -59,8 +105,9 @@ class SingleArticle extends Component {
         <i className='more-2' onClick={this.toggleArticleMenu} ref='more'></i>
         <h3 className='article-title'>{post.title}</h3>
         <p className='article-content'>{post.content}</p>
-        <ArticleAnalysis post={post} />
+        <ArticleAnalysis post={post} commentToggle={commentToggle} toggleCommentForm={this.toggleCommentForm} />
         {this.renderArticleMenu(show, post.author.id, authId, id, title, content)}
+        <Comment fold={fold} commentFetching={commentFetching} commentsId={comments} toggleCommentForm={this.toggleCommentForm} />
       </article>
     )
   }
@@ -72,16 +119,25 @@ class SingleArticle extends Component {
   }
 }
 
+SingleArticle.propTypes = {
+  post: PropTypes.object.isRequired,
+  // commentFetching: PropTypes.bool.isRequired,
+  authId: PropTypes.string.isRequired,
+  postIndex: PropTypes.number.isRequired,
+}
+
 const mapStateToProps = (state) => {
   const { id } = state.auth.profile
+  // const { commentFetching } = state.combine
   return {
     authId: id,
+    // commentFetching: commentFetching,
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    comment: bindActionCreators(CommentActions, dispatch),
   }
 }
 
-SingleArticle.propTypes = {
-  post: PropTypes.object.isRequired,
-  authId: PropTypes.string.isRequired,
-}
-
-export default connect(mapStateToProps, null)(SingleArticle)
+export default connect(mapStateToProps, mapDispatchToProps)(SingleArticle)
