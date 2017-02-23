@@ -1,0 +1,62 @@
+.article-analysis {
+	> i {
+		color: $hightLight;
+		transition: color .3s;
+		font-style: normal;
+		font-size: $smFz;
+		line-height: 30px;
+		margin-top: 5px;
+		vertical-align: bottom;
+		&:hover {
+			color: $active1;
+		}
+		&:first-child {
+			float: left;
+			margin-left: 3px;
+		}
+		&:before {
+			@extend %icon;
+			font-size: $mdFz;
+			margin-right: 5px;
+		}
+	}
+
+	> .thumb-down-1 {
+		float: right;
+		margin-right: 3px;
+	}
+
+	> .thumb-up-1 {
+		float: right;
+		margin-right: 12px;
+	}
+
+	.clicked {
+		color: $active2;
+		&:hover {
+			color: $active2;
+		}
+	}
+}
+
+.article-analysis.comment-toggle {
+	width: 100%;
+	background-color: $hightLight;
+	margin-left: 0;
+	margin-right: 0;
+	&:hover {
+		border-color: $hightLight;
+	}
+}
+
+.comment-toggle {
+	> i {
+		color: $bgContain;
+	}
+	> i.comment-o-2 {
+		margin-left: 13px;
+	}
+	> .thumb-down-1 {
+		margin-right: 13px;
+	}
+}

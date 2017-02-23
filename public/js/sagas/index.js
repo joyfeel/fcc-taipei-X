@@ -21,6 +21,7 @@ import {
   watchOauthSignInFlow,
   watchRefreshFlow,
   watchVerifyEmailTokenFlow,
+  watchGetCommentFlow,
 } from './combine'
 
 function subscribe(socket) {
@@ -83,7 +84,9 @@ export default function* root() {
     fork(watchOauthSignInFlow),
     fork(watchRefreshFlow),
     fork(watchVerifyEmailTokenFlow),
+    fork(watchGetCommentFlow),
     /* test */
     //fork(lol)
+    /* comment */
   ]
 }

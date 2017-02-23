@@ -1,14 +1,16 @@
 import { call, put, fork, take } from 'redux-saga/effects'
-import { takeEvery } from 'redux-saga'
+import { takeEvery, delay } from 'redux-saga'
 import { eventChannel } from 'redux-saga'
 import postAPI from '../utils/postAPI'
 import * as AuthActions from '../actions/auth'
 import * as OauthActions from '../actions/oauth'
+import * as CommentActions from '../actions/comment'
 import * as CombineActions from '../actions/combine'
 import * as SocketActions from '../actions/socket'
 import { signInFlow, identifyTokenFlow, verifyEmailTokenFlow } from './auth'
 import { oauthSignInFlow } from './oauth'
 import { findPresentPostFlow } from './post'
+import { getCommentFlow } from './comment'
 import auth from '../utils/auth'
 import { connectPostTimeSocket } from '../utils/socket'
 
@@ -17,7 +19,7 @@ const {
 } = AuthActions
 
 const {
-  sendingRequest, cancelRequest,
+  sendingRequest, cancelRequest, sendingCommentRequest, cancelCommentRequest,
 } = CombineActions
 
 const {
@@ -111,4 +113,14 @@ function* verifyEmailTokenFlows() {
 }
 export function* watchVerifyEmailTokenFlow() {
   yield* takeEvery(AuthActions.VERIFY_EMAIL_TOKEN_REQUEST, verifyEmailTokenFlows)
+}
+
+function* combineGetCommentFlows({ postData }) {
+  // yield put(sendingCommentRequest())
+  yield call(delay, 500)
+  yield call(getCommentFlow, postData)
+  // yield put(cancelCommentRequest())
+}
+export function* watchGetCommentFlow() {
+  yield* takeEvery(CommentActions.GET_COMMENT_REQUEST, combineGetCommentFlows)
 }

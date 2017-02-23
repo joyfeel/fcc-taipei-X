@@ -14,8 +14,8 @@ class Article extends Component {
     this.detectNewPost = this.detectNewPost.bind(this)
   }
   renderArticles(posts) {
-    return posts.map(post => {
-      return <SingleArticle key={post.id} post={post} />
+    return posts.map( (post, idx) => {
+      return <SingleArticle key={post.id} post={post} postIndex={idx} />
     })
   }
   detectNewPost() {
