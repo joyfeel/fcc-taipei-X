@@ -1,0 +1,34 @@
+.comment-form {
+  position: relative;
+  // border-top: 1px solid $hightLight;
+
+  .comment-input {
+    width: calc(100% - 40px - 15px - 3px - 3px);
+    padding-top: 12px;
+    height: 27px;
+    float: left;
+    margin-left: 3px;
+  }
+  .comment-btn {
+    width: 20%;
+    max-width: 40px;
+    float: right;
+    font-size: 18px;
+    height: 38px;
+    line-height: 40px;
+    // border: 1px solid $active1;
+    color: $hightLight;
+    background-color: #fff;
+    border-radius: 6px;
+    margin-top: 2px;
+    margin-right: 3px;
+
+    &:hover {
+      color: $active1;
+    }
+  }
+}
+
+.comment-form.pending {
+  border-top: 1px solid $hightLight;
+}

@@ -37,6 +37,17 @@ const post = (state = {}, action) => {
         ...state,
         ...action.response.post,
       }
+    case ActionTypes.GET_COMMENT_ID_SUCCESS:
+      const postId = action.data.postData.id
+      if (postId === state.id) {
+        //取出所有留言的id
+        const commentsId = action.data.response.comment.map( c => c._id)
+        return {
+          ...state,
+          comments: state.comments.concat(commentsId),
+        }
+      }
+      return state
     default:
       return state
   }
@@ -64,6 +75,7 @@ const posts = (state = initialState, action) => {
       return state.filter(p => p.id !== action.response.post.id)
     case ActionTypes.EDIT_POST_SUCCESS:
     case ActionTypes.DISPLAY_NEWER_POST:
+    case ActionTypes.GET_COMMENT_ID_SUCCESS:
       return state.map(p => post(p, action))
     case ActionTypes.CREATE_POST_FAILURE:
     case ActionTypes.FIND_NEWER_POST_FAILURE:
@@ -71,6 +83,7 @@ const posts = (state = initialState, action) => {
     case ActionTypes.PRESENT_POST_FAILURE:
     case ActionTypes.DELETE_POST_FAILURE:
     case ActionTypes.EDIT_POST_FAILURE:
+    case ActionTypes.GET_COMMENT_ID_FAILURE:
       return state
     default:
       return state

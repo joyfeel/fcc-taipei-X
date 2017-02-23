@@ -1,0 +1,25 @@
+.comment .loader { display: none; }
+
+.loading-comment {
+  .loading {
+    display: none;
+  }
+
+  .loader {
+    display: block;
+    width: 100%;
+    height: 35px;
+    position: relative;
+    top: initial;
+    animation-delay: .1s;
+  }
+
+  .loading-dot {
+    position: absolute;
+    top: 0;
+  }
+}
+
+.loading-comment > .comment-form {
+  display: none;
+}

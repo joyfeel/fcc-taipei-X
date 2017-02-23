@@ -57,3 +57,16 @@ export const editformClose = () => {
     type: EDITFORM_CLOSE,
   }
 }
+
+export const SENDING_COMMENT_REQUEST = 'SENDING_COMMENT_REQUEST'
+export const sendingCommentRequest = () => {
+  return {
+    type: SENDING_COMMENT_REQUEST,
+  }
+}
+export const CANCEL_COMMENT_REQUEST = 'CANCEL_COMMENT_REQUEST'
+export const cancelCommentRequest = () => {
+  return {
+    type: CANCEL_COMMENT_REQUEST,
+  }
+}

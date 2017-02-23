@@ -127,3 +127,18 @@ export const editPostFailure = (error) => {
     error,
   }
 }
+
+export const GET_COMMENT_ID_SUCCESS = 'GET_COMMENT_ID_SUCCESS'
+export const GET_COMMENT_ID_FAILURE = 'GET_COMMENT_ID_FAILURE'
+export const getCommentIdSuccess = (data) => {
+  return {
+    type: GET_COMMENT_ID_SUCCESS,
+    data,
+  }
+}
+export const getCommentIdFailure = (error) => {
+  return {
+    type: GET_COMMENT_ID_FAILURE,
+    error,
+  }
+}
