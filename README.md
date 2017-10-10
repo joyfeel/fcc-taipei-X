@@ -2,7 +2,7 @@
 Free Code Camp Taipei - For practice
 
 
-View the [Live Demo](https://thawing-anchorage-84508.herokuapp.com)
+View the [Live Demo](https://alphameet.herokuapp.com/)
 -------------------------------------------------------------------
 
 The code for the demo is [here](https://github.com/joyfeel/fcc-taipei-X).
